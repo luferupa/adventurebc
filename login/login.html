@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link  rel="manifest"  href="manifest.json">
+    
+    <title>login</title>
+
+
+<!--     <script>
+        // does the browser support service workers?
+        if ('serviceWorker' in navigator) {
+          // fires when the service worker is ready
+          navigator.serviceWorker.ready.then(reg => {
+            // we have an active service worker working for us
+            console.log(`Service Worker ready (Scope: ${reg.scope})`);
+            // do something interesting, if you want...
+    
+          });
+          // then register our service worker
+          navigator.serviceWorker.register('./sw.js', { scope: '/' })
+            .then(function (reg) {
+              // display a success message
+              console.log(`Service Worker Registration (Scope: ${reg.scope})`);
+            })
+            .catch(function (error) {
+              // display an error message
+              console.log(`Service Worker Error (${error})`);
+            });
+        } else {
+          // happens when the app isn't served over a TLS connection (HTTPS)
+          console.warn('Service Worker not available');
+        }
+      </script> -->
+</head>
+<body>
+    <header>
+        <h1>Login</h1>
+    </header>
+    <main>
+        <form action="POST">
+            <label for="">Email:</label>
+            <input type="text">
+            <label for="">Password</label>
+            <input type="text">
+            <button type="Submit">Login</button>
+        </form>
+
+        <h2>Register With</h2>
+        <a href="" id="registerFacebook"><img src="" alt=""></a>
+        <a href="" id="registerGoogle"><img src="" alt=""></a>
+        <button type="submit" id="register">Register</button>
+    </main>
+</body>
+</html>
