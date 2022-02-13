@@ -1,0 +1,48 @@
+* {
+    font-family: roboto;
+}
+
+h1 {
+    margin-top: 4rem;
+    margin-bottom: 3rem;
+    font-size: 40px;
+}
+
+h2 {
+    font-size: 25px;
+}
+
+h1, h2 {
+    display: block;
+    text-align: center;
+    font-weight: bold;
+}
+
+label {
+    display: block;
+    border-bottom: 2px solid #000;
+    margin: 2rem 10% 1rem 10%;
+    font-size: 25px;
+    font-weight: bold;
+}
+
+input {
+    display: block;
+    margin: 1rem 10%;
+    border-bottom: 1px solid #000;
+    border-radius: 9px;
+    min-width: 80%;
+    min-height: 42px;
+}
+
+button {
+    display: block;
+    margin: auto;
+    width: 80%;
+    font-size: 20px;
+    font-weight: bold;
+    border: 0px;
+    border-radius: 9px;
+    background-color: #c4c4c4;
+    min-height: 42px;
+}
