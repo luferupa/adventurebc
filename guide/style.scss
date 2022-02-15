@@ -1,0 +1,36 @@
+*{
+    font-family: 'Gill Sans', Calibri, sans-serif;
+}
+
+header{
+    height: 10vh;
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: flex-end;
+    align-items: center;
+
+    img{
+        max-width: 50%;
+        height: auto;
+    }
+}
+
+#stepsCarousel{
+    margin: 2rem 1rem 1rem 1rem;
+
+    img{
+        height: 70vh;
+    }
+
+    .carousel-caption{
+        font-size: 1.5rem;
+    }
+}
+
+main{
+    text-align: center;
+
+    button{
+        font-size: 1.2rem;
+    }
+}
