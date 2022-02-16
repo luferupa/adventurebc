@@ -1,0 +1,84 @@
+* {
+  font-family: 'Gill Sans', Calibri, sans-serif;
+}
+
+.main-container {
+  background: -webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0.5)), to(rgba(0, 0, 0, 0.5))), url(../img/gral/background-dummy.jpg);
+  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(../img/gral/background-dummy.jpg);
+  background-size: cover;
+  margin: 0;
+}
+
+header, main {
+  text-align: center;
+}
+
+header {
+  height: 10vh;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-flow: column nowrap;
+          flex-flow: column nowrap;
+  -webkit-box-pack: end;
+      -ms-flex-pack: end;
+          justify-content: flex-end;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+header img {
+  max-width: 200px;
+  height: auto;
+}
+
+main .wrapper {
+  width: 90%;
+  margin: auto;
+  height: 90vh;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-flow: column nowrap;
+          flex-flow: column nowrap;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  gap: 4rem;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+main .wrapper h1 {
+  color: white;
+  font-size: 2rem;
+}
+
+main .wrapper button {
+  width: 40%;
+  max-width: 270px;
+}
+
+@media screen and (min-width: 1000px) {
+  header img {
+    max-width: 15%;
+    -ms-flex-item-align: start;
+        align-self: flex-start;
+    padding-left: 3rem;
+  }
+  main .wrapper {
+    height: 70vh;
+  }
+  main .wrapper h1 {
+    font-size: 3rem;
+  }
+  main .wrapper button {
+    width: 30%;
+  }
+}

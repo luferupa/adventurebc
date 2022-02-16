@@ -1,0 +1,68 @@
+* {
+  font-family: 'Gill Sans', Calibri, sans-serif;
+}
+
+header {
+  height: 10vh;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-flow: column nowrap;
+          flex-flow: column nowrap;
+  -webkit-box-pack: end;
+      -ms-flex-pack: end;
+          justify-content: flex-end;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+header img {
+  max-width: 200px;
+  height: auto;
+}
+
+#stepsCarousel {
+  margin: 2rem 1rem 1rem 1rem;
+  max-width: 800px;
+}
+
+#stepsCarousel img {
+  height: 70vh;
+}
+
+#stepsCarousel .carousel-caption {
+  font-size: 1.5rem;
+}
+
+main {
+  text-align: center;
+}
+
+main button {
+  font-size: 1.2rem;
+}
+
+@media screen and (min-width: 800px) {
+  #stepsCarousel {
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+@media screen and (min-width: 1000px) {
+  header img {
+    max-width: 15%;
+    -ms-flex-item-align: start;
+        align-self: flex-start;
+    padding-left: 3rem;
+  }
+  #stepsCarousel img {
+    height: 70vh;
+  }
+  #stepsCarousel .carousel-caption {
+    font-size: 1.5rem;
+  }
+}
