@@ -1,0 +1,86 @@
+* {
+  font-family: roboto;
+}
+
+h1 {
+  margin-top: 5rem;
+  margin-bottom: 3rem;
+  font-size: 40px;
+}
+
+h2 {
+  font-size: 25px;
+  margin-top: 54px;
+}
+
+h1, h2 {
+  display: block;
+  text-align: center;
+  font-weight: bold;
+}
+
+label {
+  display: block;
+  border-bottom: 2px solid #000;
+  margin: 2rem 12% 1rem 12%;
+  font-size: 25px;
+  font-weight: bold;
+}
+
+input {
+  display: block;
+  margin: 1rem 12%;
+  border: 1px solid #000;
+  border-radius: 9px;
+  min-width: 76%;
+  height: 42px;
+  padding-left: 1rem;
+  font-size: 20px;
+  color: rgba(0,0,0,0.75);
+}
+
+button {
+  display: block;
+  margin: auto;
+  width: 76%;
+  font-size: 20px;
+  font-weight: bold;
+  border: 0px;
+  border-radius: 9px;
+  background-color: #c4c4c4;
+  height: 50px;
+}
+
+.reg-options {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin: 1rem 12% 3rem 12%;
+  max-width: 76%;
+}
+
+.reg-options button {
+  border: 1px solid #000;
+  border-radius: 9px;
+  background: #fff;
+  height: 42px;
+}
+
+@media screen and (min-width: 600px) {
+  body {
+      background: linear-gradient(180deg, #C4C4C4 80%, #fff 80%) no-repeat;
+  }
+
+  main {
+      max-width: 460px;
+      margin: auto;
+      background-color: #fff;
+      border-radius: 43px;
+      padding: 3rem 0
+  }
+
+  h1 {
+      margin-top: 7rem;
+  }
+
+}
