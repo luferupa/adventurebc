@@ -2,10 +2,11 @@
     font-family: 'Gill Sans', Calibri, sans-serif;
 }
 
-body{
+.main-container{
     background: linear-gradient(rgba(0, 0, 0, 0.5),
     rgba(0, 0, 0, 0.5)), url(../img/gral/background-dummy.jpg);
     background-size: cover;
+    margin: 0;
 }
 
 header, main{
@@ -20,7 +21,7 @@ header{
     align-items: center;
 
     img{
-        max-width: 50%;
+        max-width: 200px;
         height: auto;
     }
 }
@@ -44,7 +45,35 @@ main{
 
         button{
             width: 40%; 
+            max-width: 270px;
         }
     
+    }
+}
+
+@media screen and (min-width:1000px){
+    header{
+    
+        img{
+            max-width: 15%;
+            align-self: flex-start;
+            padding-left: 3rem;
+        }
+    }
+
+    main{
+    
+        .wrapper{
+            height: 70vh;
+    
+            h1{
+                font-size: 3rem;
+            }
+    
+            button{
+                width: 30%; 
+            }
+        
+        }
     }
 }

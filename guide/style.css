@@ -20,12 +20,13 @@ header {
 }
 
 header img {
-  max-width: 50%;
+  max-width: 200px;
   height: auto;
 }
 
 #stepsCarousel {
   margin: 2rem 1rem 1rem 1rem;
+  max-width: 800px;
 }
 
 #stepsCarousel img {
@@ -42,4 +43,26 @@ main {
 
 main button {
   font-size: 1.2rem;
+}
+
+@media screen and (min-width: 800px) {
+  #stepsCarousel {
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+@media screen and (min-width: 1000px) {
+  header img {
+    max-width: 15%;
+    -ms-flex-item-align: start;
+        align-self: flex-start;
+    padding-left: 3rem;
+  }
+  #stepsCarousel img {
+    height: 70vh;
+  }
+  #stepsCarousel .carousel-caption {
+    font-size: 1.5rem;
+  }
 }
