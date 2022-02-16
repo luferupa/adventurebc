@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Loading Bootstrap 5 -->
+    <!-- <link rel=”stylesheet” href=”https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css”rel=”nofollow” integrity=”sha384-r4NyP46KrjDleawBgD5tp8Y7UzmLA05oM1iAEQ17CSuDqnUK2+k9luXQOfXJCJ4I” crossorigin=”anonymous”>
+    <script src=”https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js” integrity=”sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo” crossorigin=”anonymous”></script>
+    <script src=”https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/js/bootstrap.min.js” integrity=”sha384-oesi62hOLfzrys4LxRF63OJCXdXDipiYWBnvTl9Y9/TRlw5xlKIEHpNyvvDShgf/” crossorigin=”anonymous”></script>
+     -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+      crossorigin="anonymous"
+    ></script>
+
+    <!-- Loading the PWA manifest -->
+    <link rel="manifest" href="manifest.json" />
+
+    <!-- LLoading our customizations over Bootstrap -->
+    <link rel="stylesheet" href="./register.css" />
+
+    <title>Register</title>
+  </head>
+  <body>
+    <header>
+      <h1>Register</h1>
+    </header>
+    <main>
+      <form action="POST">
+        <label for="">User Name</label>
+        <input placeholder="User Name" type="text" />
+        <label for="">Password</label>
+        <input placeholder="Password" type="password" />
+        <label for="">Email</label>
+        <input placeholder="Email" type="email" />
+        <button type="Submit">Register</button>
+      </form>
+
+      <div class="bottom-section">
+        <h2>Register With</h2>
+        <div class="reg-options">
+          <button type="Submit" class="social-buttons">
+            <img src="../images/facebook-logo.png" alt="facebook logo" class="facebook-logo" />
+            Facebook
+          </button>
+          <button type="Submit" class="social-buttons">
+            <img src="../images/google-logo.png" alt="google logo" class="google-logo" />
+            Google
+          </button>
+        </div>
+      </div>
+    </main>
+  </body>
+</html>
