@@ -2,3 +2,5 @@
 *.css.map
 *.sass.map
 *.scss.map
+login/manifest.json
+login/sw.js
