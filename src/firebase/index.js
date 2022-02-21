@@ -3,13 +3,13 @@ import { initializeApp } from 'firebase/app';
 import { getAuth, signInWithPopup, GoogleAuthProvider, signOut } from 'firebase/auth';
 
 const firebaseConfig = {
-  apiKey: 'AIzaSyCT9dQLmhlFNlwlxuePZZPwOZZoBPsmpbo',
-  authDomain: 'adventurebc-1b6e0.firebaseapp.com',
-  projectId: 'adventurebc-1b6e0',
-  storageBucket: 'adventurebc-1b6e0.appspot.com',
-  messagingSenderId: '688567435812',
-  appId: '1:688567435812:web:f222c9da9fdb800b4aceb1',
-  measurementId: 'G-XTDLK17ZRT',
+  apiKey: 'AIzaSyARfc7VDH2YJXp2xiJeZpAHGe7mOCA0Eaw',
+  authDomain: 'adventurebc-bug-hunters.firebaseapp.com',
+  projectId: 'adventurebc-bug-hunters',
+  storageBucket: 'adventurebc-bug-hunters.appspot.com',
+  messagingSenderId: '232203961391',
+  appId: '1:232203961391:web:66d3f294d8f2f25dbe32da',
+  measurementId: 'G-R3SDEC134C',
 };
 
 // Initialize Firebase
