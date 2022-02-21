@@ -6,3 +6,4 @@ login/manifest.json
 login/sw.js
 node_modules
 dist
+*.log
