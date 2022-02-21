@@ -2,3 +2,7 @@
 *.css.map
 *.sass.map
 *.scss.map
+login/manifest.json
+login/sw.js
+node_modules
+dist
