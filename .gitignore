@@ -7,3 +7,4 @@ login/sw.js
 node_modules
 dist
 *.log
+.firebase
