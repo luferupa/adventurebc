@@ -1,0 +1,66 @@
+.guide {
+    * {
+        font-family: "Gill Sans", Calibri, sans-serif;
+    }
+
+    header {
+        height: 10vh;
+        display: flex;
+        flex-flow: column nowrap;
+        justify-content: flex-end;
+        align-items: center;
+
+        img {
+            max-width: 200px;
+            height: auto;
+        }
+    }
+
+    #stepsCarousel {
+        margin: 2rem 1rem 1rem 1rem;
+        max-width: 800px;
+
+        img {
+            height: 70vh;
+        }
+
+        .carousel-caption {
+            font-size: 1.5rem;
+        }
+    }
+
+    main {
+        text-align: center;
+
+        button {
+            font-size: 1.2rem;
+        }
+    }
+
+    @media screen and (min-width: 800px) {
+        #stepsCarousel {
+            margin-left: auto;
+            margin-right: auto;
+        }
+    }
+
+    @media screen and (min-width: 1000px) {
+        header {
+            img {
+                max-width: 15%;
+                align-self: flex-start;
+                padding-left: 3rem;
+            }
+        }
+
+        #stepsCarousel {
+            img {
+                height: 70vh;
+            }
+
+            .carousel-caption {
+                font-size: 1.5rem;
+            }
+        }
+    }
+}

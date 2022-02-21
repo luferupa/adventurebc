@@ -1,0 +1,52 @@
+
+// @use "./variables";
+// @use "./normalize";
+// @use "./reset";
+// @use "./common";
+
+@use '../pages/login/login.scss';
+@use '../pages/register/register.scss';
+@use '../pages/guide/guide.scss';
+
+
+@import "../../node_modules/bootstrap/scss/bootstrap";
+
+body {
+  background: linear-gradient(0deg, #abc, #def);
+  height: 100vh;
+  margin: 0;
+  font-family: Helvetica neue, roboto;
+}
+
+h1 {
+  color: #bdbdbd;
+  font-weight: 300;
+}
+
+.toolbar {
+  position: sticky;
+  height: 4rem;
+  background-color: #989;
+  border: 2px solid #767;
+  color: #eee;
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: center;
+}
+
+.toolbar a {
+  background-color: #123;
+  text-decoration: none;
+  color: #aaa;
+  flex: 0 0 100px;
+  margin: 0.5rem;
+  padding: 0.5rem;
+  text-align: center;
+}
+.toolbar a:active {
+  background-color: #b70;
+}
+
+#authArea {
+  padding: 1em;
+}
