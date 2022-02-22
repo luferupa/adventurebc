@@ -10,6 +10,7 @@ import './pages/login/login.html';
 import './pages/register/register.html';
 import './pages/guide/guide.html';
 import './pages/home/home.html';
+import './pages/welcome/welcome.html';
 
 // styles
 import './styles/index.scss';
@@ -19,9 +20,10 @@ import Router, { Page } from './routing';
 //setting up the Router with pages
 Router.init([
   // no-auth pages
-  new Page('#login', './pages/login.html', 'login', false), // 1st Page is default if no URL match
+  new Page('#guide', './pages/guide.html', 'guide', false),// 1st Page is default if no URL match
+  new Page('#welcome', './pages/welcome.html', 'welcome', false),
+  new Page('#login', './pages/login.html', 'login', false), 
   new Page('#register', './pages/register.html', 'register', false),
-  new Page('#guide', './pages/guide.html', 'guide', false),
 
   // auth-pages
   new Page('#home', './pages/home.html', 'home'),
