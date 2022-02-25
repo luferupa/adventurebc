@@ -1,14 +1,36 @@
-
 @use "./normalize";
 @use "./reset";
 @use "./common";
 @use "./typography";
-@use "./utilities";
 
-@use '../pages/login/login.scss';
-@use '../pages/register/register.scss';
-@use '../pages/guide/guide.scss';
-@use '../pages/welcome/welcome.scss';
+@use "../pages/guide/guide.scss";
+@use "../pages/welcome/welcome.scss";
 
+// override bootstrap values
+$primary: #e28c36;
+$secondary: #698b71;
 
-@import "../../node_modules/bootstrap/scss/bootstrap";
+// scss-docs-start import-stack
+// Configuration
+@import "../../node_modules/bootstrap/scss/functions";
+@import "../../node_modules/bootstrap/scss/variables";
+@import "../../node_modules/bootstrap/scss/mixins";
+@import "../../node_modules/bootstrap/scss/utilities";
+
+// import only those components you use
+@import "../../node_modules/bootstrap/scss/root";
+@import "../../node_modules/bootstrap/scss/reboot";
+@import "../../node_modules/bootstrap/scss/type";
+@import "../../node_modules/bootstrap/scss/buttons";
+@import "../../node_modules/bootstrap/scss/modal";
+@import "../../node_modules/bootstrap/scss/carousel";
+@import "../../node_modules/bootstrap/scss/forms";
+@import "../../node_modules/bootstrap/scss/transitions";
+@import "../../node_modules/bootstrap/scss/close";
+
+// Helpers
+@import "../../node_modules/bootstrap/scss/helpers";
+
+// Utilities
+@import "../../node_modules/bootstrap/scss/utilities/api";
+// scss-docs-end import-stack

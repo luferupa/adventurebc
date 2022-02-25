@@ -1,15 +1,171 @@
 <div class="welcome">
-    <div class="main-container">
-        <header>
-            <img src="https://firebasestorage.googleapis.com/v0/b/adventurebc-bug-hunters.appspot.com/o/logo.jpeg?alt=media&token=d7c65d2a-c66a-46c6-8a1e-dbe94006b163" alt="Logo">
-        </header>
+  <header>
+    <h1>Welcome to</h1>
+    <img
+      src="https://firebasestorage.googleapis.com/v0/b/adventurebc-bug-hunters.appspot.com/o/logo.png?alt=media&token=c593639d-49c4-4ff6-9d7e-ffb4bed06d4f"
+      alt="Logo"
+      class="main-logo"
+    />
+  </header>
 
-        <main>
-            <div class="wrapper">
-                <h1>Welcome to AdventureBC</h1>
-                <button type="button" class="btn btn-primary" onclick="location.hash = '#login';
-                location.reload();">Login</button>
+  <main>
+    <button type="button" class="btn btn-primary mt-4" data-bs-toggle="modal" data-bs-target="#loginModal">
+      Login
+    </button>
+
+    <!-- Modal -->
+    <div class="modal fade" id="loginModal" aria-hidden="true" aria-labelledby="loginModalLabel" tabindex="-1">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h2 class="modal-title" id="loginModalLabel">Login</h2>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form class="mb-6 needs-validation" id="loginForm" novalidate>
+              <div class="input-group has-validation mb-4">
+                <label for="loginEmail" class="form-label visually-hidden">Email</label>
+                <input
+                  id="loginEmail"
+                  type="email"
+                  class="form-control"
+                  placeholder="Email"
+                  aria-label="Email"
+                  required
+                />
+                <div class="invalid-feedback text-start mt-2">Email is required and should be valid.</div>
+              </div>
+              <div class="input-group mb-4">
+                <label for="loginPassword" class="form-label visually-hidden">Password</label>
+                <input
+                  id="loginPassword"
+                  type="password"
+                  class="form-control"
+                  placeholder="Password"
+                  aria-label="Password"
+                  pattern=".{6,}"
+                  required
+                />
+                <div class="invalid-feedback text-start mt-2">Password is required and should be 6 characters minimum</div>
+              </div>
+              <div class="server-error text-danger my-3 text-start">
+               
+              </div>
+              <div class="d-grid d-md-block">
+                <button class="btn btn-secondary w-100" type="submit">Login</button>
+              </div>
+            </form>
+
+            <div class="social-auth mt-5">
+              <h4 class="pb-3 border-2 border-bottom">Login with</h4>
+              <div class="btn-groups py-3">
+                <button class="btn btn-light px-3 py-2 border facebook-auth">
+                  <img
+                    src="https://firebasestorage.googleapis.com/v0/b/adventurebc-bug-hunters.appspot.com/o/facebook-logo.png?alt=media&token=711aef2d-6457-4a11-9fac-eb12327dfe3d"
+                    alt="facebook logo"
+                    class="facebook-logo"
+                  />
+                  <span>Facebook</span>
+                </button>
+                <button class="btn btn-light px-3 py-2 border google-auth">
+                  <img
+                    src="https://firebasestorage.googleapis.com/v0/b/adventurebc-bug-hunters.appspot.com/o/google-logo.png?alt=media&token=4b33be88-ebf1-426c-af0e-d5d141afe00c"
+                    alt="google logo"
+                    class="google-logo"
+                  />
+                  <span>Google</span>
+                </button>
+              </div>
             </div>
-        </main>
+          </div>
+          <div class="modal-footer">
+            <button
+              class="btn btn-primary"
+              data-bs-target="#registerModal"
+              data-bs-toggle="modal"
+              data-bs-dismiss="modal"
+            >
+              Register
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
+    <div class="modal fade" id="registerModal" aria-hidden="true" aria-labelledby="registerModalLabel" tabindex="-1">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h2 class="modal-title" id="registerModalLabel">Register</h2>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form class="mb-6 needs-validation" id="registerForm" novalidate>
+              <div class="input-group has-validation mb-4">
+                <label for="registerUsername" class="form-label visually-hidden">Username</label>
+                <input
+                  id="registerUsername"
+                  type="text"
+                  class="form-control"
+                  placeholder="Username"
+                  aria-label="Username"
+                  required
+                />
+                <div class="invalid-feedback text-start mt-2">Username is required.</div>
+              </div>
+              <div class="input-group has-validation mb-4">
+                <label for="registerEmail" class="form-label visually-hidden">Email</label>
+                <input
+                  id="registerEmail"
+                  type="email"
+                  class="form-control"
+                  placeholder="Email"
+                  aria-label="Email"
+                  required
+                />
+                <div class="invalid-feedback text-start mt-2">Email is required and should be valid.</div>
+              </div>
+              <div class="input-group mb-4">
+                <label for="registerPassword" class="form-label visually-hidden">Password</label>
+                <input
+                  id="registerPassword"
+                  type="password"
+                  class="form-control"
+                  placeholder="Password"
+                  aria-label="Password"
+                  pattern=".{6,}"
+                  required
+                />
+                <div class="invalid-feedback text-start mt-2">Password is required and should be 6 characters minimum</div>
+              </div>
+              <div class="d-grid d-md-block">
+                <button class="btn btn-secondary w-100" type="submit">Register</button>
+              </div>
+            </form>
+
+            <div class="social-auth mt-5">
+              <h4 class="pb-3 border-2 border-bottom">Register with</h4>
+              <div class="btn-groups py-3">
+                <button class="btn btn-light px-3 py-2 border facebook-auth">
+                  <img
+                    src="https://firebasestorage.googleapis.com/v0/b/adventurebc-bug-hunters.appspot.com/o/facebook-logo.png?alt=media&token=711aef2d-6457-4a11-9fac-eb12327dfe3d"
+                    alt="facebook logo"
+                    class="facebook-logo"
+                  />
+                  <span>Facebook</span>
+                </button>
+                <button class="btn btn-light px-3 py-2 border google-auth">
+                  <img
+                    src="https://firebasestorage.googleapis.com/v0/b/adventurebc-bug-hunters.appspot.com/o/google-logo.png?alt=media&token=4b33be88-ebf1-426c-af0e-d5d141afe00c"
+                    alt="google logo"
+                    class="google-logo"
+                  />
+                  <span>Google</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
 </div>

@@ -1,81 +1,36 @@
-.welcome{
-    *{
-        font-family: 'Gill Sans', Calibri, sans-serif;
-    }
-    
-    .main-container{
-        background: linear-gradient(rgba(0, 0, 0, 0.5),
-        rgba(0, 0, 0, 0.5)), url("https://firebasestorage.googleapis.com/v0/b/adventurebc-bug-hunters.appspot.com/o/background-dummy.jpg?alt=media&token=b7b5d974-ca78-4ab9-8430-45d5025c5ac5");
-        background-size: cover;
-        margin: 0;
-    }
-    
-    header, main{
-        text-align: center;
-    }
-    
-    header{
-        height: 10vh;
+.welcome {
+    height: 100%;
+    background: url("https://firebasestorage.googleapis.com/v0/b/adventurebc-bug-hunters.appspot.com/o/welcome-background.jpeg?alt=media&token=131f548c-1f11-4ec4-ac1c-d14f05bf5d49")
+        #f2fcf4;
+    background-position: center center;
+    background-size: cover;
+    text-align: center;
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    justify-content: center;
+
+    .btn-groups {
         display: flex;
-        flex-flow: column nowrap;
-        justify-content: flex-end;
+        gap: 2rem;
         align-items: center;
-    
-        img{
-            max-width: 200px;
-            height: auto;
-        }
+        justify-content: center;
     }
-    
-    main{
-        
-        .wrapper{
-            width: 90%;
-            margin: auto;
-            height: 90vh;
-            display: flex;
-            flex-flow: column nowrap;
-            align-items: center;
-            gap: 4rem;
-            justify-content: center;
-    
-            h1{
-                color: white;
-                font-size: 2rem;
-            }
-    
-            button{
-                width: 40%; 
-                max-width: 270px;
-            }
-        
-        }
+
+    .btn-primary,
+    .btn-secondary {
+        color: #fff !important;
     }
-    
-    @media screen and (min-width:1000px){
-        header{
-        
-            img{
-                max-width: 15%;
-                align-self: flex-start;
-                padding-left: 3rem;
-            }
-        }
-    
-        main{
-        
-            .wrapper{
-                height: 70vh;
-        
-                h1{
-                    font-size: 3rem;
-                }
-        
-                button{
-                    width: 30%; 
-                }
-            
-            }
-        }
+
+    .btn-light {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .google-logo,
+    .facebook-logo {
+        width: 20px;
+        height: 20px;
     }
 }

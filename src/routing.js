@@ -37,17 +37,21 @@ export default class Router {
   }
 
   static async goToPage(page) {
-    if (!page.authRequired) {
-      document.getElementById('auth').remove();
-      Router.rootElem = document.getElementById('noAuthArea');
-    } else {
-      Router.rootElem = document.getElementById('authArea');
-    }
+    Router.rootElem = document.getElementById('root');
 
     try {
       const response = await fetch(page.htmlName);
       const txt = await response.text();
-      Router.rootElem.innerHTML = txt;
+
+      if (page.authRequired) {
+        const response = await fetch('./pages/auth-template.html');
+        const headerTxt = await response.text();
+        Router.rootElem.innerHTML = headerTxt;
+        document.getElementById('mainArea').innerHTML = txt;
+      } else {
+        Router.rootElem.innerHTML = txt;
+      }
+
       const init = await import(`./pages/${page.jsName}/`);
       init.default();
     } catch (error) {

@@ -1,6 +1,14 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from 'firebase/app';
-import { getAuth, signInWithPopup, GoogleAuthProvider, signOut } from 'firebase/auth';
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  signInWithPopup,
+  GoogleAuthProvider,
+  FacebookAuthProvider,
+  signOut,
+} from 'firebase/auth';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyARfc7VDH2YJXp2xiJeZpAHGe7mOCA0Eaw',
@@ -15,12 +23,21 @@ const firebaseConfig = {
 // Initialize Firebase
 initializeApp(firebaseConfig);
 
-export const provider = new GoogleAuthProvider();
-provider.addScope('https://www.googleapis.com/auth/contacts.readonly');
+const googleProvider = new GoogleAuthProvider();
+const facebookProvider = new FacebookAuthProvider();
+
+googleProvider.addScope('https://www.googleapis.com/auth/contacts.readonly');
+facebookProvider.addScope('public_profile');
+facebookProvider.setCustomParameters({
+  display: 'popup',
+});
 
 export const auth = getAuth();
 
-export const signInWithGoogle = () => signInWithPopup(auth, provider);
+export const signInWithGoogle = () => signInWithPopup(auth, googleProvider);
+export const signInWithFacebook = () => signInWithPopup(auth, facebookProvider);
+export const signInWithEmailPassword = (email, password) => signInWithEmailAndPassword(auth, email, password);
+export const createWithEmailPassword = (email, password) => createUserWithEmailAndPassword(auth, email, password);
 
 export const signOutAuth = async () => {
   await signOut(auth);
