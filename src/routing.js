@@ -44,18 +44,24 @@ export default class Router {
       const txt = await response.text();
 
       if (page.authRequired) {
-        const response = await fetch('./pages/auth-template.html');
-        const headerTxt = await response.text();
-        Router.rootElem.innerHTML = headerTxt;
+        await Router.initAuthTemplatePage();
         document.getElementById('mainArea').innerHTML = txt;
       } else {
         Router.rootElem.innerHTML = txt;
       }
-
+      
       const init = await import(`./pages/${page.jsName}/`);
       init.default();
     } catch (error) {
       console.error(error);
     }
+  }
+  
+  static async initAuthTemplatePage() {
+    const response = await fetch('./pages/auth-template.html');
+    const headerTxt = await response.text();
+    Router.rootElem.innerHTML = headerTxt;
+    const init = await import(`./pages/auth-template/`);
+    init.default();
   }
 }
