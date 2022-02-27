@@ -1,0 +1,44 @@
+.home {
+
+    .home-subheader {
+        display: grid;
+        grid-template:"container";
+        place-items: center;
+        place-content: center;
+
+        * {
+            grid-area: container;
+        }
+
+        img {
+            filter: brightness(60%);
+            z-index: -1;
+            object-fit: cover;
+        }
+
+        .home-greeting, .btn-primary {
+            color: white;
+            text-align: center;
+        }
+
+    }
+
+    .horizontal-scroll{
+        display: flex;
+        flex-flow: row nowrap;
+        gap: 2.8rem;
+    }
+
+    .block-narrow {
+        height: 280px;
+        width: 280px;
+        background-color: cyan;
+    }
+
+    .block-wide {
+        height: 540px;
+        width: 540px;
+        background-color: cyan;
+    }
+
+}
