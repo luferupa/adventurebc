@@ -1,0 +1,50 @@
+.header{
+
+    * {
+        font-family: Roboto, Calibri, sans-serif;
+        font-size: 14px;
+    }
+
+    display: flex;
+    justify-content: space-between;
+
+    img{
+        max-width: 150px;
+        height: auto;
+    }
+
+    #right{
+
+        padding-right: 3rem;
+        display: flex;
+        flex-flow: column nowrap;
+        justify-content: space-between;
+
+        #greeting{
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            text-align: right;
+            align-self: flex-end;
+
+            span{
+                font-weight: bold;
+                text-decoration: underline;
+            }
+
+            
+        }
+
+        a{
+            text-decoration: none;
+            color: black;
+        }
+
+        .toolbar{
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 5rem;
+            
+        }
+    }
+}

@@ -1,0 +1,84 @@
+<div class="search">
+  
+    <main>
+        <div id="search">
+            <h1>Search Activities</h1>
+
+            <form oninput="labels.value = `${distance.valueAsNumber} km`; labels.style.paddingLeft = `calc(${distance.valueAsNumber*10}% `;">
+                <!-- Should we change this to bring all categories from db? -->
+                <div class="input-group flex-nowrap">
+                    <span class="input-group-text fa fa-solid fa-tree" id="addon-wrapping"></span>
+                    <select class="form-select form-control" aria-label="Category selection" aria-describedby="addon-wrapping">
+                        <option selected></span>Categories</option>
+                        <option value="1">Beach</option>
+                        <option value="2">Mountain</option>
+                        <option value="3">Ocean</option>
+                        <option value="4">River</option>
+                    </select>
+                </div>
+
+                <div class="input-group flex-nowrap">
+                    <span class="input-group-text fa fa-solid fa-location-dot" id="addon-wrapping"></span>
+                    <select class="form-select form-control" aria-label="Location selection" >
+                        <option selected>Location</option>
+                        <option value="1">Kelowna</option>
+                        <option value="2">Tofino</option>
+                        <option value="3">Vancouver</option>
+                        <option value="4">Whistler</option>
+                    </select>
+                </div>
+
+                <div class="input-group flex-nowrap">
+                    <span class="input-group-text fa fa-search" id="addon-wrapping"></span>
+                    <input type="text" class="form-control" placeholder="Search Activities" aria-label="Activities search" aria-describedby="addon-wrapping">
+                </div>
+
+                <div>
+                    <label for="customRange3" class="form-label">Distance within:</label>
+                    <input type="range" class="form-range" min="0" max="10" step="1" value="0" id="customRange3" name="distance">
+                    <output name="labels" for="distance" >0 km</output>
+                </div>
+                
+            </form>
+        </div>
+
+        <div id="results">
+
+            <div id="basic-data">
+                <div class="input-group mb-3">
+                    <!-- Change here the placeholder/value for the right name -->
+                    <input type="text" class="form-control" id="adventure-name" placeholder="Adventure Name" value="Adventure Name" aria-label="Adventure's name" aria-describedby="button-addon2">
+                    <button class="btn btn-outline-secondary" type="button" id="button-addon2">
+                        <i class="fa-solid fa-pen-to-square"></i>
+                    </button>
+                </div>
+
+                <div id="dates">
+                    <div class="md-form md-outline input-with-post-icon datepicker">
+                        <!--label for="example">From: </label-->
+                        <input placeholder="Select date" type="date" id="example" class="form-control">
+                    </div>
+                    <div class="md-form md-outline input-with-post-icon datepicker">
+                        <!--label for="example">To: </label-->
+                        <input placeholder="Select date" type="date" id="example" class="form-control">
+                    </div>
+                </div>
+            </div>
+
+            <div id="suggestions">
+                <img src="https://firebasestorage.googleapis.com/v0/b/adventurebc-bug-hunters.appspot.com/o/MyAdventures-%20Activity.png?alt=media&token=00dc878c-9197-4632-a66e-2dcf15342f8c" alt="">
+                <img src="https://firebasestorage.googleapis.com/v0/b/adventurebc-bug-hunters.appspot.com/o/MyAdventures-%20Activity.png?alt=media&token=00dc878c-9197-4632-a66e-2dcf15342f8c" alt="">
+                <img src="https://firebasestorage.googleapis.com/v0/b/adventurebc-bug-hunters.appspot.com/o/MyAdventures-%20Activity.png?alt=media&token=00dc878c-9197-4632-a66e-2dcf15342f8c" alt="">
+                <img src="https://firebasestorage.googleapis.com/v0/b/adventurebc-bug-hunters.appspot.com/o/MyAdventures-%20Activity.png?alt=media&token=00dc878c-9197-4632-a66e-2dcf15342f8c" alt="">
+                <img src="https://firebasestorage.googleapis.com/v0/b/adventurebc-bug-hunters.appspot.com/o/MyAdventures-%20Activity.png?alt=media&token=00dc878c-9197-4632-a66e-2dcf15342f8c" alt="">
+                <img src="https://firebasestorage.googleapis.com/v0/b/adventurebc-bug-hunters.appspot.com/o/MyAdventures-%20Activity.png?alt=media&token=00dc878c-9197-4632-a66e-2dcf15342f8c" alt="">
+                <img src="https://firebasestorage.googleapis.com/v0/b/adventurebc-bug-hunters.appspot.com/o/MyAdventures-%20Activity.png?alt=media&token=00dc878c-9197-4632-a66e-2dcf15342f8c" alt="">
+                <img src="https://firebasestorage.googleapis.com/v0/b/adventurebc-bug-hunters.appspot.com/o/MyAdventures-%20Activity.png?alt=media&token=00dc878c-9197-4632-a66e-2dcf15342f8c" alt="">
+                <img src="https://firebasestorage.googleapis.com/v0/b/adventurebc-bug-hunters.appspot.com/o/MyAdventures-%20Activity.png?alt=media&token=00dc878c-9197-4632-a66e-2dcf15342f8c" alt="">
+                
+            </div>
+        </div>
+
+    </main>
+
+</div>
