@@ -1,3 +1,8 @@
+.wrapper .home-subheader img {
+    max-width: unset;
+
+}
+
 .home {
 
     .home-subheader {
@@ -8,12 +13,14 @@
 
         * {
             grid-area: container;
-        }
+        }                
 
         img {
             filter: brightness(60%);
-            z-index: -1;
-            object-fit: cover;
+            z-index: -1;       
+            width: 1910px;
+            height: 500px;
+            object-fit: cover;            
         }
 
         .home-greeting, .btn-primary {
@@ -23,22 +30,39 @@
 
     }
 
+    main-home {
+        margin-bottom: 2rem;
+    }
+
+    .my-adventures, .explore, .favourites {
+        margin-top: 2rem;
+    }
+
     .horizontal-scroll{
         display: flex;
         flex-flow: row nowrap;
         gap: 2.8rem;
+        overflow-x: scroll;
+        margin-bottom: 1rem;
+        margin-top: 1rem;
     }
 
     .block-narrow {
-        height: 280px;
-        width: 280px;
-        background-color: cyan;
+        aspect-ratio: 1/1;
+        width: calc((1200px - 2.8rem * 3) * 0.25);
+        background-image: url(https://firebasestorage.googleapis.com/v0/b/adventurebc-bug-hunters.appspot.com/o/MyAdventures-%20Activity.png?alt=media&token=00dc878c-9197-4632-a66e-2dcf15342f8c);
+        /* background-color: #aaa; */
+        margin-bottom: 1rem;
     }
 
     .block-wide {
-        height: 540px;
-        width: 540px;
-        background-color: cyan;
+        aspect-ratio: 1/1;
+        width: calc((1200px - 2.8rem * 1) * 0.5);
+        background-image: url(https://firebasestorage.googleapis.com/v0/b/adventurebc-bug-hunters.appspot.com/o/MyAdventures-%20Activity.png?alt=media&token=00dc878c-9197-4632-a66e-2dcf15342f8c);
+        background-repeat: no-repeat;
+        background-size: cover;
+        /* background-color: #aaa; */
+        margin-bottom: 1rem;
     }
 
 }
