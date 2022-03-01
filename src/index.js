@@ -19,11 +19,18 @@ import 'bootstrap/js/dist/modal';
 
 import { auth, signOutAuth } from './firebase';
 
+//fontawesome
+import '@fortawesome/fontawesome-free/js/fontawesome'
+import '@fortawesome/fontawesome-free/js/solid'
+import '@fortawesome/fontawesome-free/js/regular'
+import '@fortawesome/fontawesome-free/js/brands'
+
 // static pages
 import './pages/guide/guide.html';
 import './pages/home/home.html';
 import './pages/welcome/welcome.html';
 import './pages/auth-template/auth-template.html';
+import './pages/search/search.html';
 
 // styles
 import './styles/index.scss';
@@ -38,6 +45,7 @@ Router.init([
 
   // auth-pages
   new Page('#home', './pages/home.html', 'home'),
+  new Page('#search', './pages/search.html', 'search'),
   // add new pages here
 ]);
 
