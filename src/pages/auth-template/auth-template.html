@@ -1,25 +1,58 @@
 <header class="header">
-  <!-- anything shell header related goes here. e.g. top menu -->
-  <img
-        src="https://firebasestorage.googleapis.com/v0/b/adventurebc-bug-hunters.appspot.com/o/logo.png?alt=media&token=c593639d-49c4-4ff6-9d7e-ffb4bed06d4f"
-        alt="Logo"
-        class="main-logo"
-      />
-
-  <div id="right">
-      <div id="greeting">
-        <!--Change the span with the real name -->
-        <p>Hello, <span>Gabriel</span>!</p>
-        <a href='' id="signOut">Sign Out</a>
-      </div>
-      <div class="toolbar">
-        <a href="#home">Home</a>
-        <a href="#guide">Guide</a>
-        <a href="#welcome">Welcome</a>
-        
+  <nav class="navbar navbar-expand-lg navbar-light">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#home">
+        <img
+          src="https://firebasestorage.googleapis.com/v0/b/adventurebc-bug-hunters.appspot.com/o/logo.png?alt=media&token=c593639d-49c4-4ff6-9d7e-ffb4bed06d4f"
+          alt=""
+          width="100"
+          height="80"
+        />
+      </a>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+          <li class="nav-item mx-4">
+            <a class="nav-link active" aria-current="page" href="#home">Home</a>
+          </li>
+          <li class="nav-item mx-4">
+            <a class="nav-link" aria-current="page" href="#search">Search</a>
+          </li>
+          <li class="nav-item mx-4">
+            <a class="nav-link" aria-current="page" href="#myPlanner">My Planner</a>
+          </li>
+          <li class="nav-item mx-4">
+            <a class="nav-link" aria-current="page" href="#favourites">Favourites</a>
+          </li>
+          <li class="nav-item mx-4 dropdown">
+            <a
+              class="nav-link dropdown-toggle"
+              id="navbarDropdown"
+              role="button"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
+              Hello <span id="username" class="fw-bold">Username</span>
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <li><a class="dropdown-item" href="" id="signOut">Sign Out</a></li>
+            </ul>
+          </li>
+        </ul>
       </div>
     </div>
+  </nav>
 </header>
-<div id="mainArea">
+<div id="mainArea" class="mt-4">
   <!-- the main part (auth) will be dynamically updated as each page loads -->
 </div>

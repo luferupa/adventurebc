@@ -40,23 +40,25 @@ export default class Router {
     Router.rootElem = document.getElementById('root');
 
     try {
+      // get the HTML pages content
       const response = await fetch(page.htmlName);
       const txt = await response.text();
 
+      // if the page requires auth, load the header(auth-template) first and then hook the pages in the #mainArea
       if (page.authRequired) {
         await Router.initAuthTemplatePage();
         document.getElementById('mainArea').innerHTML = txt;
       } else {
         Router.rootElem.innerHTML = txt;
       }
-      
-      const init = await import(`./pages/${page.jsName}/`);
-      init.default();
+
+      const init = await import(`./pages/${page.jsName}/`); // lazily loading the js files
+      init.default(); // default exports
     } catch (error) {
       console.error(error);
     }
   }
-  
+
   static async initAuthTemplatePage() {
     const response = await fetch('./pages/auth-template.html');
     const headerTxt = await response.text();

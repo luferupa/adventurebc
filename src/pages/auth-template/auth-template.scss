@@ -1,50 +1,36 @@
-.header{
+@use "../../styles/variables";
 
-    * {
-        font-family: Roboto, Calibri, sans-serif;
-        font-size: 14px;
-    }
+.header {
+    width: 100%;
+    box-shadow: 2px 3px 2px -2px rgba(variables.$color-black, .4);
 
-    display: flex;
-    justify-content: space-between;
+    .navbar {
+        display: block;
+        padding: 0 1rem;
 
-    img{
-        max-width: 150px;
-        height: auto;
-    }
+        .navbar-toggler {
+            border-radius: 50%;
+            border-color: variables.$color-secondary;
+            width: 50px;
+            height: 50px;
 
-    #right{
-
-        padding-right: 3rem;
-        display: flex;
-        flex-flow: column nowrap;
-        justify-content: space-between;
-
-        #greeting{
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 1rem;
-            text-align: right;
-            align-self: flex-end;
-
-            span{
-                font-weight: bold;
-                text-decoration: underline;
+            .navbar-toggler-icon {
+                width: 1.2em;
+                height: 1.2em;
             }
-
-            
         }
 
-        a{
-            text-decoration: none;
-            color: black;
+        .nav-link {
+            color: variables.$color-black !important;
         }
 
-        .toolbar{
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 5rem;
-            
+        .nav-link:hover {
+            color: variables.$color-secondary !important;
+        }
+
+        .nav-link.active {
+            color: variables.$color-secondary !important;
+            border-bottom: 3px solid variables.$color-primary;
         }
     }
 }
