@@ -80,5 +80,5 @@ auth.onAuthStateChanged(async (userInfo) => {
 function setUsername(name) {
   setTimeout(() => {
     username && (username.innerText = name);
-  }, 100);
+  }, 1000);
 }
