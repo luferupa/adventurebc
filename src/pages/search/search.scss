@@ -1,16 +1,20 @@
+@use "../../styles/variables";
+
+$form-range-track-bg: black !important;
+
 .search {
+
+    max-height: calc(100vh - 67px - 3rem);
+    overflow-x: hidden;
+
     * {
         font-family: Roboto, Calibri, sans-serif;
         font-size: 14px;
     }
 
-    
-
-    header{
-        img{
-            max-width: 150px;
-            height: auto;
-        }
+    img{
+        width: 100%;
+        height: auto;
     }
 
     main{
@@ -18,35 +22,97 @@
         display: grid;
         grid-template-columns: 1fr 3fr;
         gap: 3rem;
-
-        h1{
-            border-bottom: 1px solid #ced4da;
-            font-size: 36px;
-            padding-bottom: 0.7rem;
-            margin-bottom: 2rem;
-        }
         
         .input-group-text, .btn-outline-secondary{
-            color: #3D5E46;
+            color: variables.$green-medium;
         }
 
         #search{
             grid-column: 1/2;
+            position: fixed;
+            height: 100vh;
+            
+            #title{
+                background-color: white;
+                border-bottom: 1px solid variables.$green-dark;
+
+                h1{
+                    font-size: 36px;
+                    padding-bottom: 0.7rem;
+                    margin-bottom: 0;
+                    
+                }
+
+                #close-search{
+                    display: none;
+                }
+            }
+
+            >div:nth-child(2){
+                background-color: #F2FCF4;
+                padding: 2rem 0.5rem;
+                height: 100%;
+            }
 
             form{
                 display: flex;
                 flex-flow: column nowrap;
-                gap: 1rem;
+                /*gap: 1rem;*/
 
+                .input-group, label{
+                    margin-top: 1rem;
+                }
+
+                .form-control, .input-group-text{
+                    border-color: variables.$green-dark;
+                }
+
+                .collapse{
+                    max-height: 8rem;
+                    overflow-x: hidden;
+                }
+
+                #options-categ, #options-loc{
+                    border: 1px solid variables.$green-dark;
+                    border-top: none;
+                    border-radius: 0.25rerm;
+
+                    option{
+                        padding: 0.5rem 1rem;
+                        border-top: 1px solid variables.$green-dark;
+                        background-color: white;
+
+                    }
+
+                    option:first-child{
+                        border-top: none;
+                    }
+
+                    option:hover{
+                        background-color: #D2E4D6 !important;
+                        cursor: pointer;
+                    }
+                }
+
+                button{
+                    display: none;
+                }
+                
             }
-            
-            div{
-                flex-grow: 0;
+
+            #slider-labels{
+                display: flex;
+                justify-content: space-between;
             }
+
         }
 
         #results{
             grid-column: 2/3;
+
+            #open-search{
+                display: none;
+            }
 
             #basic-data{
                 display: grid;
@@ -60,24 +126,25 @@
                 }
 
                 #adventure-name{
-                    background-color: #698B71;
+                    background-color: variables.$color-secondary;
                     color: white;
                     font-weight: bold;
                 }
 
+                #editButton{
+                    z-index: 0;
+                }
+
+                #editButton:hover{
+                    background-color: #D2E4D6;
+                }
+
                 #dates{
-                    
-                    display: grid;
-                    grid-template-columns: repeat(2, 1fr);
+                    justify-self: end;
+                    display: flex;
                     margin-bottom: 2rem;
-
-                    .datepicker:first-of-type{
-                        justify-self: end;
-                    }
-
-                    .datepicker:last-of-type{
-                        justify-self: start;
-                    }
+                    justify-content: flex-end;
+                    max-width: 100%;
 
                     .form-control{
                         width: 100%;
@@ -85,9 +152,42 @@
                 }
             }
 
-            .suggestions{
+            #suggestions{
                 display: grid;
                 grid-template-columns: repeat(3, 1fr);
+                gap: 1rem;
+                justify-items: center;
+                align-content: center;
+
+                .activity{
+
+                    position: relative;
+                    box-shadow: 1px 2px 2px 1px rgba(0, 0, 0, 0.2), -1px 2px 2px 1px rgba(0, 0, 0, 0.2);
+                    border-radius: 15px;
+                    overflow-y: hidden;
+                    overflow-x: hidden;
+
+                    h3{
+                        font-size: 18px;
+                        font-weight: bold;
+                        padding: 0.5rem;
+                        letter-spacing: -0.5px;
+                        margin: 0;
+                    }
+
+                    p{
+                        padding: 0 0 0.5rem 0.5rem;
+                        margin: 0;
+                    }
+
+                    .fa-heart{
+                        font-size: 1.8rem;
+                        color: white;
+                        position: absolute;
+                        top: 0.5rem;
+                        right: 0.7rem;
+                    }
+                }
             }
         }
 
@@ -114,6 +214,91 @@
 
     }
 
-    
+    @media screen and (max-width: 700px) {
+
+        main{
+            display: block;
+            overflow-x: hidden;
+            position: relative;
+            margin: 0;
+            
+            #search{
+                position: absolute;
+                z-index: 2;
+                top: 0;
+                bottom: 0;
+                left: 0;
+                right: 1rem;
+                transform: translateX(0);
+                transition: all 1s;
+
+                #title{
+
+                    display: flex;
+                    justify-content: space-between;
+
+                    h1{
+                        padding-left: 1rem;
+                        font-size: 24px;
+                    }
+
+                    #close-search{
+                        display: inline;
+                        color: variables.$color-primary;
+                        font-size: 1.5rem;
+                    }
+                }
+                
+
+                form{
+                    max-width: 80vw;
+                    height: 100vh;
+                    margin: auto;
+
+                    button{
+                        margin-top: 1rem;
+                        display: inline;
+                        color: white;
+                    }
+                }
+
+            }
+
+            #search.hideBar{
+                transform: translateX(-100%);
+            }
+
+            #results{
+                max-width: 92vw;
+                margin: auto;
+
+                #open-search{
+                    display: inline;
+                    color: variables.$color-primary;
+                    font-size: 1.5rem;
+                }
+
+                #basic-data{
+                    max-width: 90%;
+                    margin: auto;
+                    display: flex;
+                    flex-flow: column nowrap;
+                    gap: 1rem;
+
+                    #dates{
+                        .form-control{
+                            width: 100%;
+                        }
+                    }
+                }
+
+                #suggestions{
+                    grid-template-columns: 1fr;
+                    max-width: 100%;
+                }
+            }
+        }
+    }
+
 }
 
