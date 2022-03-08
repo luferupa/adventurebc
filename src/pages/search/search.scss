@@ -1,16 +1,10 @@
 @use "../../styles/variables";
 
-$form-range-track-bg: black !important;
-
 .search {
 
     max-height: calc(100vh - 67px - 3rem);
     overflow-x: hidden;
 
-    * {
-        font-family: Roboto, Calibri, sans-serif;
-        font-size: 14px;
-    }
 
     img{
         width: 100%;

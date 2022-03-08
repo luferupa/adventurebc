@@ -94,7 +94,6 @@ export default function Search() {
     });
 
     document.getElementById("open-search").addEventListener("click",function(event){
-        //document.getElementById("search").style.display = "inline";
         document.getElementById("search").classList.remove("hideBar");
     });
     
