@@ -30,7 +30,7 @@
 
     }
 
-    main-home {
+    .main-home {
         margin-bottom: 2rem;
     }
 
@@ -41,7 +41,7 @@
     .horizontal-scroll{
         display: flex;
         flex-flow: row nowrap;
-        gap: 2.8rem;
+        gap: 2rem;
         overflow-x: scroll;
         margin-bottom: 1rem;
         margin-top: 1rem;
@@ -49,20 +49,75 @@
 
     .block-narrow {
         aspect-ratio: 1/1;
-        width: calc((1200px - 2.8rem * 3) * 0.25);
-        background-image: url(https://firebasestorage.googleapis.com/v0/b/adventurebc-bug-hunters.appspot.com/o/MyAdventures-%20Activity.png?alt=media&token=00dc878c-9197-4632-a66e-2dcf15342f8c);
-        /* background-color: #aaa; */
+        width: calc((1200px - 2rem * 3) * 0.25);
         margin-bottom: 1rem;
     }
 
     .block-wide {
         aspect-ratio: 1/1;
-        width: calc((1200px - 2.8rem * 2) * 0.33);
-        background-image: url(https://firebasestorage.googleapis.com/v0/b/adventurebc-bug-hunters.appspot.com/o/MyAdventures-%20Activity.png?alt=media&token=00dc878c-9197-4632-a66e-2dcf15342f8c);
-        background-repeat: no-repeat;
-        background-size: cover;
-        /* background-color: #aaa; */
+        width: calc((1200px - 2rem * 2) * 0.33);
         margin-bottom: 1rem;
     }
 
+    .activity {
+
+        position: relative;
+        box-shadow: 1px 2px 2px 1px rgba(0, 0, 0, 0.2), -1px 2px 2px 1px rgba(0, 0, 0, 0.2);
+        border-radius: 15px;
+        overflow-y: hidden;
+        overflow-x: hidden;
+
+        h3 {
+            font-size: 18px;
+            font-weight: bold;
+            padding: 0.5rem;
+            letter-spacing: -0.5px;
+            margin: 0;
+        }
+
+        p {
+            padding: 0 0 0.5rem 0.5rem;
+            margin: 0;
+        }
+
+        .fa-heart {
+            font-size: 1.8rem;
+            color: white;
+            position: absolute;
+            top: 0.5rem;
+            right: 0.7rem;
+        }
+    }
+
+    @media screen and (max-width: 700px) {
+
+        .main-home {
+            margin: 0 2%;
+
+            .horizontal-scroll{
+                display: flex;
+                flex-flow: row nowrap;
+                gap: 2rem;
+                overflow-x: scroll;
+                margin-bottom: 1rem;
+                margin-top: 1rem;
+            }
+
+            .activity-frame {
+                max-width: 100%;
+            }
+        
+            .block-narrow {
+                aspect-ratio: 1/1;
+                width: calc((1200px - 2rem * 3) * 0.25);
+                margin-bottom: 1rem;
+            }
+        
+            .block-wide {
+                aspect-ratio: 1/1;
+                width: calc((1200px - 2rem * 3) * 0.25);
+                margin-bottom: 1rem;
+            }
+        }
+    }
 }
