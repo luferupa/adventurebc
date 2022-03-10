@@ -1,7 +1,12 @@
 'use strict';
 
 import Modal from 'bootstrap/js/dist/modal';
-import { signInWithEmailPassword, createWithEmailPassword, signInWithGoogle, signInWithFacebook } from '../../firebase';
+import {
+  signInWithEmailPassword,
+  createWithEmailPassword,
+  signInWithGoogle,
+  signInWithFacebook,
+} from '../../firebase/auth';
 
 export default async function Welcome() {
   /**

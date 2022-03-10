@@ -1,44 +1,44 @@
-.wrapper .home-subheader img {
-    max-width: unset;
-
-}
+@use "../../styles/variables";
 
 .home {
-
     .home-subheader {
         display: grid;
-        grid-template:"container";
+        grid-template: "container";
         place-items: center;
         place-content: center;
 
         * {
             grid-area: container;
-        }                
+        }
 
         img {
             filter: brightness(60%);
-            z-index: -1;       
+            z-index: -1;
             width: 100%;
             height: auto;
-            object-fit: cover;            
+            object-fit: cover;
         }
 
-        .home-greeting, .btn-primary {
+        .home-greeting,
+        .btn-primary {
             color: white;
             text-align: center;
         }
-
     }
 
     .main-home {
         margin-bottom: 2rem;
+        max-width: variables.$base-max-width;
+        margin: 0 auto;
     }
 
-    .my-adventures, .explore, .favourites {
+    .my-adventures,
+    .explore,
+    .favourites {
         margin-top: 2rem;
     }
 
-    .horizontal-scroll{
+    .horizontal-scroll {
         display: flex;
         flex-flow: row nowrap;
         gap: 2rem;
@@ -60,7 +60,6 @@
     }
 
     .activity {
-
         position: relative;
         box-shadow: 1px 2px 2px 1px rgba(0, 0, 0, 0.2), -1px 2px 2px 1px rgba(0, 0, 0, 0.2);
         border-radius: 15px;
@@ -90,11 +89,10 @@
     }
 
     @media screen and (max-width: 700px) {
-
         .main-home {
             margin: 0 2%;
 
-            .horizontal-scroll{
+            .horizontal-scroll {
                 display: flex;
                 flex-flow: row nowrap;
                 gap: 2rem;
@@ -106,13 +104,13 @@
             .activity-frame {
                 max-width: 100%;
             }
-        
+
             .block-narrow {
                 aspect-ratio: 1/1;
                 width: calc((1200px - 2rem * 3) * 0.25);
                 margin-bottom: 1rem;
             }
-        
+
             .block-wide {
                 aspect-ratio: 1/1;
                 width: calc((1200px - 2rem * 3) * 0.25);

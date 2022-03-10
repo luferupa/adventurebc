@@ -17,8 +17,6 @@ import 'bootstrap/js/dist/modal';
 // import 'bootstrap/js/dist/toast';
 // import 'bootstrap/js/dist/tooltip';
 
-import { auth } from './firebase';
-
 //fontawesome
 import '@fortawesome/fontawesome-free/js/fontawesome';
 import '@fortawesome/fontawesome-free/js/solid';
@@ -39,6 +37,9 @@ import './styles/index.scss';
 
 import Router, { Page } from './routing';
 
+import { auth } from './firebase';
+import { createUserProfileDocument } from './firebase/auth';
+
 export let AuthenticatedUser = null;
 
 //setting up the Router with pages
@@ -58,27 +59,29 @@ Router.init([
 auth.onAuthStateChanged(async (userInfo) => {
   if (userInfo) {
     try {
-      console.log(userInfo);
-      AuthenticatedUser = userInfo;
-      setUsername(userInfo.displayName);
+      const user = await createUserProfileDocument(userInfo);
+      AuthenticatedUser = user;
+      console.log(AuthenticatedUser);
+      setUserInfo(user);
 
-      // if (location.hash === '#welcome') {
-      //   location.hash = '#home';
-      // }
+      if (location.hash === '#welcome') {
+        location.hash = '#home';
+      }
     } catch (error) {
       console.log(error);
-      // location.hash = '#welcome';
+      location.hash = '#welcome';
     }
   } else {
-    // location.hash = '#welcome';
+    location.hash = '#welcome';
   }
 });
 
 /**
  * handles the setting of username in the header
  */
-function setUsername(name) {
+function setUserInfo(user) {
   setTimeout(() => {
-    username && (username.innerText = name);
+    username && (username.innerText = user.username ? user.username.split(' ')[0] : 'Username');
+    userAvatar && userAvatar.setAttribute('src', user.avatarUrl);
   }, 1000);
 }

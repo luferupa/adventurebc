@@ -1,15 +1,8 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from 'firebase/app';
-import {
-  getAuth,
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-  signInWithPopup,
-  GoogleAuthProvider,
-  FacebookAuthProvider,
-  signOut,
-} from 'firebase/auth';
- import { getFirestore } from 'firebase/firestore';
+import { getAuth } from 'firebase/auth';
+import { getFirestore, collection, doc, getDocs, getDoc, setDoc, addDoc } from 'firebase/firestore';
+import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyARfc7VDH2YJXp2xiJeZpAHGe7mOCA0Eaw',
@@ -23,25 +16,11 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-export const db = getFirestore(app);
 
+const auth = getAuth();
 
-const googleProvider = new GoogleAuthProvider();
-const facebookProvider = new FacebookAuthProvider();
+const db = getFirestore(app);
 
-googleProvider.addScope('https://www.googleapis.com/auth/contacts.readonly');
-facebookProvider.addScope('public_profile');
-facebookProvider.setCustomParameters({
-  display: 'popup',
-});
+const storage = getStorage();
 
-export const auth = getAuth();
-
-export const signInWithGoogle = () => signInWithPopup(auth, googleProvider);
-export const signInWithFacebook = () => signInWithPopup(auth, facebookProvider);
-export const signInWithEmailPassword = (email, password) => signInWithEmailAndPassword(auth, email, password);
-export const createWithEmailPassword = (email, password) => createUserWithEmailAndPassword(auth, email, password);
-
-export const signOutAuth = async () => {
-  await signOut(auth);
-};
+export { auth, db, collection, doc, getDoc, getDocs, setDoc, addDoc, storage, ref, uploadBytes, getDownloadURL };
