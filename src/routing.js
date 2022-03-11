@@ -46,8 +46,11 @@ export default class Router {
 
       // if the page requires auth, load the header(auth-template) first and then hook the pages in the #mainArea
       if (page.authRequired) {
-        await Router.initAuthTemplatePage();
+        if (!document.getElementById('header')) {
+          await Router.initAuthTemplatePage();
+        }
         document.getElementById('mainArea').innerHTML = txt;
+        Router.markActiveLink();
       } else {
         Router.rootElem.innerHTML = txt;
       }
@@ -65,5 +68,15 @@ export default class Router {
     Router.rootElem.innerHTML = headerTxt;
     const init = await import(`./pages/auth-template/`);
     init.default();
+  }
+
+  /**
+   * handles the marking of the current active link (#hash)
+   */
+  static markActiveLink() {
+    if (document.querySelector(`.nav-link[href='${location.hash}']`)) {
+      document.querySelector('.nav-link.active').classList.remove('active');
+      document.querySelector(`.nav-link[href='${location.hash}']`).classList.add('active');
+    }
   }
 }

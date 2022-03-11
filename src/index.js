@@ -56,6 +56,8 @@ Router.init([
   // add new pages here
 ]);
 
+const toRoute = location.hash;
+
 auth.onAuthStateChanged(async (userInfo) => {
   if (userInfo) {
     try {
@@ -65,7 +67,7 @@ auth.onAuthStateChanged(async (userInfo) => {
       setUserInfo(user);
 
       if (location.hash === '#welcome') {
-        location.hash = '#home';
+        location.hash = toRoute;
       }
     } catch (error) {
       console.log(error);

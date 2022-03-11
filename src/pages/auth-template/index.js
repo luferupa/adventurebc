@@ -4,15 +4,12 @@ import { AuthenticatedUser } from '../../index';
 import { changeUserPicture, signOutAuth } from '../../firebase/auth';
 
 export default async function AuthTemplate() {
+  console.log('auth init');
   if (!AuthenticatedUser) {
     location.hash = '#welcome';
+  } else {
+    setUserInfo(AuthenticatedUser);
   }
-
-  markActiveLink();
-
-  document.querySelectorAll('.nav-link').forEach((item) => {
-    item.addEventListener('click', () => markActiveLink);
-  });
 
   signOut.addEventListener('click', async () => {
     try {
@@ -38,12 +35,12 @@ export default async function AuthTemplate() {
   };
 
   /**
-   * handles the marking of the current active link (#hash)
+   * handles the setting of username in the header
    */
-  function markActiveLink() {
-    if (document.querySelector(`.nav-link[href='${location.hash}']`)) {
-      document.querySelector('.nav-link.active').classList.remove('active');
-      document.querySelector(`.nav-link[href='${location.hash}']`).classList.add('active');
-    }
+  function setUserInfo(user) {
+    setTimeout(() => {
+      username && (username.innerText = user.username ? user.username.split(' ')[0] : 'Username');
+      userAvatar && userAvatar.setAttribute('src', user.avatarUrl);
+    }, 1000);
   }
 }
