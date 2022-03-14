@@ -41,6 +41,7 @@
                 background-color: #f2fcf4;
                 padding: 2rem 0.5rem;
                 height: 100%;
+                z-index: -1;
             }
 
             form {
@@ -86,7 +87,9 @@
                 }
 
                 button {
-                    display: none;
+                    margin-top: 1rem;
+                    display: inline;
+                    color: white;
                 }
             }
 
@@ -237,11 +240,7 @@
                     height: 100vh;
                     margin: auto;
 
-                    button {
-                        margin-top: 1rem;
-                        display: inline;
-                        color: white;
-                    }
+                    
                 }
             }
 

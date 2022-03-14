@@ -4,6 +4,7 @@ import { AuthenticatedUser } from '../../index';
 
 import { getCategories } from '../../firebase/categories';
 import { getCities } from '../../firebase/cities';
+import { activitiesCollection, getActivities, getActivitiesWhere } from '../../firebase/activities';
 
 export default function Search() {
   if (!AuthenticatedUser) {
@@ -102,6 +103,32 @@ export default function Search() {
 
     sbSearch.addEventListener('click', function (event) {
       document.getElementById('search').classList.add('hideBar');
+
+      let category = document.getElementById('category-sel').value;
+      let location = document.getElementById('location-sel').value;
+      
+      searchActivity(category, location);
+
     });
+
+    async function searchActivity(category, location){
+      let suggestions = new Array();
+      //let query = query(activitiesCollection, where("name", "==", "Stanley Park Bike Tour"));
+      console.log("Category - "+ category);
+      console.log("Location - "+ location);
+
+      if(category == "Categories"){
+        suggestions = await getActivitiesWhere(null, location);
+      }else if(location == "Location"){
+        suggestions = await getActivitiesWhere(category, null);
+      }else{
+        suggestions = await getActivitiesWhere(category, location);
+      }
+
+      
+      //getActivitiesWhere();
+    }
   }
+
+  
 }
