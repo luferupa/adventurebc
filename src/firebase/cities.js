@@ -1,4 +1,4 @@
-import { db, collection, getDocs } from '../firebase';
+import { db, collection, getDocs, getDoc } from '../firebase';
 
 const citiesCollection = collection(db, 'cities');
 
@@ -9,4 +9,9 @@ const getCities = async () => {
   return snapshot.docs.map((doc) => doc.data());
 };
 
-export { citiesCollection, getCitiesSnapshot, getCities };
+const getCityName = async (cityRef) => {
+  const snapshotCity = await getDoc(cityRef);
+  return snapshotCity.data().name;
+};
+
+export { citiesCollection, getCitiesSnapshot, getCities, getCityName };

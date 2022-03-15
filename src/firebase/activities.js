@@ -1,4 +1,5 @@
-import { db, collection, getDocs, query, where } from '../firebase';
+import { db, collection, doc, getDocs, getDoc, query, where } from '../firebase';
+import { getPlaceCity } from './places';
 
 const activitiesCollection = collection(db, 'activities');
 
@@ -11,12 +12,40 @@ const getActivities = async () => {
 
 const getActivitiesWhere = async (category, location) => {
 
-    const q = query(activitiesCollection, where("name", "==", "Stanley Park Bike Tour"));
-    const snapshot = await getDocs(q);
-    /*snapshot.forEach((doc) =>{
-        console.log(doc.id, " - ", doc.data);
-    });*/
-    return snapshot.docs.map((doc) => doc.data());
+    let qActivities, qPlaces, categoryDocRef, locationDocRef = "";
+    const placesRef = [];
+    
+    if(category != null){
+        categoryDocRef = doc(collection(db, "categories"),category.toLowerCase());
+    }
+
+    if(location != null){
+        locationDocRef = doc(collection(db, "cities"),location.toLowerCase());
+
+        qPlaces = query(collection(db, "places"), where("city", "==", locationDocRef));
+        const snapshotPlaces = await getDocs(qPlaces);
+        
+        snapshotPlaces.forEach( (place) => placesRef.push(doc(collection(db, "places"),place.id)));
+    }
+
+    if(category != null && location != null){
+        qActivities = query(activitiesCollection, where("category", "array-contains", categoryDocRef),
+        where("place", "in", placesRef));
+    }else if(category == null){
+        qActivities = query(activitiesCollection, where("place", "in", placesRef));
+    }else if(location == null){
+        qActivities = query(activitiesCollection, where("category", "array-contains", categoryDocRef));
+    }
+
+    const snapshot = await getDocs(qActivities);
+    
+    return snapshot.docs.map((doc) => ({id: doc.id, ...doc.data()}));
 };
 
-export { activitiesCollection, getActivitiesSnapshot, getActivities, getActivitiesWhere };
+const getActivityPlace = async (activityId) => {
+    const activityDocRef = doc(activitiesCollection,activityId);
+    const snapshot = await getDoc(activityDocRef);
+    return getPlaceCity(snapshot.data().place);
+};
+
+export { activitiesCollection, getActivitiesSnapshot, getActivities, getActivitiesWhere, getActivityPlace };
