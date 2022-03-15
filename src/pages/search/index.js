@@ -14,15 +14,18 @@ export default function Search() {
   } else {
 
     class Adventure{
-      constructor (name,beginningDate,endDate,userId){
+      constructor (name,beginningDate,endDate){
           this.name = name;
           this.beginningDate = Timestamp.fromDate(beginningDate);
           this.endDate = Timestamp.fromDate(endDate);
-          this.userId = userId;
-          this.activities = new Array();
+          this.userActivities = new Array();
       }
       addActivity(activityId){
-        this.activities.push(activityId);
+        this.userActivities.push({
+            activityId: activityId,
+            daySlot: 0,
+            dayOrder: 0
+        });
       }
       toPlainObject(){
         const clone = {...this};
@@ -134,10 +137,10 @@ export default function Search() {
     });
 
     plannerBtn.addEventListener("click", function(){
-      let adventure = new Adventure(adventureName.value, new Date(beginningDate.value), new Date(endDate.value), AuthenticatedUser.id);
+      let adventure = new Adventure(adventureName.value, new Date(beginningDate.value), new Date(endDate.value));
       adventure.addActivity(doc(activitiesCollection, suggestions[0].id));
       console.log(adventure);
-      addAdventure(adventure.toPlainObject());
+      addAdventure(adventure.toPlainObject(),AuthenticatedUser.id);
 
     });
 

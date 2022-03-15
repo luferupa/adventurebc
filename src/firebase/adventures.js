@@ -10,8 +10,8 @@ const getAdventures = async () => {
   return snapshot.docs.map((doc) => doc.data());
 };
 
-const addAdventure = async (adventure) => {
-    const userDocRef = doc(usersCollection, adventure.userId);
+const addAdventure = async (adventure, userId) => {
+    const userDocRef = doc(usersCollection, userId);
     const adventureDocRef = await updateDoc (userDocRef, {
         adventures: arrayUnion(adventure)
     });
