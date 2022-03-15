@@ -4,18 +4,40 @@ import { AuthenticatedUser } from '../../index';
 
 import { getCategories } from '../../firebase/categories';
 import { getCities } from '../../firebase/cities';
-import { activitiesCollection, getActivities, getActivitiesWhere } from '../../firebase/activities';
+import { getActivitiesWhere, getActivityPlace, activitiesCollection } from '../../firebase/activities';
+import { addAdventure } from '../../firebase/adventures';
+import { Timestamp, doc } from '../../firebase';
 
 export default function Search() {
   if (!AuthenticatedUser) {
     location.hash = '#welcome';
   } else {
-    let categoryOptions;
-    let locationOptions;
+
+    class Adventure{
+      constructor (name,beginningDate,endDate,userId){
+          this.name = name;
+          this.beginningDate = Timestamp.fromDate(beginningDate);
+          this.endDate = Timestamp.fromDate(endDate);
+          this.userId = userId;
+          this.activities = new Array();
+      }
+      addActivity(activityId){
+        this.activities.push(activityId);
+      }
+      toPlainObject(){
+        const clone = {...this};
+        return clone;
+      }
+    }
+
+    let categoryOptions, locationOptions, suggestions ;
 
     const categorySelect = document.getElementById('category-sel');
     const locationSelect = document.getElementById('location-sel');
     const adventureName = document.getElementById('adventure-name');
+    const beginningDate = document.getElementById("from-date");
+    const endDate = document.getElementById("to-date");
+    const divResults = document.getElementById("suggestions");
 
     /* INITIAL LOAD - START */
     async function loadCategories() {
@@ -84,20 +106,20 @@ export default function Search() {
       options[location - 1].style.backgroundColor = '#D2E4D6';
     }
 
-    editButton.addEventListener('click', function (event) {
+    editButton.addEventListener('click', function () {
       adventureName.readOnly = false;
       adventureName.focus();
     });
 
-    adventureName.addEventListener('focusout', function (event) {
+    adventureName.addEventListener('focusout', function () {
       adventureName.readOnly = true;
     });
 
-    document.getElementById('open-search').addEventListener('click', function (event) {
+    document.getElementById('open-search').addEventListener('click', function () {
       document.getElementById('search').classList.remove('hideBar');
     });
 
-    document.getElementById('close-search').addEventListener('click', function (event) {
+    document.getElementById('close-search').addEventListener('click', function () {
       document.getElementById('search').classList.add('hideBar');
     });
 
@@ -111,11 +133,16 @@ export default function Search() {
 
     });
 
+    plannerBtn.addEventListener("click", function(){
+      let adventure = new Adventure(adventureName.value, new Date(beginningDate.value), new Date(endDate.value), AuthenticatedUser.id);
+      adventure.addActivity(doc(activitiesCollection, suggestions[0].id));
+      console.log(adventure);
+      addAdventure(adventure.toPlainObject());
+
+    });
+
     async function searchActivity(category, location){
-      let suggestions = new Array();
-      //let query = query(activitiesCollection, where("name", "==", "Stanley Park Bike Tour"));
-      console.log("Category - "+ category);
-      console.log("Location - "+ location);
+      suggestions = new Array();
 
       if(category == "Categories"){
         suggestions = await getActivitiesWhere(null, location);
@@ -125,9 +152,25 @@ export default function Search() {
         suggestions = await getActivitiesWhere(category, location);
       }
 
+      console.log(suggestions);
       
-      //getActivitiesWhere();
+      updateResults(suggestions);
+
     }
+
+    async function updateResults(suggestions){
+      divResults.innerHTML = ``;
+        for(const suggestion of suggestions){
+            divResults.innerHTML += `<div class="activity">
+            <img src="https://firebasestorage.googleapis.com/v0/b/adventurebc-bug-hunters.appspot.com/o/activities%2Fpexels-marco-milanesi-5899783%201.png?alt=media&token=d2f4cb27-60c8-421f-aadc-c07a9ee8165b" alt="Activity picture">
+            <span class="fa-regular fa-heart"></span>
+            <h3>${suggestion.name}</h3>
+            <p>${await getActivityPlace(suggestion.id)}</p>
+            </div>`;
+        }
+        
+    }
+
   }
 
   

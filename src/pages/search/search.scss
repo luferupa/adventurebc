@@ -1,7 +1,7 @@
 @use "../../styles/variables";
 
 .search {
-    max-height: calc(100vh - 67px - 3rem);
+    height: calc(100vh - 67px - 3rem);
     overflow-x: hidden;
 
     main {
@@ -41,7 +41,7 @@
                 background-color: #f2fcf4;
                 padding: 2rem 0.5rem;
                 height: 100%;
-                z-index: -1;
+                //z-index: -1;
             }
 
             form {
@@ -107,13 +107,14 @@
             }
 
             #basic-data {
-                display: grid;
-                grid-template-columns: 1fr 2fr;
+                display: flex;
+                flex-flow: row wrap;
                 gap: 2rem;
 
                 .input-group {
                     width: 100%;
                     height: 18px;
+                    flex: 1 0 20%;
                 }
 
                 #adventure-name {
@@ -131,19 +132,29 @@
                 }
 
                 #dates {
+                    flex: 1 0 20%;
                     justify-self: end;
                     display: flex;
-                    margin-bottom: 2rem;
+                    //margin-bottom: 2rem;
                     justify-content: flex-end;
-                    max-width: 100%;
+                    max-width: 90%;
+                    margin: auto;
 
                     .form-control {
                         width: 100%;
                     }
                 }
+
+                #plannerBtn {
+                    flex: 1 0 20%;
+                    display: inline;
+                    color: white;
+                    height: 2.5rem;
+                }
             }
 
             #suggestions {
+                height: 100%;
                 display: grid;
                 grid-template-columns: repeat(3, 1fr);
                 gap: 1rem;
@@ -205,7 +216,6 @@
     @media screen and (max-width: 700px) {
         main {
             display: block;
-            overflow-x: hidden;
             position: relative;
             margin: 0;
 
@@ -269,6 +279,10 @@
                         .form-control {
                             width: 100%;
                         }
+                    }
+
+                    #plannerBtn {
+                        margin-bottom: 1rem;
                     }
                 }
 
