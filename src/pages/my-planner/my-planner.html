@@ -1,3 +1,294 @@
 <div class="my-planner">
-  <h1>This is planner page</h1>
+  <h2>My Planner</h2>
+  <div class="info-section">
+    <div class="planner-date-wrapper">
+      <div class="planner-selector dropdown">
+        <button
+          class="btn btn-secondary dropdown-toggle"
+          type="button"
+          id="dropdownMenuButton1"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+        >
+          Adventure 1
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+          <li><a class="dropdown-item">Adventure 1</a></li>
+          <li><a class="dropdown-item">Adventure 2</a></li>
+          <li><a class="dropdown-item">Adventure 3</a></li>
+        </ul>
+      </div>
+      <div class="date-selector">
+        <input placeholder="From date" type="date" id="from-date" class="form-control" />
+        <input placeholder="To date" type="date" id="to-date" class="form-control" />
+      </div>
+    </div>
+    <div class="meta-info">
+      <p class="info">By Gabriel</p>
+      <span>•</span>
+      <p class="info">0 activities</p>
+    </div>
+  </div>
+
+  <div class="to-schedule">
+    <h4>Activities to Schedule</h4>
+    <div class="horizontal-scroll">
+      <div class="activity-wrapper">
+        <div class="activity add-activity">
+          <span class="fa-solid fa-plus" onclick=" location.hash='#search'"></span>
+        </div>
+
+        <div class="activity">
+          <img
+            src="https://firebasestorage.googleapis.com/v0/b/adventurebc-bug-hunters.appspot.com/o/activities%2Fpexels-marco-milanesi-5899783%201.png?alt=media&token=d2f4cb27-60c8-421f-aadc-c07a9ee8165b"
+            alt="Activity picture"
+          />
+          <span class="fa-regular fa-heart"></span>
+          <span class="fa-solid fa-xmark"></span>
+          <h3>Activity 1</h3>
+          <p>Vancouver</p>
+          <div class="hover-state">
+            <button class="btn btn-secondary">Schedule</button>
+          </div>
+        </div>
+
+        <div class="activity">
+          <img
+            src="https://firebasestorage.googleapis.com/v0/b/adventurebc-bug-hunters.appspot.com/o/activities%2Fpexels-marco-milanesi-5899783%201.png?alt=media&token=d2f4cb27-60c8-421f-aadc-c07a9ee8165b"
+            alt="Activity picture"
+          />
+          <span class="fa-regular fa-heart"></span>
+          <span class="fa-solid fa-xmark"></span>
+          <h3>Activity 1</h3>
+          <p>Vancouver</p>
+          <div class="hover-state">
+            <button class="btn btn-secondary">Schedule</button>
+          </div>
+        </div>
+
+        <div class="activity">
+          <img
+            src="https://firebasestorage.googleapis.com/v0/b/adventurebc-bug-hunters.appspot.com/o/activities%2Fpexels-marco-milanesi-5899783%201.png?alt=media&token=d2f4cb27-60c8-421f-aadc-c07a9ee8165b"
+            alt="Activity picture"
+          />
+          <span class="fa-regular fa-heart"></span>
+          <span class="fa-solid fa-xmark"></span>
+          <h3>Activity 1</h3>
+          <p>Vancouver</p>
+          <div class="hover-state">
+            <button class="btn btn-secondary">Schedule</button>
+          </div>
+        </div>
+
+        <div class="activity">
+          <img
+            src="https://firebasestorage.googleapis.com/v0/b/adventurebc-bug-hunters.appspot.com/o/activities%2Fpexels-marco-milanesi-5899783%201.png?alt=media&token=d2f4cb27-60c8-421f-aadc-c07a9ee8165b"
+            alt="Activity picture"
+          />
+          <span class="fa-regular fa-heart"></span>
+          <span class="fa-solid fa-xmark"></span>
+          <h3>Activity 1</h3>
+          <p>Vancouver</p>
+          <div class="hover-state">
+            <button class="btn btn-secondary">Schedule</button>
+          </div>
+        </div>
+
+        <div class="activity">
+          <img
+            src="https://firebasestorage.googleapis.com/v0/b/adventurebc-bug-hunters.appspot.com/o/activities%2Fpexels-marco-milanesi-5899783%201.png?alt=media&token=d2f4cb27-60c8-421f-aadc-c07a9ee8165b"
+            alt="Activity picture"
+          />
+          <span class="fa-regular fa-heart"></span>
+          <span class="fa-solid fa-xmark"></span>
+          <h3>Activity 1</h3>
+          <p>Vancouver</p>
+          <div class="hover-state">
+            <button class="btn btn-secondary">Schedule</button>
+          </div>
+        </div>
+
+        <div class="activity">
+          <img
+            src="https://firebasestorage.googleapis.com/v0/b/adventurebc-bug-hunters.appspot.com/o/activities%2Fpexels-marco-milanesi-5899783%201.png?alt=media&token=d2f4cb27-60c8-421f-aadc-c07a9ee8165b"
+            alt="Activity picture"
+          />
+          <span class="fa-regular fa-heart"></span>
+          <span class="fa-solid fa-xmark"></span>
+          <h3>Activity 1</h3>
+          <p>Vancouver</p>
+          <div class="hover-state">
+            <button class="btn btn-secondary">Schedule</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="schedule-activities">
+    <div class="accordion" id="accordionPanelsStayOpenExample">
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="panelsStayOpen-headingOne">
+          <button
+            class="accordion-button"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#panelsStayOpen-collapseOne"
+            aria-expanded="true"
+            aria-controls="panelsStayOpen-collapseOne"
+          >
+            <span class="square"></span>
+            <span class="label">20 April</span>
+          </button>
+        </h2>
+        <div
+          id="panelsStayOpen-collapseOne"
+          class="accordion-collapse collapse show"
+          aria-labelledby="panelsStayOpen-headingOne"
+        >
+          <div class="accordion-body">
+            <div class="horizontal-scroll">
+              <div class="activity-wrapper">
+                <div class="activity">
+                  <img
+                    src="https://firebasestorage.googleapis.com/v0/b/adventurebc-bug-hunters.appspot.com/o/activities%2Fpexels-marco-milanesi-5899783%201.png?alt=media&token=d2f4cb27-60c8-421f-aadc-c07a9ee8165b"
+                    alt="Activity picture"
+                  />
+                  <span class="fa-regular fa-heart"></span>
+                  <span class="fa-solid fa-xmark"></span>
+                  <h3>Activity 1</h3>
+                  <p>Vancouver</p>
+                  <div class="hover-state">
+                    <button class="btn btn-secondary">Schedule</button>
+                  </div>
+                </div>
+
+                <div class="activity">
+                  <img
+                    src="https://firebasestorage.googleapis.com/v0/b/adventurebc-bug-hunters.appspot.com/o/activities%2Fpexels-marco-milanesi-5899783%201.png?alt=media&token=d2f4cb27-60c8-421f-aadc-c07a9ee8165b"
+                    alt="Activity picture"
+                  />
+                  <span class="fa-regular fa-heart"></span>
+                  <span class="fa-solid fa-xmark"></span>
+                  <h3>Activity 1</h3>
+                  <p>Vancouver</p>
+                  <div class="hover-state">
+                    <button class="btn btn-secondary">Schedule</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="panelsStayOpen-headingtwo">
+          <button
+            class="accordion-button"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#panelsStayOpen-collapseTwo"
+            aria-expanded="true"
+            aria-controls="panelsStayOpen-collapseTwo"
+          >
+            <span class="square"></span>
+            <span class="label">21 April</span>
+          </button>
+        </h2>
+        <div
+          id="panelsStayOpen-collapseTwo"
+          class="accordion-collapse collapse show"
+          aria-labelledby="panelsStayOpen-headingtwo"
+        >
+          <div class="accordion-body">
+            <div class="horizontal-scroll">
+              <div class="activity-wrapper">
+                <div class="activity">
+                  <img
+                    src="https://firebasestorage.googleapis.com/v0/b/adventurebc-bug-hunters.appspot.com/o/activities%2Fpexels-marco-milanesi-5899783%201.png?alt=media&token=d2f4cb27-60c8-421f-aadc-c07a9ee8165b"
+                    alt="Activity picture"
+                  />
+                  <span class="fa-regular fa-heart"></span>
+                  <span class="fa-solid fa-xmark"></span>
+                  <h3>Activity 1</h3>
+                  <p>Vancouver</p>
+                  <div class="hover-state">
+                    <button class="btn btn-secondary">Schedule</button>
+                  </div>
+                </div>
+
+                <div class="activity">
+                  <img
+                    src="https://firebasestorage.googleapis.com/v0/b/adventurebc-bug-hunters.appspot.com/o/activities%2Fpexels-marco-milanesi-5899783%201.png?alt=media&token=d2f4cb27-60c8-421f-aadc-c07a9ee8165b"
+                    alt="Activity picture"
+                  />
+                  <span class="fa-regular fa-heart"></span>
+                  <span class="fa-solid fa-xmark"></span>
+                  <h3>Activity 1</h3>
+                  <p>Vancouver</p>
+                  <div class="hover-state">
+                    <button class="btn btn-secondary">Schedule</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="panelsStayOpen-headingThree">
+          <button
+            class="accordion-button"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#panelsStayOpen-collapseThree"
+            aria-expanded="true"
+            aria-controls="panelsStayOpen-collapseThree"
+          >
+            <span class="square"></span>
+            <span class="label">22 April</span>
+          </button>
+        </h2>
+        <div
+          id="panelsStayOpen-collapseThree"
+          class="accordion-collapse collapse show"
+          aria-labelledby="panelsStayOpen-headingThree"
+        >
+          <div class="accordion-body">
+            <div class="horizontal-scroll">
+              <div class="activity-wrapper">
+                <div class="activity">
+                  <img
+                    src="https://firebasestorage.googleapis.com/v0/b/adventurebc-bug-hunters.appspot.com/o/activities%2Fpexels-marco-milanesi-5899783%201.png?alt=media&token=d2f4cb27-60c8-421f-aadc-c07a9ee8165b"
+                    alt="Activity picture"
+                  />
+                  <span class="fa-regular fa-heart"></span>
+                  <span class="fa-solid fa-xmark"></span>
+                  <h3>Activity 1</h3>
+                  <p>Vancouver</p>
+                  <div class="hover-state">
+                    <button class="btn btn-secondary">Schedule</button>
+                  </div>
+                </div>
+
+                <div class="activity">
+                  <img
+                    src="https://firebasestorage.googleapis.com/v0/b/adventurebc-bug-hunters.appspot.com/o/activities%2Fpexels-marco-milanesi-5899783%201.png?alt=media&token=d2f4cb27-60c8-421f-aadc-c07a9ee8165b"
+                    alt="Activity picture"
+                  />
+                  <span class="fa-regular fa-heart"></span>
+                  <span class="fa-solid fa-xmark"></span>
+                  <h3>Activity 1</h3>
+                  <p>Vancouver</p>
+                  <div class="hover-state">
+                    <button class="btn btn-secondary">Schedule</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

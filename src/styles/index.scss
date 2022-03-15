@@ -2,6 +2,8 @@
 $primary: #e28c36;
 $secondary: #698b71;
 $navbar-light-color: #698b71;
+$accordion-icon-color: $primary;
+$accordion-icon-active-color: $primary;
 
 @use "./normalize";
 @use "./reset";
@@ -36,6 +38,7 @@ $navbar-light-color: #698b71;
 @import "../../node_modules/bootstrap/scss/close";
 @import "../../node_modules/bootstrap/scss/navbar";
 @import "../../node_modules/bootstrap/scss/nav";
+@import "../../node_modules/bootstrap/scss/accordion";
 
 // Helpers
 @import "../../node_modules/bootstrap/scss/helpers";
