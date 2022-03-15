@@ -4,18 +4,39 @@ import { AuthenticatedUser } from '../../index';
 
 import { getCategories } from '../../firebase/categories';
 import { getCities } from '../../firebase/cities';
-import { getActivitiesWhere, getActivityPlace } from '../../firebase/activities';
+import { getActivitiesWhere, getActivityPlace, activitiesCollection } from '../../firebase/activities';
+import { addAdventure } from '../../firebase/adventures';
+import { Timestamp, doc } from '../../firebase';
 
 export default function Search() {
   if (!AuthenticatedUser) {
     location.hash = '#welcome';
   } else {
-    let categoryOptions;
-    let locationOptions;
+
+    class Adventure{
+      constructor (name,beginningDate,endDate,userId){
+          this.name = name;
+          this.beginningDate = Timestamp.fromDate(beginningDate);
+          this.endDate = Timestamp.fromDate(endDate);
+          this.userId = userId;
+          this.activities = new Array();
+      }
+      addActivity(activityId){
+        this.activities.push(activityId);
+      }
+      toPlainObject(){
+        const clone = {...this};
+        return clone;
+      }
+    }
+
+    let categoryOptions, locationOptions, suggestions ;
 
     const categorySelect = document.getElementById('category-sel');
     const locationSelect = document.getElementById('location-sel');
     const adventureName = document.getElementById('adventure-name');
+    const beginningDate = document.getElementById("from-date");
+    const endDate = document.getElementById("to-date");
     const divResults = document.getElementById("suggestions");
 
     /* INITIAL LOAD - START */
@@ -113,18 +134,15 @@ export default function Search() {
     });
 
     plannerBtn.addEventListener("click", function(){
-      let name = adventureName.value;
-      let beginningDate = document.getElementById("from-date").value;
-      let endDate = document.getElementById("to-date").value;
-      let activities = new Array();
-      
+      let adventure = new Adventure(adventureName.value, new Date(beginningDate.value), new Date(endDate.value), AuthenticatedUser.id);
+      adventure.addActivity(doc(activitiesCollection, suggestions[0].id));
+      console.log(adventure);
+      addAdventure(adventure.toPlainObject());
+
     });
 
     async function searchActivity(category, location){
-      let suggestions = new Array();
-      //let query = query(activitiesCollection, where("name", "==", "Stanley Park Bike Tour"));
-      console.log("Category - "+ category);
-      console.log("Location - "+ location);
+      suggestions = new Array();
 
       if(category == "Categories"){
         suggestions = await getActivitiesWhere(null, location);
