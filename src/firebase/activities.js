@@ -16,11 +16,11 @@ const getActivitiesWhere = async (category, location) => {
     const placesRef = [];
     
     if(category != null){
-        categoryDocRef = doc(collection(db, "categories"),category.toLowerCase());
+        categoryDocRef = doc(collection(db, "categories"),category.toLowerCase().replaceAll(" ","_"));
     }
 
     if(location != null){
-        locationDocRef = doc(collection(db, "cities"),location.toLowerCase());
+        locationDocRef = doc(collection(db, "cities"),location.toLowerCase().replaceAll(" ","_"));
 
         qPlaces = query(collection(db, "places"), where("city", "==", locationDocRef));
         const snapshotPlaces = await getDocs(qPlaces);

@@ -16,16 +16,38 @@ export default function Search() {
     class Adventure{
       constructor (name,beginningDate,endDate){
           this.name = name;
-          this.beginningDate = Timestamp.fromDate(beginningDate);
-          this.endDate = Timestamp.fromDate(endDate);
+          if(beginningDate != null){
+            this.beginningDate = Timestamp.fromDate(beginningDate);
+          }else{
+            this.beginningDate = null;
+          }
+
+          if(endDate != null){
+            this.endDate = Timestamp.fromDate(endDate);
+          }else{
+            this.endDate = null;
+          }
+          
           this.userActivities = new Array();
       }
-      addActivity(activityId){
+      addActivity(activityRef){
         this.userActivities.push({
-            activityId: activityId,
+            activityId: activityRef,
             daySlot: 0,
             dayOrder: 0
         });
+      }
+      removeActivity(activityRef){
+        this.userActivities = this.userActivities.filter(function(value){
+          return value.activityId.id!=activityRef.id;
+        });
+        
+      }
+      alreadyHas(activityId){
+        const result = this.userActivities.filter(function(value){
+          return value.activityId.id==activityId;
+        });
+        return (result.length >0);
       }
       toPlainObject(){
         const clone = {...this};
@@ -41,6 +63,8 @@ export default function Search() {
     const beginningDate = document.getElementById("from-date");
     const endDate = document.getElementById("to-date");
     const divResults = document.getElementById("suggestions");
+    
+    let adventure = new Adventure(adventureName.value, null, null);
 
     /* INITIAL LOAD - START */
     async function loadCategories() {
@@ -137,8 +161,9 @@ export default function Search() {
     });
 
     plannerBtn.addEventListener("click", function(){
-      let adventure = new Adventure(adventureName.value, new Date(beginningDate.value), new Date(endDate.value));
-      adventure.addActivity(doc(activitiesCollection, suggestions[0].id));
+     adventure.name = adventureName.value;
+     adventure.beginningDate = new Date(beginningDate.value);
+     adventure.endDate = new Date(endDate.value);
       console.log(adventure);
       addAdventure(adventure.toPlainObject(),AuthenticatedUser.id);
 
@@ -154,24 +179,45 @@ export default function Search() {
       }else{
         suggestions = await getActivitiesWhere(category, location);
       }
-
-      console.log(suggestions);
       
-      updateResults(suggestions);
+      await updateResults(suggestions);
+      assignEventToSuggestions();
 
     }
 
     async function updateResults(suggestions){
       divResults.innerHTML = ``;
-        for(const suggestion of suggestions){
-            divResults.innerHTML += `<div class="activity">
+        for(let suggestion of suggestions){
+            let additional = "";
+            if(adventure.alreadyHas(suggestion.id)){ additional = "added"};
+
+            divResults.innerHTML += `<div class="activity ${additional}" id="${suggestion.id}">
             <img src="https://firebasestorage.googleapis.com/v0/b/adventurebc-bug-hunters.appspot.com/o/activities%2Fpexels-marco-milanesi-5899783%201.png?alt=media&token=d2f4cb27-60c8-421f-aadc-c07a9ee8165b" alt="Activity picture">
             <span class="fa-regular fa-heart"></span>
+            <span class="fa-solid fa-xmark"></span>
             <h3>${suggestion.name}</h3>
             <p>${await getActivityPlace(suggestion.id)}</p>
             </div>`;
         }
         
+    }
+
+    function assignEventToSuggestions(){
+      const activities = document.querySelectorAll(".activity");
+      activities.forEach( (activity) => {
+        activity.addEventListener("click", function(){      
+          if(this.classList.contains("added")){
+            adventure.removeActivity(doc(activitiesCollection, this.id));
+            activity.classList.remove("added");
+            this.querySelector(".fa-xmark").style.display = "none";
+          }else{
+            adventure.addActivity(doc(activitiesCollection, this.id));
+            activity.classList.add("added");
+            this.querySelector(".fa-xmark").style.display = "inline";
+          }
+          console.log(adventure);
+        })
+      });
     }
 
   }

@@ -26,8 +26,8 @@
                 background-color: white;
                 border-bottom: 1px solid variables.$green-dark;
 
-                h1 {
-                    font-size: 36px;
+                h2 {
+                    
                     padding-bottom: 0.7rem;
                     margin-bottom: 0;
                 }
@@ -167,6 +167,7 @@
                     border-radius: 15px;
                     overflow-y: hidden;
                     overflow-x: hidden;
+                    transition: background 0.5s;
 
                     h3 {
                         font-size: 18px;
@@ -181,13 +182,33 @@
                         margin: 0;
                     }
 
-                    .fa-heart {
+                    .fa-heart{
                         font-size: 1.8rem;
                         color: white;
                         position: absolute;
                         top: 0.5rem;
                         right: 0.7rem;
                     }
+
+                    .fa-xmark {
+                        font-size: 2.5rem;
+                        color: white;
+                        position: absolute;
+                        top: 30%;
+                        right: 45%;
+                        display: none;
+                    }
+
+                    &:hover{
+                        cursor: pointer;
+                        border: 3px solid variables.$color-secondary;
+                        background-blend-mode: darken;
+                    }
+                }
+
+                .added{
+                    background: variables.$color-item-selected;
+                    border: 3px solid variables.$color-primary;
                 }
             }
         }
@@ -233,7 +254,7 @@
                     display: flex;
                     justify-content: space-between;
 
-                    h1 {
+                    h2 {
                         padding-left: 1rem;
                         font-size: 24px;
                     }
