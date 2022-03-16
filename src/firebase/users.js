@@ -1,4 +1,5 @@
 import { db, collection, getDocs, doc, updateDoc, getDoc, arrayUnion } from '../firebase';
+import { getActivity } from './activities';
 
 const usersCollection = collection(db, "users");
 
@@ -15,4 +16,16 @@ const getUserAdventures = async (userId) => {
     return snapshot.data().adventures;
 };
 
-export { usersCollection, getUsersSnapshot, getUsers, getUserAdventures };
+const getUserFavorites = async (userId) => {
+    const userDocRef = doc(usersCollection,userId);
+    const snapshot = await getDoc(userDocRef);
+    const favourites = [];
+    snapshot.data().favourites.forEach(async (favourite) => {
+        const activityDocRef = await getActivity(favourite.id);
+        favourites.push(activityDocRef);
+    });
+    return favourites;
+    
+};
+
+export { usersCollection, getUsersSnapshot, getUsers, getUserAdventures, getUserFavorites };

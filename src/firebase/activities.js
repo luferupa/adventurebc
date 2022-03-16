@@ -1,4 +1,4 @@
-import { db, collection, doc, getDocs, getDoc, query, where } from '../firebase';
+import { db, collection, doc, getDocs, getDoc, query, where, limit, orderBy } from '../firebase';
 import { getPlaceCity } from './places';
 
 const activitiesCollection = collection(db, 'activities');
@@ -8,6 +8,12 @@ const getActivitiesSnapshot = async () => await getDocs(activitiesCollection);
 const getActivities = async () => {
   const snapshot = await getActivitiesSnapshot();
   return snapshot.docs.map((doc) => doc.data());
+};
+
+const getActivitiesRandom = async () => {
+    const queryRandom = query(activitiesCollection/*, where("random", "<=", random) , orderBy("random")*/, limit(6));
+    const snapshot = await getDocs(queryRandom);
+    return snapshot.docs.map((doc) => ({id: doc.id, ...doc.data()}));
 };
 
 const getActivitiesWhere = async (category, location) => {
@@ -48,4 +54,10 @@ const getActivityPlace = async (activityId) => {
     return getPlaceCity(snapshot.data().place);
 };
 
-export { activitiesCollection, getActivitiesSnapshot, getActivities, getActivitiesWhere, getActivityPlace };
+const getActivity = async (activityId) => {
+    const activityDocRef = doc(activitiesCollection,activityId);
+    const snapshot = await getDoc(activityDocRef);
+    return snapshot.data();
+};
+
+export { activitiesCollection, getActivitiesSnapshot, getActivities, getActivitiesWhere, getActivityPlace, getActivitiesRandom, getActivity };
