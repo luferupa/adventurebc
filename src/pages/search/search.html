@@ -8,7 +8,7 @@
             </div>
             
             <div>
-                <form oninput="labels.value = `${distance.valueAsNumber} km`; labels.style.paddingLeft = `calc(${distance.valueAsNumber*10}% `;">
+                <form id="searchFilters" oninput="labels.value = `${distance.valueAsNumber} km`; labels.style.paddingLeft = `calc(${distance.valueAsNumber*10}% `;">
                     <!-- Should we change this to bring all categories from db? -->
                     <div class="input-group flex-nowrap" id="category">
                         <span class="input-group-text fa fa-solid fa-tree"></span>
@@ -74,6 +74,7 @@
 
             <div id="suggestions">
                 
+                <h4>Please make a search to give you some suggestions.</h4>
                 <!--div class="activity">
                     <img src="https://firebasestorage.googleapis.com/v0/b/adventurebc-bug-hunters.appspot.com/o/activities%2Fpexels-marco-milanesi-5899783%201.png?alt=media&token=d2f4cb27-60c8-421f-aadc-c07a9ee8165b" alt="Activity picture">
                     <span class="fa-regular fa-heart"></span>

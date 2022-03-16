@@ -150,7 +150,7 @@ export default function Search() {
       document.getElementById('search').classList.add('hideBar');
     });
 
-    sbSearch.addEventListener('click', function (event) {
+    searchFilters.addEventListener('submit', function (event) {
       document.getElementById('search').classList.add('hideBar');
 
       let category = document.getElementById('category-sel').value;

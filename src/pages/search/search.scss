@@ -161,6 +161,11 @@
                 justify-items: center;
                 align-content: center;
 
+                h4{
+                    grid-column: 2/3;
+                    margin-top: 20vh;
+                }
+
                 .activity {
                     position: relative;
                     box-shadow: 1px 2px 2px 1px rgba(0, 0, 0, 0.2), -1px 2px 2px 1px rgba(0, 0, 0, 0.2);
