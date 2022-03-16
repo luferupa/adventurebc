@@ -186,19 +186,26 @@ export default function Search() {
     }
 
     async function updateResults(suggestions){
-      divResults.innerHTML = ``;
+      var output="";
         for(let suggestion of suggestions){
             let additional = "";
-            if(adventure.alreadyHas(suggestion.id)){ additional = "added"};
+            const exists = adventure.alreadyHas(suggestion.id);
+            if(exists){ additional = "added"};
 
-            divResults.innerHTML += `<div class="activity ${additional}" id="${suggestion.id}">
+            output += `<div class="activity ${additional}" id="${suggestion.id}">
             <img src="https://firebasestorage.googleapis.com/v0/b/adventurebc-bug-hunters.appspot.com/o/activities%2Fpexels-marco-milanesi-5899783%201.png?alt=media&token=d2f4cb27-60c8-421f-aadc-c07a9ee8165b" alt="Activity picture">
-            <span class="fa-regular fa-heart"></span>
-            <span class="fa-solid fa-xmark"></span>
-            <h3>${suggestion.name}</h3>
+            <span class="fa-regular fa-heart"></span>`;
+            if(exists){
+              output += `<span class="fa-solid fa-xmark remove"></span>`;
+            }else{
+              output += `<span class="fa-solid fa-xmark"></span>`;
+            }
+            
+            output += `<h3>${suggestion.name}</h3>
             <p>${await getActivityPlace(suggestion.id)}</p>
             </div>`;
         }
+        divResults.innerHTML = output;
         
     }
 
@@ -208,12 +215,12 @@ export default function Search() {
         activity.addEventListener("click", function(){      
           if(this.classList.contains("added")){
             adventure.removeActivity(doc(activitiesCollection, this.id));
-            activity.classList.remove("added");
-            this.querySelector(".fa-xmark").style.display = "none";
+            this.classList.remove("added");
+            this.querySelector(".fa-xmark").classList.remove("remove");
           }else{
             adventure.addActivity(doc(activitiesCollection, this.id));
-            activity.classList.add("added");
-            this.querySelector(".fa-xmark").style.display = "inline";
+            this.classList.add("added");
+            this.querySelector(".fa-xmark").classList.add("remove");
           }
           console.log(adventure);
         })

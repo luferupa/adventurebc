@@ -195,13 +195,17 @@
                         right: 0.7rem;
                     }
 
-                    .fa-xmark {
+                    .fa-xmark{
                         font-size: 2.5rem;
                         color: white;
                         position: absolute;
                         top: 30%;
                         right: 45%;
                         display: none;
+                    }
+
+                    .remove {
+                        display: inline;
                     }
 
                     &:hover{
