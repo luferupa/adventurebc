@@ -20,7 +20,7 @@ const getUserFavorites = async (userId) => {
     const userDocRef = doc(usersCollection,userId);
     const snapshot = await getDoc(userDocRef);
     const favourites = [];
-    if(snapshot.data().favourites.length >0){
+    if(snapshot.data().favourites!= undefined && snapshot.data().favourites.length >0){
         snapshot.data().favourites.forEach(async (favourite) => {
         const activityDocRef = await getActivity(favourite.id);
         favourites.push(activityDocRef);
