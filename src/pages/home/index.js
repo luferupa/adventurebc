@@ -4,7 +4,7 @@ import { AuthenticatedUser } from '../../index';
 import { getUserAdventures, getUserFavorites } from '../../firebase/users';
 
 import { getActivityPlace, getActivitiesRandom, getActivity } from '../../firebase/activities';
-import { getFormattedDate } from '../../utils/indexjs';
+import { getFormattedDate } from '../../utils/index,js';
 export let favouriteActiv =  new Array();
 
 export default async function Home() {
