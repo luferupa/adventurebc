@@ -11,53 +11,66 @@ const getActivities = async () => {
 };
 
 const getActivitiesRandom = async () => {
-    const queryRandom = query(activitiesCollection/*, where("random", "<=", random) , orderBy("random")*/, limit(6));
-    const snapshot = await getDocs(queryRandom);
-    return snapshot.docs.map((doc) => ({id: doc.id, ...doc.data()}));
+  const queryRandom = query(activitiesCollection /*, where("random", "<=", random) , orderBy("random")*/, limit(6));
+  const snapshot = await getDocs(queryRandom);
+  return snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
 };
 
 const getActivitiesWhere = async (category, location) => {
+  let qActivities,
+    qPlaces,
+    categoryDocRef,
+    locationDocRef = '';
+  const placesRef = [];
 
-    let qActivities, qPlaces, categoryDocRef, locationDocRef = "";
-    const placesRef = [];
-    
-    if(category != null){
-        categoryDocRef = doc(collection(db, "categories"),category.toLowerCase().replaceAll(" ","_"));
-    }
+  if (category != null) {
+    categoryDocRef = doc(collection(db, 'categories'), category.toLowerCase().replaceAll(' ', '_'));
+  }
 
-    if(location != null){
-        locationDocRef = doc(collection(db, "cities"),location.toLowerCase().replaceAll(" ","_"));
+  if (location != null) {
+    locationDocRef = doc(collection(db, 'cities'), location.toLowerCase().replaceAll(' ', '_'));
 
-        qPlaces = query(collection(db, "places"), where("city", "==", locationDocRef));
-        const snapshotPlaces = await getDocs(qPlaces);
-        
-        snapshotPlaces.forEach( (place) => placesRef.push(doc(collection(db, "places"),place.id)));
-    }
+    qPlaces = query(collection(db, 'places'), where('city', '==', locationDocRef));
+    const snapshotPlaces = await getDocs(qPlaces);
 
-    if(category != null && location != null){
-        qActivities = query(activitiesCollection, where("category", "array-contains", categoryDocRef),
-        where("place", "in", placesRef));
-    }else if(category == null){
-        qActivities = query(activitiesCollection, where("place", "in", placesRef));
-    }else if(location == null){
-        qActivities = query(activitiesCollection, where("category", "array-contains", categoryDocRef));
-    }
+    snapshotPlaces.forEach((place) => placesRef.push(doc(collection(db, 'places'), place.id)));
+  }
 
-    const snapshot = await getDocs(qActivities);
-    
-    return snapshot.docs.map((doc) => ({id: doc.id, ...doc.data()}));
+  if (category != null && location != null) {
+    qActivities = query(
+      activitiesCollection,
+      where('category', 'array-contains', categoryDocRef),
+      where('place', 'in', placesRef)
+    );
+  } else if (category == null) {
+    qActivities = query(activitiesCollection, where('place', 'in', placesRef));
+  } else if (location == null) {
+    qActivities = query(activitiesCollection, where('category', 'array-contains', categoryDocRef));
+  }
+
+  const snapshot = await getDocs(qActivities);
+
+  return snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
 };
 
 const getActivityPlace = async (activityId) => {
-    const activityDocRef = doc(activitiesCollection,activityId);
-    const snapshot = await getDoc(activityDocRef);
-    return getPlaceCity(snapshot.data().place);
+  const activityDocRef = doc(activitiesCollection, activityId);
+  const snapshot = await getDoc(activityDocRef);
+  return getPlaceCity(snapshot.data().place);
 };
 
 const getActivity = async (activityId) => {
-    const activityDocRef = doc(activitiesCollection,activityId);
-    const snapshot = await getDoc(activityDocRef);
-    return {id: activityId, ...snapshot.data()};
+  const activityDocRef = doc(activitiesCollection, activityId);
+  const snapshot = await getDoc(activityDocRef);
+  return { id: snapshot.id, ...snapshot.data(), place: await getActivityPlace(activityId) };
 };
 
-export { activitiesCollection, getActivitiesSnapshot, getActivities, getActivitiesWhere, getActivityPlace, getActivitiesRandom, getActivity };
+export {
+  activitiesCollection,
+  getActivitiesSnapshot,
+  getActivities,
+  getActivitiesWhere,
+  getActivityPlace,
+  getActivitiesRandom,
+  getActivity,
+};

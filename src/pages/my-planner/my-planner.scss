@@ -30,6 +30,7 @@
 
           .dropdown-item {
             color: variables.$color-white;
+            cursor: pointer;
 
             &:hover {
               color: variables.$color-black;
@@ -124,13 +125,15 @@
         border-radius: 15px;
         width: 220px !important;
         overflow: hidden;
+        min-height: 215px;
 
         h3 {
-          font-size: 18px;
+          font-size: 16px;
           font-weight: bold;
           padding: 0.5rem;
           letter-spacing: -0.5px;
           margin: 0;
+          height: 50px;
         }
 
         p {
@@ -147,19 +150,33 @@
           cursor: pointer;
         }
 
-        .fa-xmark {
+        .delete-button {
           font-size: 1.6rem;
           color: variables.$color-black;
           position: absolute;
           top: 0.5rem;
           left: 0.7rem;
           cursor: pointer;
+          width: 0;
+          height: 0;
+          border: none;
+
+          .fa-xmark {
+            :hover {
+              color: variables.$color-white;
+            }
+          }
         }
 
         &.add-activity {
           display: flex;
           align-items: center;
           justify-content: center;
+          cursor: pointer;
+
+          &:hover {
+            background-color: rgba(variables.$color-black, 0.2);
+          }
 
           .fa-plus {
             font-size: 32px;
@@ -169,15 +186,14 @@
             color: variables.$color-white;
             border-radius: 50%;
             padding: 0.5rem;
-            cursor: pointer;
+            z-index: 15;
           }
         }
 
         .hover-state {
-          // display: none;
           position: absolute;
-          top: -500px;
-          transition: all 0.3s ease-out;
+          top: 0;
+          transition: all 0.2s ease-out;
 
           .btn {
             display: none;
@@ -186,7 +202,7 @@
 
         &:hover {
           .hover-state {
-            top: 0;
+            top: 50%;
             left: 0;
             right: 0;
             bottom: 0;
@@ -205,7 +221,37 @@
     }
   }
 
+  .btn-primary {
+    background-color: variables.$color-primary;
+    color: variables.$color-white;
+  }
+
   .btn-secondary {
     color: variables.$color-white;
+  }
+
+  #deleteModal {
+    .modal-content {
+      border: none;
+
+      .modal-body {
+        color: variables.$color-white;
+        background-color: variables.$green-medium;
+        padding: 2rem;
+
+        h3 {
+          text-align: center;
+          font-size: 1.5rem;
+        }
+
+        .button-wrapper {
+          margin-top: 3rem;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          gap: 2rem;
+        }
+      }
+    }
   }
 }

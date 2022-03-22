@@ -4,7 +4,6 @@ import { AuthenticatedUser } from '../../index';
 import { changeUserPicture, signOutAuth } from '../../firebase/auth';
 
 export default async function AuthTemplate() {
-  console.log('auth init');
   if (!AuthenticatedUser) {
     location.hash = '#welcome';
   } else {
@@ -15,7 +14,7 @@ export default async function AuthTemplate() {
     try {
       await signOutAuth();
     } catch (error) {
-      console.log(AuthenticatedUser);
+      console.log(error);
     }
   });
 
@@ -31,7 +30,7 @@ export default async function AuthTemplate() {
     const response = await changeUserPicture(uploadedFile, AuthenticatedUser);
 
     AuthenticatedUser.avatarURL = response;
-    userAvatar.setAttribute('src', AuthenticatedUser.avatarUrl);
+    userAvatar.setAttribute('src', window.URL.createObjectURL(uploadedFile));
   };
 
   /**

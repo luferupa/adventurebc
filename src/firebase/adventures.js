@@ -1,7 +1,7 @@
-import { db, collection, getDocs, doc, updateDoc, addDoc, arrayUnion } from '../firebase';
+import { db, collection, getDocs, doc, setDoc, updateDoc, arrayUnion } from '../firebase';
 
 const adventuresCollection = collection(db, 'adventures');
-const usersCollection = collection(db, "users");
+const usersCollection = collection(db, 'users');
 
 const getAdventuresSnapshot = async () => await getDocs(adventuresCollection);
 
@@ -11,10 +11,14 @@ const getAdventures = async () => {
 };
 
 const addAdventure = async (adventure, userId) => {
-    const userDocRef = doc(usersCollection, userId);
-    const adventureDocRef = await updateDoc (userDocRef, {
-        adventures: arrayUnion(adventure)
-    });
-}
+  const userDocRef = doc(usersCollection, userId);
+  const adventureDocRef = await updateDoc(userDocRef, {
+    adventures: arrayUnion(adventure),
+  });
+};
 
-export { adventuresCollection, getAdventuresSnapshot, getAdventures, addAdventure };
+const clearAdventures = async (userId) => {
+  await setDoc(doc(usersCollection, userId), { adventures: [] }, { merge: true });
+};
+
+export { adventuresCollection, getAdventuresSnapshot, getAdventures, addAdventure, clearAdventures };

@@ -1,7 +1,7 @@
-import { db, collection, getDocs, doc, updateDoc, getDoc, arrayUnion } from '../firebase';
+import { db, collection, getDocs, doc, getDoc } from '../firebase';
 import { getActivity } from './activities';
 
-const usersCollection = collection(db, "users");
+const usersCollection = collection(db, 'users');
 
 const getUsersSnapshot = async () => await getDocs(usersCollection);
 
@@ -12,9 +12,9 @@ const getUsers = async () => {
 
 //not being used - pending to delete
 const getUserAdventures = async (userId) => {
-    const userDocRef = doc(usersCollection,userId);
-    const snapshot = await getDoc(userDocRef);
-    return snapshot.data().adventures;
+  const userDocRef = doc(usersCollection, userId);
+  const snapshot = await getDoc(userDocRef);
+  return snapshot.data().adventures;
 };
 
 
