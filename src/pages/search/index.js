@@ -1,6 +1,7 @@
 'use strict';
 
 import { AuthenticatedUser } from '../../index';
+import { favouriteActiv } from '../home/index';
 
 import { getCategories } from '../../firebase/categories';
 import { getCities } from '../../firebase/cities';
@@ -63,6 +64,7 @@ export default function Search() {
     const beginningDate = document.getElementById("from-date");
     const endDate = document.getElementById("to-date");
     const divResults = document.getElementById("suggestions");
+    const divFavourites = document.getElementById("favourites");
     
     let adventure = new Adventure(adventureName.value, null, null);
 
@@ -115,8 +117,30 @@ export default function Search() {
       });
     }
 
+    async function loadFavourites() {
+      let output = `<h4>Favourites</h4>`;
+              for(let activity of favouriteActiv){
+                const exists = adventure.alreadyHas(activity.id);
+                output += `<div class="activity" id="${activity.id}">
+                  <img src="https://firebasestorage.googleapis.com/v0/b/adventurebc-bug-hunters.appspot.com/o/activities%2Fpexels-marco-milanesi-5899783%201.png?alt=media&token=d2f4cb27-60c8-421f-aadc-c07a9ee8165b" alt="Activity picture">
+                  <span class="fa-regular fa-heart"></span>`;
+                  if(exists){
+                    output += `<span class="fa-solid fa-xmark remove"></span>`;
+                  }else{
+                    output += `<span class="fa-solid fa-xmark"></span>`;
+                  }
+                  output += `<h3>${activity.name}</h3>
+                  <p>${await getActivityPlace(activity.id)}</p>
+                  </div>`;
+              }
+
+              divFavourites.innerHTML = output;
+              assignEventToSuggestions();
+    }
+
     loadCategories();
     loadLocations();
+    loadFavourites();
     /* INITIAL LOAD - END */
 
     function updateCategory(category) {
@@ -187,6 +211,11 @@ export default function Search() {
 
     async function updateResults(suggestions){
       var output="";
+      if(suggestions!= null && suggestions.length > 0){
+        output = "<h4>Search results</h4>";
+      }else{
+        output = "<h5>No results for your search. Try again with different filters.</h5>";
+      }
         for(let suggestion of suggestions){
             let additional = "";
             const exists = adventure.alreadyHas(suggestion.id);
@@ -210,7 +239,9 @@ export default function Search() {
     }
 
     function assignEventToSuggestions(){
+      
       const activities = document.querySelectorAll(".activity");
+      console.log(activities);
       activities.forEach( (activity) => {
         activity.addEventListener("click", function(){      
           if(this.classList.contains("added")){

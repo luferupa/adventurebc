@@ -57,7 +57,7 @@ const getActivityPlace = async (activityId) => {
 const getActivity = async (activityId) => {
     const activityDocRef = doc(activitiesCollection,activityId);
     const snapshot = await getDoc(activityDocRef);
-    return snapshot.data();
+    return {id: activityId, ...snapshot.data()};
 };
 
 export { activitiesCollection, getActivitiesSnapshot, getActivities, getActivitiesWhere, getActivityPlace, getActivitiesRandom, getActivity };

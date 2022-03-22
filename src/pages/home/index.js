@@ -2,26 +2,25 @@
 
 import { AuthenticatedUser } from '../../index';
 import { getUserAdventures, getUserFavorites } from '../../firebase/users';
-import { getActivityPlace, getActivitiesRandom } from '../../firebase/activities';
+import { getActivityPlace, getActivitiesRandom, getActivity } from '../../firebase/activities';
+
+export let favouriteActiv =  new Array();
 
 export default async function Home() {
 
   if (!AuthenticatedUser) {
     location.hash = '#welcome';
   } else {
-    const userAdventures = await getUserAdventures(AuthenticatedUser.id);
-    console.log(userAdventures);
+    const userAdventures = AuthenticatedUser.adventures;
     const myAdventuresDiv = document.querySelector(".my-adventures .horizontal-scroll");
     const randomActivities = await getActivitiesRandom();
-    console.log(randomActivities);
     const exploreDiv = document.querySelector(".explore .horizontal-scroll");
-    const favouriteActiv = await getUserFavorites(AuthenticatedUser.id);
-    console.log(favouriteActiv);
+    favouriteActiv = await getUserFavorites(AuthenticatedUser.favourites)
     const favouritesDiv = document.querySelector(".favourites .horizontal-scroll");
 
     updateMyAdventures();
     updateExplore();
-    //updateFavourites();
+    updateFavourites();
 
     async function updateMyAdventures(){
       myAdventuresDiv.innerHTML = ``;
@@ -31,7 +30,7 @@ export default async function Home() {
             <img src="https://firebasestorage.googleapis.com/v0/b/adventurebc-bug-hunters.appspot.com/o/activities%2Fpexels-marco-milanesi-5899783%201.png?alt=media&token=d2f4cb27-60c8-421f-aadc-c07a9ee8165b" alt="Activity picture">
             <span class="fa-regular fa-heart"></span>
             <h3>${userAdventure.name}</h3>
-            <p>${userAdventure.beginningDate.toDate().toDateString()} - ${userAdventure.endDate.toDate().toDateString()}</p>
+            <p>${new Date(userAdventure.beginningDate).toDateString()} - ${new Date(userAdventure.endDate).toDateString()}</p>
             </div></div>`;
         }
     }
@@ -51,9 +50,7 @@ export default async function Home() {
 
     async function updateFavourites(){
       favouritesDiv.innerHTML = ``;
-      console.log(favouriteActiv.length);
         for(let activity of favouriteActiv){
-          console.log(activity);
           favouritesDiv.innerHTML += `<div><div class="activity block-wide"">
             <img src="https://firebasestorage.googleapis.com/v0/b/adventurebc-bug-hunters.appspot.com/o/activities%2Fpexels-marco-milanesi-5899783%201.png?alt=media&token=d2f4cb27-60c8-421f-aadc-c07a9ee8165b" alt="Activity picture">
             <span class="fa-regular fa-heart"></span>
