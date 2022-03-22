@@ -1,7 +1,7 @@
-import { db, collection, getDocs, doc, updateDoc, getDoc, arrayUnion } from '../firebase';
+import { db, collection, getDocs, doc, getDoc } from '../firebase';
 import { getActivity } from './activities';
 
-const usersCollection = collection(db, "users");
+const usersCollection = collection(db, 'users');
 
 const getUsersSnapshot = async () => await getDocs(usersCollection);
 
@@ -11,24 +11,23 @@ const getUsers = async () => {
 };
 
 const getUserAdventures = async (userId) => {
-    const userDocRef = doc(usersCollection,userId);
-    const snapshot = await getDoc(userDocRef);
-    return snapshot.data().adventures;
+  const userDocRef = doc(usersCollection, userId);
+  const snapshot = await getDoc(userDocRef);
+  return snapshot.data().adventures;
 };
 
 const getUserFavorites = async (userId) => {
-    const userDocRef = doc(usersCollection,userId);
-    const snapshot = await getDoc(userDocRef);
-    const favourites = [];
-    if(snapshot.data().favourites!= undefined && snapshot.data().favourites.length >0){
-        snapshot.data().favourites.forEach(async (favourite) => {
-        const activityDocRef = await getActivity(favourite.id);
-        favourites.push(activityDocRef);
+  const userDocRef = doc(usersCollection, userId);
+  const snapshot = await getDoc(userDocRef);
+  const favourites = [];
+  if (snapshot.data().favourites != undefined && snapshot.data().favourites.length > 0) {
+    snapshot.data().favourites.forEach(async (favourite) => {
+      const activityDocRef = await getActivity(favourite.id);
+      favourites.push(activityDocRef);
     });
-    }
-    
-    return favourites;
-    
+  }
+
+  return favourites;
 };
 
 export { usersCollection, getUsersSnapshot, getUsers, getUserAdventures, getUserFavorites };

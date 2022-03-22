@@ -6,64 +6,62 @@ import { getCategories } from '../../firebase/categories';
 import { getCities } from '../../firebase/cities';
 import { getActivitiesWhere, getActivityPlace, activitiesCollection } from '../../firebase/activities';
 import { addAdventure } from '../../firebase/adventures';
-import { Timestamp, doc } from '../../firebase';
+import { db, doc } from '../../firebase';
 
 export default function Search() {
   if (!AuthenticatedUser) {
     location.hash = '#welcome';
   } else {
+    class Adventure {
+      constructor(name, beginningDate, endDate) {
+        this.name = name;
+        if (beginningDate != null) {
+          this.beginningDate = beginningDate;
+        } else {
+          this.beginningDate = null;
+        }
 
-    class Adventure{
-      constructor (name,beginningDate,endDate){
-          this.name = name;
-          if(beginningDate != null){
-            this.beginningDate = Timestamp.fromDate(beginningDate);
-          }else{
-            this.beginningDate = null;
-          }
+        if (endDate != null) {
+          this.endDate = endDate;
+        } else {
+          this.endDate = null;
+        }
 
-          if(endDate != null){
-            this.endDate = Timestamp.fromDate(endDate);
-          }else{
-            this.endDate = null;
-          }
-          
-          this.userActivities = new Array();
+        this.userActivities = new Array();
       }
-      addActivity(activityRef){
+      addActivity(activityRef) {
         this.userActivities.push({
-            activityId: activityRef,
-            daySlot: 0,
-            dayOrder: 0
+          activityId: activityRef,
+          daySlot: '',
+          dayOrder: 0,
         });
       }
-      removeActivity(activityRef){
-        this.userActivities = this.userActivities.filter(function(value){
-          return value.activityId.id!=activityRef.id;
+      removeActivity(activityRef) {
+        this.userActivities = this.userActivities.filter(function (value) {
+          return value.activityId.id != activityRef.id;
         });
-        
       }
-      alreadyHas(activityId){
-        const result = this.userActivities.filter(function(value){
-          return value.activityId.id==activityId;
+      alreadyHas(activityId) {
+        const result = this.userActivities.filter(function (value) {
+          return value.activityId.id == activityId;
         });
-        return (result.length >0);
+        return result.length > 0;
       }
-      toPlainObject(){
-        const clone = {...this};
+      toPlainObject() {
+        const clone = { ...this };
         return clone;
       }
     }
 
-    let categoryOptions, locationOptions, suggestions ;
+    let categoryOptions, locationOptions, suggestions;
 
     const categorySelect = document.getElementById('category-sel');
     const locationSelect = document.getElementById('location-sel');
     const adventureName = document.getElementById('adventure-name');
-    const beginningDate = document.getElementById("from-date");
-    const endDate = document.getElementById("to-date");
-    const divResults = document.getElementById("suggestions");
-    
+    const beginningDate = document.getElementById('from-date');
+    const endDate = document.getElementById('to-date');
+    const divResults = document.getElementById('suggestions');
+
     let adventure = new Adventure(adventureName.value, null, null);
 
     /* INITIAL LOAD - START */
@@ -151,83 +149,85 @@ export default function Search() {
     });
 
     searchFilters.addEventListener('submit', function (event) {
+      event.preventDefault();
       document.getElementById('search').classList.add('hideBar');
 
       let category = document.getElementById('category-sel').value;
       let location = document.getElementById('location-sel').value;
-      
+
       searchActivity(category, location);
-
     });
 
-    plannerBtn.addEventListener("click", function(){
-     adventure.name = adventureName.value;
-     adventure.beginningDate = new Date(beginningDate.value);
-     adventure.endDate = new Date(endDate.value);
-      console.log(adventure);
-      addAdventure(adventure.toPlainObject(),AuthenticatedUser.id);
-
+    plannerBtn.addEventListener('click', async function () {
+      adventure.name = adventureName.value;
+      adventure.beginningDate = beginningDate.value;
+      adventure.endDate = endDate.value;
+      adventure.id = getRandomId();
+      console.log(adventure.toPlainObject());
+      await addAdventure(adventure.toPlainObject(), AuthenticatedUser.id);
+      location.hash = '#myPlanner/' + adventure.id;
     });
 
-    async function searchActivity(category, location){
+    async function searchActivity(category, location) {
       suggestions = new Array();
 
-      if(category == "Categories"){
+      if (category == 'Categories') {
         suggestions = await getActivitiesWhere(null, location);
-      }else if(location == "Location"){
+      } else if (location == 'Location') {
         suggestions = await getActivitiesWhere(category, null);
-      }else{
+      } else {
         suggestions = await getActivitiesWhere(category, location);
       }
-      
+
       await updateResults(suggestions);
       assignEventToSuggestions();
-
     }
 
-    async function updateResults(suggestions){
-      var output="";
-        for(let suggestion of suggestions){
-            let additional = "";
-            const exists = adventure.alreadyHas(suggestion.id);
-            if(exists){ additional = "added"};
+    async function updateResults(suggestions) {
+      var output = '';
+      for (let suggestion of suggestions) {
+        let additional = '';
+        const exists = adventure.alreadyHas(suggestion.id);
+        if (exists) {
+          additional = 'added';
+        }
 
-            output += `<div class="activity ${additional}" id="${suggestion.id}">
+        output += `<div class="activity ${additional}" id="${suggestion.id}">
             <img src="https://firebasestorage.googleapis.com/v0/b/adventurebc-bug-hunters.appspot.com/o/activities%2Fpexels-marco-milanesi-5899783%201.png?alt=media&token=d2f4cb27-60c8-421f-aadc-c07a9ee8165b" alt="Activity picture">
             <span class="fa-regular fa-heart"></span>`;
-            if(exists){
-              output += `<span class="fa-solid fa-xmark remove"></span>`;
-            }else{
-              output += `<span class="fa-solid fa-xmark"></span>`;
-            }
-            
-            output += `<h3>${suggestion.name}</h3>
+        if (exists) {
+          output += `<span class="fa-solid fa-xmark remove"></span>`;
+        } else {
+          output += `<span class="fa-solid fa-xmark"></span>`;
+        }
+
+        output += `<h3>${suggestion.name}</h3>
             <p>${await getActivityPlace(suggestion.id)}</p>
             </div>`;
-        }
-        divResults.innerHTML = output;
-        
+      }
+      divResults.innerHTML = output;
     }
 
-    function assignEventToSuggestions(){
-      const activities = document.querySelectorAll(".activity");
-      activities.forEach( (activity) => {
-        activity.addEventListener("click", function(){      
-          if(this.classList.contains("added")){
+    function assignEventToSuggestions() {
+      const activities = document.querySelectorAll('.activity');
+      activities.forEach((activity) => {
+        activity.addEventListener('click', function () {
+          if (this.classList.contains('added')) {
             adventure.removeActivity(doc(activitiesCollection, this.id));
-            this.classList.remove("added");
-            this.querySelector(".fa-xmark").classList.remove("remove");
-          }else{
+            this.classList.remove('added');
+            this.querySelector('.fa-xmark').classList.remove('remove');
+          } else {
             adventure.addActivity(doc(activitiesCollection, this.id));
-            this.classList.add("added");
-            this.querySelector(".fa-xmark").classList.add("remove");
+            this.classList.add('added');
+            this.querySelector('.fa-xmark').classList.add('remove');
           }
           console.log(adventure);
-        })
+        });
       });
     }
 
+    function getRandomId() {
+      return Date.now().toString(36) + Math.random().toString(36).substr(2);
+    }
   }
-
-  
 }

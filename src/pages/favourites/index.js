@@ -1,3 +1,3 @@
 'use strict';
 
-export default async function MyPlanner() {}
+export default async function Favourites() {}
