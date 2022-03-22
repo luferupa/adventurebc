@@ -10,24 +10,25 @@ const getUsers = async () => {
   return snapshot.docs.map((doc) => doc.data());
 };
 
+//not being used - pending to delete
 const getUserAdventures = async (userId) => {
   const userDocRef = doc(usersCollection, userId);
   const snapshot = await getDoc(userDocRef);
   return snapshot.data().adventures;
 };
 
-const getUserFavorites = async (userId) => {
-  const userDocRef = doc(usersCollection, userId);
-  const snapshot = await getDoc(userDocRef);
-  const favourites = [];
-  if (snapshot.data().favourites != undefined && snapshot.data().favourites.length > 0) {
-    snapshot.data().favourites.forEach(async (favourite) => {
-      const activityDocRef = await getActivity(favourite.id);
-      favourites.push(activityDocRef);
-    });
-  }
 
-  return favourites;
+const getUserFavorites = async (favourites) => {
+
+    let favouriteActiv =  new Array();
+    
+    for(let favourite of favourites){
+      const activity = await getActivity(favourite.id);
+      favouriteActiv.push(activity);
+    };
+
+    return favouriteActiv;
+    
 };
 
 export { usersCollection, getUsersSnapshot, getUsers, getUserAdventures, getUserFavorites };
