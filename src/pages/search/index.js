@@ -69,7 +69,6 @@ export default function Search() {
     /* INITIAL LOAD - START */
     async function loadCategories() {
       const categories = await getCategories();
-      console.log(categories);
 
       let pos = 1;
 
@@ -93,7 +92,6 @@ export default function Search() {
 
     async function loadLocations() {
       const cities = await getCities();
-      console.log(cities);
 
       let pos = 1;
 
@@ -120,7 +118,7 @@ export default function Search() {
               for(let activity of favouriteActiv){
                 const exists = adventure.alreadyHas(activity.id);
                 output += `<div class="activity" id="${activity.id}">
-                  <img src="https://firebasestorage.googleapis.com/v0/b/adventurebc-bug-hunters.appspot.com/o/activities%2Fpexels-marco-milanesi-5899783%201.png?alt=media&token=d2f4cb27-60c8-421f-aadc-c07a9ee8165b" alt="Activity picture">
+                  <img src="${activity.imageUrl}" alt="Activity picture">
                   <span class="fa-regular fa-heart"></span>`;
                   if(exists){
                     output += `<span class="fa-solid fa-xmark remove"></span>`;
@@ -187,7 +185,6 @@ export default function Search() {
       adventure.beginningDate = beginningDate.value;
       adventure.endDate = endDate.value;
       adventure.id = getRandomId();
-      console.log(adventure.toPlainObject());
       await addAdventure(adventure.toPlainObject(), AuthenticatedUser.id);
       location.hash = '#myPlanner/' + adventure.id;
     });
@@ -220,7 +217,7 @@ export default function Search() {
             if(exists){ additional = "added"};
 
         output += `<div class="activity ${additional}" id="${suggestion.id}">
-            <img src="https://firebasestorage.googleapis.com/v0/b/adventurebc-bug-hunters.appspot.com/o/activities%2Fpexels-marco-milanesi-5899783%201.png?alt=media&token=d2f4cb27-60c8-421f-aadc-c07a9ee8165b" alt="Activity picture">
+            <img src="${suggestion.imageUrl}" alt="Activity picture">
             <span class="fa-regular fa-heart"></span>`;
         if (exists) {
           output += `<span class="fa-solid fa-xmark remove"></span>`;
@@ -248,7 +245,6 @@ export default function Search() {
             this.classList.add('added');
             this.querySelector('.fa-xmark').classList.add('remove');
           }
-          console.log(adventure);
         });
       });
     }
