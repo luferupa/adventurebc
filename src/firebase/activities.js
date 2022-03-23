@@ -65,6 +65,11 @@ const getActivity = async (activityId) => {
   return { id: snapshot.id, ...snapshot.data(), place: await getActivityPlace(activityId) };
 };
 
+const getActivityRef = async (activityId) => {
+  const activityDocRef = doc(activitiesCollection, activityId);
+  return activityDocRef;
+};
+
 export {
   activitiesCollection,
   getActivitiesSnapshot,
@@ -73,4 +78,5 @@ export {
   getActivityPlace,
   getActivitiesRandom,
   getActivity,
+  getActivityRef
 };
