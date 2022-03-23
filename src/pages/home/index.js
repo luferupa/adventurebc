@@ -3,7 +3,7 @@
 import { AuthenticatedUser } from '../../index';
 import { getUserAdventures, getUserFavorites, addFavorite } from '../../firebase/users';
 
-import { getActivityPlace, getActivitiesRandom, getActivity, getActivityRef } from '../../firebase/activities';
+import { getActivityPlace, getActivitiesRandom, getActivity, getActivityRef, getActivityPlaceObject } from '../../firebase/activities';
 import { getFormattedDate } from '../../utils/index,js';
 export let favouriteActiv =  new Array();
 
@@ -21,19 +21,7 @@ export default async function Home() {
     await updateExplore();
     await updateFavourites();
     addFavoritesAction();
-
-    function addFavoritesAction(){
-      const act = document.querySelectorAll(".fa-heart");
-        act.forEach((activityH) => {
-          activityH.addEventListener("click", function () {
-            modifyFavourites(activityH);
-            
-          });
-          
-        });
-    }
    
-
     async function updateMyAdventures() {
       myAdventuresDiv.innerHTML = ``;
       for (let userAdventure of userAdventures) {
@@ -99,5 +87,61 @@ export default async function Home() {
       }
     }
 
+
+    const exploreActivities = document.getElementById('exploreID');
+    const modalWrapper = document.getElementById('modalWrapper');
+
+    exploreActivities.onclick = function(event) {
+      if(!event.target.classList.contains('fa-heart') && !event.target.parentNode.classList.contains('fa-heart')){
+        let target = event.target.parentNode;
+        let clickedActivity = document.getElementById(target.id);
+        openActivity(clickedActivity.id);
+      }
+    }
+
+    async function openActivity(id) {
+      let currentID = id;
+      modalWrapper.classList.add('showActivity');
+
+      let modalHeader = document.getElementById('modalHeader');
+      let city = document.getElementById('city');
+      let descriptionText = document.getElementById('descriptionText');
+      let mapLongLat = document.getElementById('mapLongLat')
+
+      let currentActivity = await getActivity(currentID);
+      let cityDB = await getActivityPlaceObject(currentID);
+
+      modalHeader.innerHTML = `<h2 id="title">${currentActivity.name}</h2><img src="${currentActivity.imageUrl}"><span class="fa-solid fa-xmark"></span>`;
+      city.innerHTML = cityDB.city;
+      descriptionText.innerHTML = currentActivity.about;
+
+      mapLongLat.innerHTML = 
+      `<iframe
+      frameborder="0" 
+      scrolling="no" 
+      marginheight="0" 
+      marginwidth="0"
+      src="https://www.openstreetmap.org/export/embed.html?bbox=${cityDB.coordinates._long - 0.01}%2C${cityDB.coordinates._lat - 0.01}%2C${cityDB.coordinates._long + 0.01}%2C${cityDB.coordinates._lat + 0.01}&amp;layer=mapnik&amp;marker=${cityDB.coordinates._lat}%2C${cityDB.coordinates._long}" 
+      </iframe>` 
+    }
+
+    const closeButton = document.getElementById("closeButton");
+    console.log(closeButton);
+
+    closeButton.addEventListener('click', () => {
+      console.log("event listener close button");
+      modalWrapper.classList.remove('showActivity');
+    });
+
+    function addFavoritesAction(){
+      const act = document.querySelectorAll(".fa-heart");
+        act.forEach((activityH) => {
+          activityH.addEventListener("click", function () {
+            modifyFavourites(activityH);
+            
+          });
+          
+        });
+    }
   }
 }
