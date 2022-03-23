@@ -77,7 +77,7 @@ export default async function Home() {
         exploreDiv.innerHTML += `<div><div class="activity block-wide" id="${activity.id}">
             <img src="${activity.imageUrl}" alt="Activity picture">
             <span class="fa-regular fa-heart"></span>
-            <h3 id="${activity.id}">${activity.name}</h3>
+            <h3>${activity.name}</h3>
             <p>${await getActivityPlace(activity.id)}</p>
             </div></div>`;
       }
@@ -104,14 +104,15 @@ export default async function Home() {
     const modalWrapper = document.getElementById('modalWrapper');
 
     exploreActivities.onclick = function(event) {
-      let target = event.target;
+      
+      let target = event.target.parentNode;
       let clickedActivity = document.getElementById(target.id);
-
       openActivity(clickedActivity.id);
     }
 
     async function openActivity(id) {
       let currentID = id;
+      console.log(modalWrapper);
       modalWrapper.classList.add('showActivity');
 
       let modalHeader = document.getElementById('modalHeader');
