@@ -14,8 +14,8 @@
         img {
             filter: brightness(60%);
             z-index: -1;
-            width: 100%;
-            height: auto;
+            max-height: 50vh;
+            width: 100vw;
             object-fit: cover;
         }
 
