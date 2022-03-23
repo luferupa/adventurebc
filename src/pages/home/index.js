@@ -21,19 +21,7 @@ export default async function Home() {
     await updateExplore();
     await updateFavourites();
     addFavoritesAction();
-
-    function addFavoritesAction(){
-      const act = document.querySelectorAll(".fa-heart");
-        act.forEach((activityH) => {
-          activityH.addEventListener("click", function () {
-            modifyFavourites(activityH);
-            
-          });
-          
-        });
-    }
    
-
     async function updateMyAdventures() {
       myAdventuresDiv.innerHTML = ``;
       for (let userAdventure of userAdventures) {
@@ -104,15 +92,15 @@ export default async function Home() {
     const modalWrapper = document.getElementById('modalWrapper');
 
     exploreActivities.onclick = function(event) {
-      
-      let target = event.target.parentNode;
-      let clickedActivity = document.getElementById(target.id);
-      openActivity(clickedActivity.id);
+      if(!event.target.classList.contains('fa-heart') && !event.target.parentNode.classList.contains('fa-heart')){
+        let target = event.target.parentNode;
+        let clickedActivity = document.getElementById(target.id);
+        openActivity(clickedActivity.id);
+      }
     }
 
     async function openActivity(id) {
       let currentID = id;
-      console.log(modalWrapper);
       modalWrapper.classList.add('showActivity');
 
       let modalHeader = document.getElementById('modalHeader');
@@ -144,5 +132,16 @@ export default async function Home() {
       console.log("event listener close button");
       modalWrapper.classList.remove('showActivity');
     });
+
+    function addFavoritesAction(){
+      const act = document.querySelectorAll(".fa-heart");
+        act.forEach((activityH) => {
+          activityH.addEventListener("click", function () {
+            modifyFavourites(activityH);
+            
+          });
+          
+        });
+    }
   }
 }
