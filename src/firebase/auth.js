@@ -48,6 +48,8 @@ export const createUserProfileDocument = async (userInfo) => {
       const createdAt = new Date();
 
       const newUser = {
+        adventures: [],
+        favourites: [],
         username: displayName ? displayName : 'Username',
         email,
         createdAt,

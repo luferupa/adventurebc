@@ -19,13 +19,12 @@ export default class Router {
   }
 
   static handleHashChange() {
-    const urlHash = window.location.hash;
-
-    if (urlHash.length > 0) {
+    Router.urlHash = window.location.hash.split('/')[0];
+    if (Router.urlHash.length > 0) {
       // If there is a hash in URL
       for (let i = 0; i < Router.pages.length; i++) {
         // find which page matches the hash then navigate to it
-        if (urlHash === Router.pages[i].name) {
+        if (Router.urlHash === Router.pages[i].name) {
           Router.goToPage(Router.pages[i]);
           break;
         }
@@ -74,9 +73,9 @@ export default class Router {
    * handles the marking of the current active link (#hash)
    */
   static markActiveLink() {
-    if (document.querySelector(`.nav-link[href='${location.hash}']`)) {
+    if (document.querySelector(`.nav-link[href='${Router.urlHash}']`)) {
       document.querySelector('.nav-link.active').classList.remove('active');
-      document.querySelector(`.nav-link[href='${location.hash}']`).classList.add('active');
+      document.querySelector(`.nav-link[href='${Router.urlHash}']`).classList.add('active');
     }
   }
 }

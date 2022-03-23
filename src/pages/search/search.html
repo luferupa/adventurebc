@@ -1,80 +1,109 @@
 <div class="search">
-  
-    <main>
-        <div id="search">
-            <div id="title">
-                <h2>Search Activities</h2>
-                <span id="close-search" class="fa-solid fa-chevron-left"></span>
+  <main>
+    <div id="search">
+      <div id="title">
+        <h2>Search Activities</h2>
+        <span id="close-search" class="fa-solid fa-chevron-left"></span>
+      </div>
+
+      <div>
+        <form
+          id="searchFilters"
+          oninput="labels.value = `${distance.valueAsNumber} km`; labels.style.paddingLeft = `calc(${distance.valueAsNumber*10}% `;"
+        >
+          <!-- Should we change this to bring all categories from db? -->
+          <div class="input-group flex-nowrap" id="category">
+            <span class="input-group-text fa fa-solid fa-tree"></span>
+            <select
+              class="form-select form-control"
+              id="category-sel"
+              aria-label="Category selection"
+              data-bs-toggle="collapse"
+              href="#options-categ"
+              role="button"
+            >
+              <option selected hidden>Categories</option>
+            </select>
+          </div>
+          <div class="collapse" id="options-categ"></div>
+
+          <div class="input-group flex-nowrap" id="location">
+            <span class="input-group-text fa fa-solid fa-location-dot"></span>
+            <select
+              class="form-select form-control"
+              id="location-sel"
+              aria-label="Location selection"
+              data-bs-toggle="collapse"
+              href="#options-loc"
+              role="button"
+            >
+              <option selected hidden>Location</option>
+            </select>
+          </div>
+
+          <div class="collapse" id="options-loc"></div>
+
+          <div class="input-group flex-nowrap">
+            <span class="input-group-text fa fa-search"></span>
+            <input type="text" class="form-control" placeholder="Search Activities" aria-label="Activities search" />
+          </div>
+
+          <div>
+            <label for="customRange3" class="form-label">Distance within:</label>
+            <div id="slider-labels">
+              <span>0 Km</span>
+              <span>10 Km</span>
             </div>
-            
-            <div>
-                <form id="searchFilters" oninput="labels.value = `${distance.valueAsNumber} km`; labels.style.paddingLeft = `calc(${distance.valueAsNumber*10}% `;">
-                    <!-- Should we change this to bring all categories from db? -->
-                    <div class="input-group flex-nowrap" id="category">
-                        <span class="input-group-text fa fa-solid fa-tree"></span>
-                        <select class="form-select form-control" id="category-sel" aria-label="Category selection" data-bs-toggle="collapse" href="#options-categ" role="button">
-                            <option selected hidden>Categories</option>
-                            
-                        </select>
-                    </div>
-                    <div class="collapse" id="options-categ" >
-                    </div>
+            <input
+              type="range"
+              class="form-range"
+              min="0"
+              max="10"
+              step="1"
+              value="0"
+              id="customRange3"
+              name="distance"
+            />
+            <output name="labels" for="distance">0 km</output>
+          </div>
 
-                    <div class="input-group flex-nowrap" id="location">
-                        <span class="input-group-text fa fa-solid fa-location-dot"></span>
-                        <select class="form-select form-control" id="location-sel" aria-label="Location selection"  data-bs-toggle="collapse" href="#options-loc" role="button">
-                            <option selected hidden>Location</option>
-                        </select>
-                    </div>
+          <button type="submit" id="sbSearch" class="btn btn-primary mb-3">Search</button>
+        </form>
+      </div>
+    </div>
 
-                    <div class="collapse" id="options-loc" ></div>
-
-                    <div class="input-group flex-nowrap">
-                        <span class="input-group-text fa fa-search"></span>
-                        <input type="text" class="form-control" placeholder="Search Activities" aria-label="Activities search">
-                    </div>
-
-                    <div>
-                        <label for="customRange3" class="form-label">Distance within:</label>
-                        <div id="slider-labels">
-                            <span>0 Km</span>
-                            <span>10 Km</span>
-                        </div>
-                        <input type="range" class="form-range" min="0" max="10" step="1" value="0" id="customRange3" name="distance">
-                        <output name="labels" for="distance" >0 km</output>
-                        
-                    </div>
-                    
-                    <button type="submit" id="sbSearch" class="btn btn-primary mb-3">Search</button>
-
-                </form>
-            </div>
+    <div id="results">
+      <span id="open-search" class="fa-solid fa-chevron-right"></span>
+      <div id="basic-data">
+        <div class="input-group">
+          <!-- Change here the placeholder/value for the right name -->
+          <input
+            type="text"
+            class="form-control"
+            id="adventure-name"
+            placeholder="Adventure Name"
+            value="Adventure Name"
+            aria-label="Adventure's name"
+            aria-describedby="editButton"
+            readonly
+          />
+          <button class="btn btn-outline-secondary" type="button" id="editButton">
+            <i class="fa-solid fa-pen-to-square"></i>
+          </button>
         </div>
 
-        <div id="results">
-            <span id="open-search" class="fa-solid fa-chevron-right"></span>
-            <div id="basic-data">
-                <div class="input-group">
-                    <!-- Change here the placeholder/value for the right name -->
-                    <input type="text" class="form-control" id="adventure-name" placeholder="Adventure Name" value="Adventure Name" aria-label="Adventure's name" aria-describedby="editButton" readonly>
-                    <button class="btn btn-outline-secondary" type="button" id="editButton">
-                        <i class="fa-solid fa-pen-to-square"></i>
-                    </button>
-                </div>
+        <div id="dates">
+          <input placeholder="From date" type="date" id="from-date" class="form-control" />
 
-                <div id="dates">
-                    
-                        <input placeholder="From date" type="date" id="from-date" class="form-control">
-                    
-                        <input placeholder="To date" type="date" id="to-date" class="form-control">
-                </div>
+          <input placeholder="To date" type="date" id="to-date" class="form-control" />
+        </div>
 
-                <button id="plannerBtn" class="btn btn-primary" onclick="location.hash = '#myPlanner'"> Go to Planner</button>
-            </div>
+        <button id="plannerBtn" class="btn btn-primary">Go to Planner</button>
+      </div>
 
-            <div id="suggestions">
+        <div id="suggestions">
                 
-                <h4>Please make a search to give you some suggestions.</h4>
+            <h5>Please make a search to give you some suggestions.</h5>
                 <!--div class="activity">
                     <img src="https://firebasestorage.googleapis.com/v0/b/adventurebc-bug-hunters.appspot.com/o/activities%2Fpexels-marco-milanesi-5899783%201.png?alt=media&token=d2f4cb27-60c8-421f-aadc-c07a9ee8165b" alt="Activity picture">
                     <span class="fa-regular fa-heart"></span>
@@ -83,8 +112,15 @@
                 </div-->
 
               
-            </div>
         </div>
+
+        <div id="favourites">
+                
+            <h4>Favourites</h4>
+
+              
+        </div>
+    </div>
 
     </main>
 

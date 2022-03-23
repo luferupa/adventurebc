@@ -10,7 +10,10 @@ import 'bootstrap/js/dist/button';
 import 'bootstrap/js/dist/carousel';
 import 'bootstrap/js/dist/collapse';
 import 'bootstrap/js/dist/dropdown';
-import 'bootstrap/js/dist/modal';
+import Modal from 'bootstrap/js/dist/modal';
+
+export { Modal };
+
 // import 'bootstrap/js/dist/popover';
 // import 'bootstrap/js/dist/scrollspy';
 // import 'bootstrap/js/dist/tab';
@@ -45,8 +48,8 @@ export let AuthenticatedUser = null;
 //setting up the Router with pages
 Router.init([
   // no-auth pages
-  new Page('#guide', './pages/guide.html', 'guide', false), // 1st Page is default if no URL match
-  new Page('#welcome', './pages/welcome.html', 'welcome', false),
+  new Page('#welcome', './pages/welcome.html', 'welcome', false), // 1st Page is default if no URL match
+  new Page('#guide', './pages/guide.html', 'guide', false),
 
   // auth-pages
   new Page('#home', './pages/home.html', 'home'),
@@ -64,10 +67,10 @@ auth.onAuthStateChanged(async (userInfo) => {
       const user = await createUserProfileDocument(userInfo);
       AuthenticatedUser = user;
       console.log(AuthenticatedUser);
-      setUserInfo(user);
+      if (location.hash === '#welcome' || location.hash === '') {
+        console.log(toRoute);
 
-      if (location.hash === '#welcome') {
-        location.hash = toRoute;
+        location.hash = toRoute ? (toRoute === '#welcome' ? '#home' : toRoute) : '#home';
       }
     } catch (error) {
       console.log(error);
@@ -77,13 +80,3 @@ auth.onAuthStateChanged(async (userInfo) => {
     location.hash = '#welcome';
   }
 });
-
-/**
- * handles the setting of username in the header
- */
-function setUserInfo(user) {
-  setTimeout(() => {
-    username && (username.innerText = user.username ? user.username.split(' ')[0] : 'Username');
-    userAvatar && userAvatar.setAttribute('src', user.avatarUrl);
-  }, 1000);
-}

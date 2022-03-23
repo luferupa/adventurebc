@@ -1,14 +1,19 @@
 .welcome {
     height: 100vh;
-    background: url("https://firebasestorage.googleapis.com/v0/b/adventurebc-bug-hunters.appspot.com/o/welcome-background.jpeg?alt=media&token=131f548c-1f11-4ec4-ac1c-d14f05bf5d49")
-        #f2fcf4;
+    background: rgba(0,0,0,0.7) url("https://firebasestorage.googleapis.com/v0/b/adventurebc-bug-hunters.appspot.com/o/welcome%2Fwelcome.png?alt=media&token=d5407bdf-ee19-4ebc-93b0-a94d86824007");
+    background-blend-mode: darken;
+    background-repeat: no-repeat;
+    background-size: contain;
     background-position: center center;
-    background-size: cover;
     text-align: center;
     display: flex;
     flex-flow: column;
     align-items: center;
     justify-content: center;
+
+    h1{
+        color: white;
+    }
 
     .btn-groups {
         display: flex;

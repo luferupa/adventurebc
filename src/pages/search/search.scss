@@ -153,18 +153,26 @@
                 }
             }
 
-            #suggestions {
-                height: 100%;
+            #suggestions, #favourites {
+                min-height: 30vh;
                 display: grid;
                 grid-template-columns: repeat(3, 1fr);
                 gap: 1rem;
-                justify-items: center;
-                align-content: center;
+                margin: 2rem auto;
 
-                h4{
+                h5{
                     grid-column: 2/3;
                     margin-top: 20vh;
+                    margin: auto;
                 }
+
+                h4{
+                    grid-column: span 3;
+                    text-align: left;
+                    max-height: 2rem;
+                    justify-self: flex-start;
+                }
+
 
                 .activity {
                     position: relative;
@@ -219,6 +227,21 @@
                     background: variables.$color-item-selected;
                     border: 3px solid variables.$color-primary;
                 }
+
+                
+            }
+
+            #suggestions{
+                justify-items: center;
+                align-content: center;
+
+                
+            }
+
+            #favourites{
+                align-content: center;
+
+                
             }
         }
 
@@ -316,7 +339,7 @@
                     }
                 }
 
-                #suggestions {
+                #suggestions, #favourites {
                     grid-template-columns: 1fr;
                     max-width: 100%;
                 }

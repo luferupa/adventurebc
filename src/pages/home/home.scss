@@ -14,8 +14,8 @@
         img {
             filter: brightness(60%);
             z-index: -1;
-            width: 100%;
-            height: auto;
+            max-height: 50vh;
+            width: 100vw;
             object-fit: cover;
         }
 
@@ -65,6 +65,7 @@
         border-radius: 15px;
         overflow-y: hidden;
         overflow-x: hidden;
+        cursor: pointer;
 
         h3 {
             font-size: 18px;
@@ -85,6 +86,10 @@
             position: absolute;
             top: 0.5rem;
             right: 0.7rem;
+        }
+
+        .fav{
+            color: red;
         }
     }
 

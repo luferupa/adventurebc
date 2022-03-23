@@ -1,6 +1,7 @@
 'use strict';
 
-import Modal from 'bootstrap/js/dist/modal';
+import { Modal } from '../../index';
+
 import {
   signInWithEmailPassword,
   createWithEmailPassword,
