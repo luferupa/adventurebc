@@ -1,7 +1,8 @@
+@use "../../styles/variables";
+
 .welcome {
     height: 100vh;
-    background: rgba(0,0,0,0.7) url("https://firebasestorage.googleapis.com/v0/b/adventurebc-bug-hunters.appspot.com/o/welcome%2Fwelcome.png?alt=media&token=d5407bdf-ee19-4ebc-93b0-a94d86824007");
-    background-blend-mode: darken;
+    background: url("https://firebasestorage.googleapis.com/v0/b/adventurebc-bug-hunters.appspot.com/o/welcome%2Fwelcome.png?alt=media&token=d5407bdf-ee19-4ebc-93b0-a94d86824007");
     background-repeat: no-repeat;
     background-size: contain;
     background-position: center center;
@@ -11,9 +12,28 @@
     align-items: center;
     justify-content: center;
 
-    h1{
-        color: white;
+    #wrapper{
+        display: flex;
+        flex-flow: column nowrap;
+        background-color: rgba($color: #ffffff, $alpha: 0.8);
+        align-items: center;
+        max-width: 35vh;
+        padding: 1.5rem 0.5rem 1rem 0.5rem;
+        border-radius: 15px;
+        position: relative;
+        bottom: 2rem;
+
+        img{
+            max-width: 95%;
+        }
+
+        button{
+            width: 8rem;
+            font-size: 0.8rem;
+        }
     }
+
+    
 
     .btn-groups {
         display: flex;
@@ -38,4 +58,29 @@
         width: 20px;
         height: 20px;
     }
+}
+
+.modal-backdrop.show{
+    opacity:0 !important;
+}
+
+@media screen and (max-width: 700px) {
+    .welcome {
+        background: variables.$green-light;
+
+        #wrapper{
+            margin-top: 15vh ;
+            background: none;
+            gap: 25vh;
+
+            button{
+                background-color: variables.$color-secondary;
+                border-color: variables.$color-secondary;
+                font-size: 1rem;
+                width: 9rem;
+            }
+        }
+    }
+
+    
 }
