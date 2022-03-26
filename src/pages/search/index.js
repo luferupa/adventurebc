@@ -62,7 +62,7 @@ export default function Search() {
     const beginningDate = document.getElementById("from-date");
     const endDate = document.getElementById("to-date");
     const divResults = document.getElementById("suggestions");
-    const divFavourites = document.getElementById("favourites");
+    const divFavourites = document.querySelector("#favourites .horizontal-scroll");
     
     let adventure = new Adventure(adventureName.value, null, null);
 
@@ -119,7 +119,7 @@ export default function Search() {
     }
 
     async function loadFavourites() {
-      let output = `<h4>Favourites</h4>`;
+      let output = ``;
               for(let activity of favouriteActiv){
                 const exists = adventure.alreadyHas(activity.id);
                 output += `<div class="activity" id="${activity.id}">
@@ -203,7 +203,7 @@ export default function Search() {
       document.getElementById('category-sel').value = "Categories";
       document.getElementById('location-sel').value = "Location";
 
-     cleanCategories();
+      cleanCategories();
       cleanLocations();
 
       const collapsers = document.querySelectorAll(".collapse");
