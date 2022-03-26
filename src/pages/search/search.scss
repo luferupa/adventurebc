@@ -153,12 +153,25 @@
                 }
             }
 
-            #suggestions, #favourites {
-                min-height: 30vh;
+            #favourites{
+                .horizontal-scroll{
+                    display: flex;
+                    flex-flow: row nowrap;
+                    overflow-x: scroll;
+                    gap: 1rem;
+
+                    .activity{
+                        flex: 0 0 30%;
+                        margin-bottom: 0.5rem;
+                    }
+                }
+                
+            }
+
+            #suggestions{
                 display: grid;
                 grid-template-columns: repeat(3, 1fr);
                 gap: 1rem;
-                margin: 2rem auto;
 
                 h5{
                     grid-column: 2/3;
@@ -167,7 +180,7 @@
                 }
 
                 h4{
-                    grid-column: span 3;
+                    grid-column: 1/-1;
                     text-align: left;
                     max-height: 2rem;
                     justify-self: flex-start;
@@ -178,6 +191,11 @@
                     }
                 }
 
+            }
+
+            #suggestions, #favourites .horizontal-scroll {
+                min-height: 30vh;
+                margin: 2rem auto;
 
                 .activity {
                     position: relative;
@@ -271,6 +289,26 @@
         }
     }
 
+    @media screen and (max-width: 1000px) {
+        main #results {
+            #suggestions {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1rem;
+                margin: 2rem auto;
+            }
+
+            #favourites{
+                .horizontal-scroll{
+
+                    .activity{
+                        flex: 0 0 45%;
+                    }
+                }
+                
+            }
+        }
+    }
+
     @media screen and (max-width: 700px) {
         main {
             display: block;
@@ -347,6 +385,20 @@
                 #suggestions, #favourites {
                     grid-template-columns: 1fr;
                     max-width: 100%;
+                }
+
+                #suggestions{
+                    display: flex;
+                    flex-flow: column nowrap;
+                }
+
+                #favourites{
+                    .horizontal-scroll{
+                        .activity{
+                            flex: 0 0 90%;
+                        }
+                    }
+                    
                 }
             }
         }
