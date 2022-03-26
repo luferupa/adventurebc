@@ -67,6 +67,11 @@ export default function Search() {
     let adventure = new Adventure(adventureName.value, null, null);
 
     /* INITIAL LOAD - START */
+    const minStartDate = new Date();
+    const offset = minStartDate.getTimezoneOffset() * 60000;
+    beginningDate.setAttribute("min", new Date(minStartDate-offset).toISOString().split('T')[0]);
+    endDate.setAttribute("min", new Date(minStartDate-offset).toISOString().split('T')[0]);
+
     async function loadCategories() {
       const categories = await getCategories();
 
@@ -139,6 +144,12 @@ export default function Search() {
     loadFavourites();
     /* INITIAL LOAD - END */
 
+
+    beginningDate.onchange= () =>{
+      endDate.value = "";
+      endDate.setAttribute("min", beginningDate.value);
+    }
+
     function updateCategory(category) {
       categorySelect.selectedIndex = category;
       let options = Array.from(categoryOptions);
@@ -146,11 +157,21 @@ export default function Search() {
       options[category - 1].style.backgroundColor = '#D2E4D6';
     }
 
+    function cleanCategories() {
+      let options = Array.from(categoryOptions);
+      options.forEach((option) => (option.style.backgroundColor = 'white'));
+    }
+
     function updateLocation(location) {
       locationSelect.selectedIndex = location;
       let options = Array.from(locationOptions);
       options.forEach((option) => (option.style.backgroundColor = 'white'));
       options[location - 1].style.backgroundColor = '#D2E4D6';
+    }
+
+    function cleanLocations() {
+      let options = Array.from(locationOptions);
+      options.forEach((option) => (option.style.backgroundColor = 'white'));
     }
 
     editButton.addEventListener('click', function () {
@@ -170,17 +191,28 @@ export default function Search() {
       document.getElementById('search').classList.add('hideBar');
     });
 
-    searchFilters.addEventListener('submit', function (event) {
+    searchFilters.addEventListener('submit', async function (event) {
       event.preventDefault();
       document.getElementById('search').classList.add('hideBar');
 
       let category = document.getElementById('category-sel').value;
       let location = document.getElementById('location-sel').value;
 
-      searchActivity(category, location);
+      await searchActivity(category, location);
+
+      document.getElementById('category-sel').value = "Categories";
+      document.getElementById('location-sel').value = "Location";
+
+     cleanCategories();
+      cleanLocations();
+
+      const collapsers = document.querySelectorAll(".collapse");
+      collapsers.forEach((element) => {
+        element.classList.remove("show");
+      });
     });
 
-    plannerBtn.addEventListener('click', async function () {
+    formulario.addEventListener('submit', async function () {
       adventure.name = adventureName.value;
       adventure.beginningDate = beginningDate.value;
       adventure.endDate = endDate.value;
@@ -191,23 +223,28 @@ export default function Search() {
 
     async function searchActivity(category, location) {
       suggestions = new Array();
-
-      if (category == 'Categories') {
-        suggestions = await getActivitiesWhere(null, location);
-      } else if (location == 'Location') {
-        suggestions = await getActivitiesWhere(category, null);
-      } else {
+      let filters = "";
+      if (category != 'Categories' && location != 'Location'){
         suggestions = await getActivitiesWhere(category, location);
-      }
+        filters += "(<b>Location:</b> " + location + ", <b>Category:</b> " + category + ") ";
+      } else{
+        if (location != 'Location') {
+          suggestions = await getActivitiesWhere(null, location);
+          filters += "(<b>Location:</b> " + location + ") ";
+        } else if (category != 'Categories') {
+          suggestions = await getActivitiesWhere(category, null);
+          filters += "(<b>Category:</b> " + category + ") ";
+        }
+      } 
 
-      await updateResults(suggestions);
+      await updateResults(suggestions, filters);
       assignEventToSuggestions();
     }
 
-    async function updateResults(suggestions){
+    async function updateResults(suggestions, filters){
       var output="";
       if(suggestions!= null && suggestions.length > 0){
-        output = "<h4>Search results</h4>";
+        output = `<h4>Search results <span>${filters}</span></h4>`;
       }else{
         output = "<h5>No results for your search. Try again with different filters.</h5>";
       }

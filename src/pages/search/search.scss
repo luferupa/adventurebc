@@ -171,6 +171,11 @@
                     text-align: left;
                     max-height: 2rem;
                     justify-self: flex-start;
+
+                    span{
+                        font-weight: normal;
+                        font-size: 1rem;
+                    }
                 }
 
 
@@ -346,4 +351,12 @@
             }
         }
     }
+
+    @media screen and (max-width: 500px){
+        main #results #basic-data #dates {
+            max-width: 100%;
+            width: 100%;
+        }
+    }
 }
+

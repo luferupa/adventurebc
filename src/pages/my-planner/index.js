@@ -238,7 +238,7 @@ export default async function MyPlanner() {
           const activityDOM = `
         <div class="activity" id=${activity.id}>
           <img
-            src="https://firebasestorage.googleapis.com/v0/b/adventurebc-bug-hunters.appspot.com/o/activities%2Fpexels-marco-milanesi-5899783%201.png?alt=media&token=d2f4cb27-60c8-421f-aadc-c07a9ee8165b"
+            src="${activity.imageUrl}"
             alt="Activity picture"
           />
           <span class="fa-regular fa-heart"></span>
@@ -276,7 +276,7 @@ export default async function MyPlanner() {
             if (activity.daySlot === date) {
               scheduledActivities.push(`<div class='activity' id=${activity.id}>
           <img
-            src='https://firebasestorage.googleapis.com/v0/b/adventurebc-bug-hunters.appspot.com/o/activities%2Fpexels-marco-milanesi-5899783%201.png?alt=media&token=d2f4cb27-60c8-421f-aadc-c07a9ee8165b'
+            src='${activity.imageUrl}'
             alt='Activity picture'
           />
           <span class='fa-regular fa-heart'></span>
