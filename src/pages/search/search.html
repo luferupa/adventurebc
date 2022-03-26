@@ -11,7 +11,6 @@
           id="searchFilters"
           oninput="labels.value = `${distance.valueAsNumber} km`; labels.style.paddingLeft = `calc(${distance.valueAsNumber*10}% `;"
         >
-          <!-- Should we change this to bring all categories from db? -->
           <div class="input-group flex-nowrap" id="category">
             <span class="input-group-text fa fa-solid fa-tree"></span>
             <select
@@ -74,9 +73,8 @@
 
     <div id="results">
       <span id="open-search" class="fa-solid fa-chevron-right"></span>
-      <div id="basic-data">
+      <form id="basic-data" name="formulario">
         <div class="input-group">
-          <!-- Change here the placeholder/value for the right name -->
           <input
             type="text"
             class="form-control"
@@ -85,7 +83,7 @@
             value="Adventure Name"
             aria-label="Adventure's name"
             aria-describedby="editButton"
-            readonly
+            readonly required
           />
           <button class="btn btn-outline-secondary" type="button" id="editButton">
             <i class="fa-solid fa-pen-to-square"></i>
@@ -93,13 +91,13 @@
         </div>
 
         <div id="dates">
-          <input placeholder="From date" type="date" id="from-date" class="form-control" />
+          <input placeholder="From date" type="date" id="from-date" class="form-control" required/>
 
-          <input placeholder="To date" type="date" id="to-date" class="form-control" />
+          <input placeholder="To date" type="date" id="to-date" class="form-control" required/>
         </div>
 
-        <button id="plannerBtn" class="btn btn-primary">Go to Planner</button>
-      </div>
+        <button type="submit" id="plannerBtn" class="btn btn-primary">Go to Planner</button>
+      </form>
 
         <div id="suggestions">
                 

@@ -66,16 +66,11 @@
 
 @media screen and (max-width: 700px) {
     .welcome {
-        background: variables.$green-light;
+       background-size: cover;
 
         #wrapper{
-            margin-top: 15vh ;
-            background: none;
-            gap: 25vh;
 
             button{
-                background-color: variables.$color-secondary;
-                border-color: variables.$color-secondary;
                 font-size: 1rem;
                 width: 9rem;
             }
