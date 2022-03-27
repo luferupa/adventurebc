@@ -20,7 +20,7 @@ export default async function MyPlanner() {
     location.hash = '#welcome';
   } else {
     myPlannerSnapshot = onSnapshot(doc(db, 'users', AuthenticatedUser.id), { includeMetadataChanges: true }, (doc) => {
-      if (!doc.metadata.hasPendingWrites && doc.data().adventures.length > 0 && location.hash === '#myPlanner') {
+      if (!doc.metadata.hasPendingWrites && doc.data().adventures.length > 0 && location.hash.includes('#myPlanner')) {
         setLoader(true);
         userAdventures = doc.data().adventures;
 
