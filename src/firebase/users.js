@@ -1,4 +1,4 @@
-import { db, collection, getDocs, doc, getDoc, updateDoc, arrayUnion } from '../firebase';
+import { db, collection, getDocs, doc, getDoc, updateDoc, arrayUnion, arrayRemove } from '../firebase';
 import { getActivity, getActivityRef } from './activities';
 
 const usersCollection = collection(db, 'users');
@@ -40,4 +40,14 @@ const addFavorite = async (userId,favoriteId) => {
   return activityRef;
 }
 
-export { usersCollection, getUsersSnapshot, getUsers, getUserAdventures, getUserFavorites, addFavorite };
+const removeFavorite = async (userId,favoriteId) => {
+  const activityRef= await getActivityRef(favoriteId);
+  const userDocRef = doc(usersCollection, userId);
+  await updateDoc(userDocRef, {
+    favourites: arrayRemove(activityRef),
+  });
+
+  return activityRef;
+}
+
+export { usersCollection, getUsersSnapshot, getUsers, getUserAdventures, getUserFavorites, addFavorite, removeFavorite };

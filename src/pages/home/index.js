@@ -1,7 +1,7 @@
 'use strict';
 
 import { AuthenticatedUser } from '../../index';
-import { getUserAdventures, getUserFavorites, addFavorite } from '../../firebase/users';
+import { getUserAdventures, getUserFavorites, addFavorite, removeFavorite } from '../../firebase/users';
 
 import { getActivityPlace, getActivitiesRandom, getActivity, getActivityRef, getActivityPlaceObject } from '../../firebase/activities';
 import { getFormattedDate } from '../../utils/index,js';
@@ -17,6 +17,7 @@ export default async function Home() {
     const exploreDiv = document.querySelector(".explore .horizontal-scroll");
     const favouritesDiv = document.querySelector(".favourites .horizontal-scroll");
 
+    favouriteActiv = await getUserFavorites(AuthenticatedUser.favourites);
     updateMyAdventures();
     await updateExplore();
     await updateFavourites();
@@ -36,49 +37,66 @@ export default async function Home() {
     }
 
    async function modifyFavourites(favouriteH){
-
-    let added = false;
-    for(let favorite of favouriteActiv){
-      if(favorite.id == favouriteH.parentElement.id){
-        added = true;
-        break;
+      let added = false;
+      for(let favorite of favouriteActiv){
+        if(favorite.id == favouriteH.parentElement.id.substring(3)){
+          added = true;
+          break;
+        }
       }
-    }
-    
-    if(!added){
-      const activityRef = await addFavorite(AuthenticatedUser.id, favouriteH.parentElement.id);
-      AuthenticatedUser.favourites.push(activityRef);
-      //const activity = await getActivity(favouriteH);
-      //console.log(activity);
-      favouriteActiv = await getUserFavorites(AuthenticatedUser.favourites);
-      favouriteH.classList.remove("fa-heart");
-      favouriteH.classList.add("fav");
+      
+      if(!added){
+        const activityRef = await addFavorite(AuthenticatedUser.id, favouriteH.parentElement.id.substring(3));
+        AuthenticatedUser.favourites.push(activityRef);
+        favouriteH.classList.remove("fa-regular");
+        favouriteH.classList.add("fav");
+        favouriteH.classList.add("fa-solid");
 
+      }else{
+        const activityRef = await removeFavorite(AuthenticatedUser.id, favouriteH.parentElement.id.substring(3));
+        AuthenticatedUser.favourites = AuthenticatedUser.favourites.filter(function (value) {
+          return value.id != favouriteH.parentElement.id.substring(3);
+        });
+        favouriteH.classList.add("fa-regular");
+        favouriteH.classList.remove("fa-solid");
+        favouriteH.classList.remove("fav");
+      }
+
+
+      favouriteActiv = await getUserFavorites(AuthenticatedUser.favourites);
       updateFavourites();
-    }
+      addFavoritesAction();
 
     }
 
     async function updateExplore() {
-      exploreDiv.innerHTML = ``;
+      let content = "";
+      
       for (let activity of randomActivities) {
-        exploreDiv.innerHTML += `<div><div class="activity block-wide" id="${activity.id}">
+        content += `<div><div class="activity block-wide" id="ex-${activity.id}">
             <img src="${activity.imageUrl}" alt="Activity picture">
-            <span class="fa-regular fa-heart"></span>
+            <span class="fa-regular fa-heart`;
+        for(let fav of favouriteActiv){
+          if(fav.id == activity.id){
+            content += ` fa-solid fav`;
+            break;
+          }
+        }
+        content += `"></span>
             <h3>${activity.name}</h3>
             <p>${await getActivityPlace(activity.id)}</p>
             </div></div>`;
       }
+      exploreDiv.innerHTML = content;
     }
 
     
 
     async function updateFavourites() {
-      favouriteActiv = await getUserFavorites(AuthenticatedUser.favourites);
 
       favouritesDiv.innerHTML = ``;
         for(let activity of favouriteActiv){
-          favouritesDiv.innerHTML += `<div><div class="activity block-wide" id="${activity.id}">
+          favouritesDiv.innerHTML += `<div><div class="activity block-wide" id="fv-${activity.id}">
             <img src="${activity.imageUrl}" alt="Activity picture">
             <span class="fa-solid fa-heart fav"></span>
             <h3>${activity.name}</h3>
@@ -95,7 +113,7 @@ export default async function Home() {
       if(!event.target.classList.contains('fa-heart') && !event.target.parentNode.classList.contains('fa-heart')){
         let target = event.target.parentNode;
         let clickedActivity = document.getElementById(target.id);
-        openActivity(clickedActivity.id);
+        openActivity(clickedActivity.id.substring(3));
       }
     }
 
@@ -135,9 +153,11 @@ export default async function Home() {
     function addFavoritesAction(){
       const act = document.querySelectorAll(".fa-heart");
         act.forEach((activityH) => {
-          activityH.addEventListener("click", function () {
-            modifyFavourites(activityH);
-            
+          activityH.removeEventListener("click", function () {
+             modifyFavourites(activityH);
+          });
+          activityH.addEventListener("click",  function () {
+             modifyFavourites(activityH);
           });
           
         });
