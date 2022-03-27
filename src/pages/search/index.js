@@ -6,15 +6,16 @@ import { favouriteActiv } from '../home/index';
 import { getCategories } from '../../firebase/categories';
 import { getCities } from '../../firebase/cities';
 import { getActivitiesWhere, getActivityPlace, activitiesCollection } from '../../firebase/activities';
-import { addAdventure } from '../../firebase/adventures';
+import { addAdventure, getAdventure, removeAdventure } from '../../firebase/adventures';
 import { db, doc } from '../../firebase';
+import { getUserAdventures } from '../../firebase/users';
 
-export default function Search() {
+export default async function Search() {
   if (!AuthenticatedUser) {
     location.hash = '#welcome';
   } else {
     class Adventure {
-      constructor(name, beginningDate, endDate) {
+      constructor(name, beginningDate, endDate, id) {
         this.name = name;
         if (beginningDate != null) {
           this.beginningDate = beginningDate;
@@ -27,6 +28,8 @@ export default function Search() {
         } else {
           this.endDate = null;
         }
+
+        this.id = id;
 
         this.userActivities = new Array();
       }
@@ -54,6 +57,7 @@ export default function Search() {
       }
     }
 
+
     let categoryOptions, locationOptions, suggestions;
 
     const categorySelect = document.getElementById('category-sel');
@@ -64,13 +68,29 @@ export default function Search() {
     const divResults = document.getElementById("suggestions");
     const divFavourites = document.querySelector("#favourites .horizontal-scroll");
     
-    let adventure = new Adventure(adventureName.value, null, null);
+    let adventure;
+    let adventureToChange;
 
     /* INITIAL LOAD - START */
+    if(location.hash.split('/').length > 1 && location.hash.split('/')[1] != ""){
+      await loadAdventure(location.hash.split('/')[1]);
+    }else{
+      adventure = new Adventure(adventureName.value, null, null, undefined);
+    }
+
     const minStartDate = new Date();
     const offset = minStartDate.getTimezoneOffset() * 60000;
     beginningDate.setAttribute("min", new Date(minStartDate-offset).toISOString().split('T')[0]);
     endDate.setAttribute("min", new Date(minStartDate-offset).toISOString().split('T')[0]);
+
+    async function loadAdventure(adventureId){
+      adventureToChange = (await getAdventure(adventureId, AuthenticatedUser.id))[0];
+      adventure = new Adventure(adventureToChange.name, adventureToChange.beginningDate, adventureToChange.endDate, adventureToChange.id);
+      adventure.userActivities = [...adventureToChange.userActivities];
+      adventureName.value = adventure.name;
+      beginningDate.value = adventure.beginningDate;
+      endDate.value = adventure.endDate;
+    }
 
     async function loadCategories() {
       const categories = await getCategories();
@@ -142,6 +162,10 @@ export default function Search() {
     loadCategories();
     loadLocations();
     loadFavourites();
+
+    if(favouriteActiv.length <= 0){
+      document.getElementById("favourites").style.display = "none";
+    }
     /* INITIAL LOAD - END */
 
 
@@ -212,14 +236,27 @@ export default function Search() {
       });
     });
 
-    formulario.addEventListener('submit', async function () {
+    formAdventure.addEventListener('submit', async function () {
       adventure.name = adventureName.value;
       adventure.beginningDate = beginningDate.value;
       adventure.endDate = endDate.value;
-      adventure.id = getRandomId();
-      await addAdventure(adventure.toPlainObject(), AuthenticatedUser.id);
+      if(adventure.id == undefined) adventure.id = getRandomId();
+      if(adventureToChange != undefined){
+        await updateAdventure();
+      }else{
+        await addAdventure(adventure.toPlainObject(), AuthenticatedUser.id);
+      }
+      
+      AuthenticatedUser.adventures = await getUserAdventures(AuthenticatedUser.id);
+      
       location.hash = '#myPlanner/' + adventure.id;
     });
+
+    async function updateAdventure() {
+      await removeAdventure(adventureToChange, AuthenticatedUser.id);
+      await addAdventure(adventure.toPlainObject(), AuthenticatedUser.id);
+    }
+
 
     async function searchActivity(category, location) {
       suggestions = new Array();
