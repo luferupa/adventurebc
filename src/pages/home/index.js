@@ -67,8 +67,6 @@ export default async function Home() {
       updateFavourites();
       addFavoritesAction();
 
-        updateFavourites();
-      }
     }
 
     async function updateExplore() {
@@ -163,7 +161,7 @@ export default async function Home() {
           });
           
         });
-      });
+      
     }
   }
 }
