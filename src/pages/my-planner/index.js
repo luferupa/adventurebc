@@ -4,7 +4,7 @@ import { AuthenticatedUser, Modal } from '../../index';
 
 import { db, collection, doc, onSnapshot } from '../../firebase';
 import { getActivity } from '../../firebase/activities';
-import { getFormattedDate, getDaysArray } from '../../utils/index,js';
+import { getFormattedDate, getDaysArray, setLoader } from '../../utils/index.js';
 import { addAdventure, clearAdventures } from '../../firebase/adventures';
 
 export default async function MyPlanner() {
@@ -20,7 +20,8 @@ export default async function MyPlanner() {
     location.hash = '#welcome';
   } else {
     myPlannerSnapshot = onSnapshot(doc(db, 'users', AuthenticatedUser.id), { includeMetadataChanges: true }, (doc) => {
-      if (!doc.metadata.hasPendingWrites && doc.data().adventures.length > 0) {
+      if (!doc.metadata.hasPendingWrites && doc.data().adventures.length > 0 && location.hash === '#myPlanner') {
+        setLoader(true);
         userAdventures = doc.data().adventures;
 
         userAdventures.forEach((adventure) => {
@@ -47,8 +48,10 @@ export default async function MyPlanner() {
 
         getPlannerDates();
 
-        setTimeout(() => renderUiElements(), 1000);
-      } else {
+        setTimeout(() => {
+          renderUiElements();
+          setLoader(false);
+        }, 1000);
       }
     });
 
@@ -94,6 +97,7 @@ export default async function MyPlanner() {
         let promises = [];
 
         if (daySlot.value && dayOrder.value && activityId.value) {
+          setLoader(true);
           await clearAdventures(AuthenticatedUser.id);
 
           userAdventures.map(async (adventure) => {
@@ -126,6 +130,7 @@ export default async function MyPlanner() {
         let promises = [];
 
         if (activityId1.value) {
+          setLoader(true);
           await clearAdventures(AuthenticatedUser.id);
 
           userAdventures.map(async (adventure) => {
@@ -185,6 +190,8 @@ export default async function MyPlanner() {
         }
       });
     });
+
+    // setLoader(false);
   }
 
   /**
@@ -208,6 +215,7 @@ export default async function MyPlanner() {
       });
 
       async function updateDateRanges(entity, value) {
+        setLoader(true);
         await clearAdventures(AuthenticatedUser.id);
 
         userAdventures.map(async (adventure) => {

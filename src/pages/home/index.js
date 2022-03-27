@@ -3,26 +3,26 @@
 import { AuthenticatedUser } from '../../index';
 import { getUserAdventures, getUserFavorites, addFavorite, removeFavorite } from '../../firebase/users';
 
-import { getActivityPlace, getActivitiesRandom, getActivity, getActivityRef, getActivityPlaceObject } from '../../firebase/activities';
-import { getFormattedDate } from '../../utils/index,js';
-export let favouriteActiv =  new Array();
+import { getActivityPlace, getActivitiesRandom, getActivity, getActivityPlaceObject } from '../../firebase/activities';
+import { getFormattedDate } from '../../utils/index.js';
+export let favouriteActiv = new Array();
 
 export default async function Home() {
   if (!AuthenticatedUser) {
     location.hash = '#welcome';
   } else {
     const userAdventures = AuthenticatedUser.adventures;
-    const myAdventuresDiv = document.querySelector(".my-adventures .horizontal-scroll");
+    const myAdventuresDiv = document.querySelector('.my-adventures .horizontal-scroll');
     const randomActivities = await getActivitiesRandom();
-    const exploreDiv = document.querySelector(".explore .horizontal-scroll");
-    const favouritesDiv = document.querySelector(".favourites .horizontal-scroll");
+    const exploreDiv = document.querySelector('.explore .horizontal-scroll');
+    const favouritesDiv = document.querySelector('.favourites .horizontal-scroll');
 
     favouriteActiv = await getUserFavorites(AuthenticatedUser.favourites);
     updateMyAdventures();
     await updateExplore();
     await updateFavourites();
     addFavoritesAction();
-   
+
     async function updateMyAdventures() {
       myAdventuresDiv.innerHTML = ``;
       for (let userAdventure of userAdventures) {
@@ -67,6 +67,8 @@ export default async function Home() {
       updateFavourites();
       addFavoritesAction();
 
+        updateFavourites();
+      }
     }
 
     async function updateExplore() {
@@ -90,8 +92,6 @@ export default async function Home() {
       exploreDiv.innerHTML = content;
     }
 
-    
-
     async function updateFavourites() {
 
       favouritesDiv.innerHTML = ``;
@@ -105,17 +105,16 @@ export default async function Home() {
       }
     }
 
-
     const exploreActivities = document.getElementById('exploreID');
     const modalWrapper = document.getElementById('modalWrapper');
 
-    exploreActivities.onclick = function(event) {
-      if(!event.target.classList.contains('fa-heart') && !event.target.parentNode.classList.contains('fa-heart')){
+    exploreActivities.onclick = function (event) {
+      if (!event.target.classList.contains('fa-heart') && !event.target.parentNode.classList.contains('fa-heart')) {
         let target = event.target.parentNode;
         let clickedActivity = document.getElementById(target.id);
         openActivity(clickedActivity.id.substring(3));
       }
-    }
+    };
 
     async function openActivity(id) {
       let currentID = id;
@@ -124,7 +123,7 @@ export default async function Home() {
       let modalHeader = document.getElementById('modalHeader');
       let city = document.getElementById('city');
       let descriptionText = document.getElementById('descriptionText');
-      let mapLongLat = document.getElementById('mapLongLat')
+      let mapLongLat = document.getElementById('mapLongLat');
 
       let currentActivity = await getActivity(currentID);
       let cityDB = await getActivityPlaceObject(currentID);
@@ -133,20 +132,23 @@ export default async function Home() {
       city.innerHTML = cityDB.city;
       descriptionText.innerHTML = currentActivity.about;
 
-      mapLongLat.innerHTML = 
-      `<iframe
+      mapLongLat.innerHTML = `<iframe
       frameborder="0" 
       scrolling="no" 
       marginheight="0" 
       marginwidth="0"
-      src="https://www.openstreetmap.org/export/embed.html?bbox=${cityDB.coordinates._long - 0.01}%2C${cityDB.coordinates._lat - 0.01}%2C${cityDB.coordinates._long + 0.01}%2C${cityDB.coordinates._lat + 0.01}&amp;layer=mapnik&amp;marker=${cityDB.coordinates._lat}%2C${cityDB.coordinates._long}" 
-      </iframe>` 
+      src="https://www.openstreetmap.org/export/embed.html?bbox=${cityDB.coordinates._long - 0.01}%2C${
+        cityDB.coordinates._lat - 0.01
+      }%2C${cityDB.coordinates._long + 0.01}%2C${cityDB.coordinates._lat + 0.01}&amp;layer=mapnik&amp;marker=${
+        cityDB.coordinates._lat
+      }%2C${cityDB.coordinates._long}" 
+      </iframe>`;
     }
 
     const closeButton = document.getElementById("closeButton");
 
     closeButton.addEventListener('click', () => {
-      console.log("event listener close button");
+      console.log('event listener close button');
       modalWrapper.classList.remove('showActivity');
     });
 
@@ -161,6 +163,7 @@ export default async function Home() {
           });
           
         });
+      });
     }
   }
 }

@@ -73,8 +73,13 @@ export default class Router {
    * handles the marking of the current active link (#hash)
    */
   static markActiveLink() {
-    if (document.querySelector(`.nav-link[href='${Router.urlHash}']`)) {
+    if (Router.urlHash === '#addActivities') {
       document.querySelector('.nav-link.active').classList.remove('active');
+    }
+
+    if (document.querySelector(`.nav-link[href='${Router.urlHash}']`)) {
+      document.querySelector('.nav-link.active') &&
+        document.querySelector('.nav-link.active').classList.remove('active');
       document.querySelector(`.nav-link[href='${Router.urlHash}']`).classList.add('active');
     }
   }

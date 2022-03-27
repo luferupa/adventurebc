@@ -24,8 +24,6 @@ export default async function Welcome() {
       loginForm.classList.add('was-validated');
 
       if (loginForm.checkValidity() && loginEmail.value && loginPassword.value) {
-        console.log(loginEmail.value, loginPassword.value);
-
         try {
           await signInWithEmailPassword(loginEmail.value, loginPassword.value);
           hideAllModalsAndNavigateToHome();
@@ -52,8 +50,6 @@ export default async function Welcome() {
       registerForm.classList.add('was-validated');
 
       if (registerForm.checkValidity() && registerUsername.value && registerEmail.value && registerPassword.value) {
-        console.log(registerUsername.value, registerEmail.value, registerPassword.value);
-
         try {
           await createWithEmailPassword(registerEmail.value, registerPassword.value);
           hideAllModalsAndNavigateToHome();

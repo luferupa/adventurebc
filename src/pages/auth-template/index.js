@@ -40,6 +40,10 @@ export default async function AuthTemplate() {
     setTimeout(() => {
       username && (username.innerText = user.username ? user.username.split(' ')[0] : 'Username');
       userAvatar && userAvatar.setAttribute('src', user.avatarUrl);
+
+      if (!user.isAdmin) {
+        document.querySelector('.add-activity').remove();
+      }
     }, 1000);
   }
 }

@@ -14,12 +14,6 @@ import Modal from 'bootstrap/js/dist/modal';
 
 export { Modal };
 
-// import 'bootstrap/js/dist/popover';
-// import 'bootstrap/js/dist/scrollspy';
-// import 'bootstrap/js/dist/tab';
-// import 'bootstrap/js/dist/toast';
-// import 'bootstrap/js/dist/tooltip';
-
 //fontawesome
 import '@fortawesome/fontawesome-free/js/fontawesome';
 import '@fortawesome/fontawesome-free/js/solid';
@@ -34,6 +28,7 @@ import './pages/auth-template/auth-template.html';
 import './pages/my-planner/my-planner.html';
 import './pages/search/search.html';
 import './pages/favourites/favourites.html';
+import './pages/add-activities/add-activities.html';
 
 // styles
 import './styles/index.scss';
@@ -56,6 +51,7 @@ Router.init([
   new Page('#search', './pages/search.html', 'search'),
   new Page('#myPlanner', './pages/my-planner.html', 'my-planner'),
   new Page('#favourites', './pages/favourites.html', 'favourites'),
+  new Page('#addActivities', './pages/add-activities.html', 'add-activities'),
   // add new pages here
 ]);
 
@@ -66,10 +62,8 @@ auth.onAuthStateChanged(async (userInfo) => {
     try {
       const user = await createUserProfileDocument(userInfo);
       AuthenticatedUser = user;
-      console.log(AuthenticatedUser);
-      if (location.hash === '#welcome' || location.hash === '') {
-        console.log(toRoute);
 
+      if (location.hash === '#welcome' || location.hash === '') {
         location.hash = toRoute ? (toRoute === '#welcome' ? '#home' : toRoute) : '#home';
       }
     } catch (error) {

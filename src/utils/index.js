@@ -41,3 +41,10 @@ export function getDaysArray(s, e) {
   }
   return a;
 }
+
+/**
+ * makes the loader visible
+ */
+export function setLoader(value) {
+  document.querySelector('.loader').style.display = value === true ? 'block' : 'none';
+}

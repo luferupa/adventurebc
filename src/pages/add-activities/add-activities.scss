@@ -1,0 +1,22 @@
+@use "../../styles/variables";
+
+.add-activities {
+  max-width: variables.$base-max-width;
+  margin: 0 auto;
+  padding: 0 1rem;
+
+  h2 {
+    margin-bottom: 1rem;
+  }
+
+  form {
+    max-width: 500px;
+
+    select {
+      &[multiple] option {
+        padding: 0.5rem 0;
+        cursor: pointer;
+      }
+    }
+  }
+}

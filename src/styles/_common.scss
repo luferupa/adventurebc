@@ -10,6 +10,7 @@ body {
 
 .wrapper {
 	// height: 100%;
+	position: relative;
 	margin: 0 auto;
 }
 
@@ -74,4 +75,37 @@ a {
 	position: absolute;
 	white-space: nowrap;
 	width: 1px;
+}
+
+.loader {
+	background: rgba(variables.$color-black, 0.4);
+	display: none;
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	z-index: 99999999;
+
+	.spinner {
+		border: 12px solid #f3f3f3;
+		border-top: 12px solid variables.$color-primary;
+		border-radius: 50%;
+		width: 80px;
+		height: 80px;
+		animation: spin 2s linear infinite;
+		position: fixed;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+	}
+}
+
+@keyframes spin {
+	0% {
+		transform: rotate(0deg);
+	}
+	100% {
+		transform: rotate(360deg);
+	}
 }
