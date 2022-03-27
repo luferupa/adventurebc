@@ -1,4 +1,4 @@
- <header id="header" class="header">
+<header id="header" class="header">
   <nav class="navbar navbar-expand-lg navbar-light">
     <div class="container-fluid">
       <a class="navbar-brand" href="#home">
@@ -35,7 +35,12 @@
             <a class="nav-link" aria-current="page" href="#favourites">Favourites</a>
           </li>
           <li class="nav-item mx-4 dropdown">
-            <img src="https://www.codewigs.com/static/img/profile/default/avatar-2.png" alt="avatar" class="avatar" id="userAvatar" />
+            <img
+              src="https://www.codewigs.com/static/img/profile/default/avatar-2.png"
+              alt="avatar"
+              class="avatar"
+              id="userAvatar"
+            />
             <input type="file" accept="image/*" capture="environment" class="file-upload visually-hidden" />
             <a
               class="nav-link dropdown-toggle"
@@ -47,8 +52,9 @@
               Hello <span id="username" class="fw-bold">Username</span>
             </a>
             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <li><a class="dropdown-item" href="" id="signOut">Sign Out</a></li>
               <li><a class="dropdown-item" href="" id="changeProfilePic">Change Profile Picture</a></li>
+              <li><a class="dropdown-item" href="#addActivities" >Add Activities</a></li>
+              <li><a class="dropdown-item" href="" id="signOut">Sign Out</a></li>
             </ul>
           </li>
         </ul>
@@ -62,11 +68,12 @@
 
 <footer class="footer">
   <img
-  src="https://firebasestorage.googleapis.com/v0/b/adventurebc-bug-hunters.appspot.com/o/logo.png?alt=media&token=c593639d-49c4-4ff6-9d7e-ffb4bed06d4f"
-  alt=""
-  width="100"
-  height="80"
-/>
+    src="https://firebasestorage.googleapis.com/v0/b/adventurebc-bug-hunters.appspot.com/o/logo.png?alt=media&token=c593639d-49c4-4ff6-9d7e-ffb4bed06d4f"
+    alt=""
+    width="100"
+    height="80"
+  />
   <p>Designed by Bug Hunters</p>
   <p>All Rights Reserved by AdventureBC</p>
 </footer>
+<div class="loader"><div class="spinner"></div></div>

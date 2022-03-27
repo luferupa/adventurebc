@@ -34,6 +34,7 @@ import './pages/auth-template/auth-template.html';
 import './pages/my-planner/my-planner.html';
 import './pages/search/search.html';
 import './pages/favourites/favourites.html';
+import './pages/add-activities/add-activities.html';
 
 // styles
 import './styles/index.scss';
@@ -56,6 +57,7 @@ Router.init([
   new Page('#search', './pages/search.html', 'search'),
   new Page('#myPlanner', './pages/my-planner.html', 'my-planner'),
   new Page('#favourites', './pages/favourites.html', 'favourites'),
+  new Page('#addActivities', './pages/add-activities.html', 'add-activities'),
   // add new pages here
 ]);
 
@@ -68,8 +70,6 @@ auth.onAuthStateChanged(async (userInfo) => {
       AuthenticatedUser = user;
       console.log(AuthenticatedUser);
       if (location.hash === '#welcome' || location.hash === '') {
-        console.log(toRoute);
-
         location.hash = toRoute ? (toRoute === '#welcome' ? '#home' : toRoute) : '#home';
       }
     } catch (error) {

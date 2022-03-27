@@ -1,0 +1,59 @@
+<div class="add-activities">
+  <h2>Add Activities</h2>
+  <form class="mb-6 needs-validation" id="activityForm" novalidate>
+    <div class="input-group has-validation mb-4">
+      <label for="activityName" class="form-label visually-hidden">Name</label>
+      <input id="activityName" type="text" class="form-control" placeholder="Name" aria-label="activityName" required />
+      <div class="invalid-feedback text-start mt-2">This field is required.</div>
+    </div>
+    <div class="input-group has-validation mb-4">
+      <label for="about" class="form-label visually-hidden">About</label>
+      <textarea
+        id="about"
+        type="email"
+        class="form-control"
+        placeholder="Description about the activity"
+        aria-label="about"
+        required
+      ></textarea>
+      <div class="invalid-feedback text-start mt-2">This field is required.</div>
+    </div>
+    <div class="input-group mb-4">
+      <label for="imageUrl" class="form-label visually-hidden">Image URL</label>
+      <input
+        id="imageUrl"
+        type="text"
+        class="form-control"
+        placeholder="Image URL"
+        aria-label="imageUrl"
+        required
+      />
+      <div class="invalid-feedback text-start mt-2">This field is required.</div>
+    </div>
+    <div class="input-group mb-4">
+      <label for="tags" class="form-label visually-hidden">Tags</label>
+      <input
+        id="tags"
+        type="text"
+        class="form-control"
+        placeholder="Please insert tag list separated by commas"
+        aria-label="tags"
+        required
+      />
+      <div class="invalid-feedback text-start mt-2">This field is required.</div>
+    </div>
+    <div class="input-group mb-4">
+      <label for="category" class="form-label visually-hidden">Category</label>
+      <select class="form-select" name="category" id="category" multiple required></select>
+      <div class="invalid-feedback text-start mt-2">This field is required.</div>
+    </div>
+    <div class="input-group mb-4">
+      <label for="place" class="form-label visually-hidden">Place</label>
+      <select class="form-select" name="place" id="place" required></select>
+      <div class="invalid-feedback text-start mt-2">This field is required.</div>
+    </div>
+    <div class="d-grid d-md-block">
+      <button class="btn btn-secondary w-100" type="submit">Add Activity</button>
+    </div>
+  </form>
+</div>

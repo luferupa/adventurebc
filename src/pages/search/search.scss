@@ -27,7 +27,6 @@
                 border-bottom: 1px solid variables.$green-dark;
 
                 h2 {
-                    
                     padding-bottom: 0.7rem;
                     margin-bottom: 0;
                 }
@@ -153,47 +152,46 @@
                 }
             }
 
-            #favourites{
-                .horizontal-scroll{
+            #favourites {
+                .horizontal-scroll {
                     display: flex;
                     flex-flow: row nowrap;
                     overflow-x: scroll;
                     gap: 1rem;
 
-                    .activity{
+                    .activity {
                         flex: 0 0 30%;
                         margin-bottom: 0.5rem;
                     }
                 }
-                
             }
 
-            #suggestions{
+            #suggestions {
                 display: grid;
                 grid-template-columns: repeat(3, 1fr);
                 gap: 1rem;
 
-                h5{
+                h5 {
                     grid-column: 2/3;
                     margin-top: 20vh;
                     margin: auto;
                 }
 
-                h4{
+                h4 {
                     grid-column: 1/-1;
                     text-align: left;
                     max-height: 2rem;
                     justify-self: flex-start;
 
-                    span{
+                    span {
                         font-weight: normal;
                         font-size: 1rem;
                     }
                 }
-
             }
 
-            #suggestions, #favourites .horizontal-scroll {
+            #suggestions,
+            #favourites .horizontal-scroll {
                 min-height: 30vh;
                 margin: 2rem auto;
 
@@ -218,7 +216,7 @@
                         margin: 0;
                     }
 
-                    .fa-heart{
+                    .fa-heart {
                         font-size: 1.8rem;
                         color: white;
                         position: absolute;
@@ -226,7 +224,7 @@
                         right: 0.7rem;
                     }
 
-                    .fa-xmark{
+                    .fa-xmark {
                         font-size: 2.5rem;
                         color: white;
                         position: absolute;
@@ -239,32 +237,26 @@
                         display: inline;
                     }
 
-                    &:hover{
+                    &:hover {
                         cursor: pointer;
                         border: 3px solid variables.$color-secondary;
                         background-blend-mode: darken;
                     }
                 }
 
-                .added{
+                .added {
                     background: variables.$color-item-selected;
                     border: 3px solid variables.$color-primary;
                 }
-
-                
             }
 
-            #suggestions{
+            #suggestions {
                 justify-items: center;
                 align-content: center;
-
-                
             }
 
-            #favourites{
+            #favourites {
                 align-content: center;
-
-                
             }
         }
 
@@ -297,14 +289,12 @@
                 margin: 2rem auto;
             }
 
-            #favourites{
-                .horizontal-scroll{
-
-                    .activity{
+            #favourites {
+                .horizontal-scroll {
+                    .activity {
                         flex: 0 0 45%;
                     }
                 }
-                
             }
         }
     }
@@ -345,8 +335,6 @@
                     max-width: 80vw;
                     height: 100vh;
                     margin: auto;
-
-                    
                 }
             }
 
@@ -382,33 +370,32 @@
                     }
                 }
 
-                #suggestions, #favourites {
+                #suggestions,
+                #favourites {
                     grid-template-columns: 1fr;
                     max-width: 100%;
                 }
 
-                #suggestions{
+                #suggestions {
                     display: flex;
                     flex-flow: column nowrap;
                 }
 
-                #favourites{
-                    .horizontal-scroll{
-                        .activity{
+                #favourites {
+                    .horizontal-scroll {
+                        .activity {
                             flex: 0 0 90%;
                         }
                     }
-                    
                 }
             }
         }
     }
 
-    @media screen and (max-width: 500px){
+    @media screen and (max-width: 500px) {
         main #results #basic-data #dates {
             max-width: 100%;
             width: 100%;
         }
     }
 }
-
