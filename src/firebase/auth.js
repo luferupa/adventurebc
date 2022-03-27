@@ -86,6 +86,6 @@ export const changeUserPicture = async (file, currentUser) => {
 
     return newAvatarUrl;
   } catch (error) {
-    console.log(error);
+    return error;
   }
 };

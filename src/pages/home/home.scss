@@ -38,13 +38,20 @@
         margin-top: 2rem;
     }
 
+    .my-adventures {
+        padding: 0 1rem;
+    }
+
+    .favourites {
+        padding: 0;
+    }
+
     .horizontal-scroll {
         display: flex;
         flex-flow: row nowrap;
         gap: 2rem;
-        overflow-x: scroll;
-        margin-bottom: 1rem;
-        margin-top: 1rem;
+        overflow-x: auto;
+        margin: 1rem 0;
     }
 
     .block-narrow {
@@ -88,7 +95,7 @@
             right: 0.7rem;
         }
 
-        .fav{
+        .fav {
             color: red;
         }
     }
@@ -124,7 +131,6 @@
         }
     }
 
-
     .modalWrapper {
         position: fixed;
         top: 0;
@@ -147,11 +153,10 @@
         background-color: #fff;
         border-radius: 25px;
         box-shadow: 7px 7px 15px 3px rgba(0, 0, 0, 0.5);
-        
 
         .modalHeader {
             display: grid;
-            grid-template: 'container';
+            grid-template: "container";
 
             .fa-xmark {
                 grid-area: container;
@@ -166,7 +171,7 @@
 
             h2 {
                 padding: 0.5rem 1rem;
-                background-color: rgba(0,0,0,0.35);
+                background-color: rgba(0, 0, 0, 0.35);
                 border-radius: 5px;
                 color: variables.$color-white;
                 grid-area: container;
@@ -183,7 +188,7 @@
             }
         }
 
-        .modalMain{
+        .modalMain {
             padding: 1rem 3% 2rem 3%;
 
             .btn {
@@ -244,10 +249,7 @@
                     margin-bottom: 1rem;
                 }
             }
-
         }
-
-
     }
 
     .showActivity {

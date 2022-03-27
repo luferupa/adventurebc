@@ -3,24 +3,27 @@
 import { AuthenticatedUser } from '../../index';
 import { favouriteActiv } from '../home/index';
 import { getActivityPlace } from '../../firebase/activities';
+import { setLoader } from '../../utils';
 
 export default async function Favourites() {
-    if (!AuthenticatedUser) {
-        location.hash = '#welcome';
-      } else {
-        const divFavourites = document.querySelector(".activity-wrapper");
-        updateFavourites();
+  if (!AuthenticatedUser) {
+    location.hash = '#welcome';
+  } else {
+    const divFavourites = document.querySelector('.activity-wrapper');
+    setLoader(true);
+    await updateFavourites();
+    setLoader(false);
 
-        async function updateFavourites(){
-            divFavourites.innerHTML = ``;
-              for(let activity of favouriteActiv){
-                divFavourites.innerHTML += `<div><div class="activity block-wide"">
+    async function updateFavourites() {
+      divFavourites.innerHTML = ``;
+      for (let activity of favouriteActiv) {
+        divFavourites.innerHTML += `<div><div class="activity block-wide"">
                   <img src="${activity.imageUrl}" alt="Activity picture">
                   <span class="fa-regular fa-heart"></span>
                   <h3>${activity.name}</h3>
                   <p>${await getActivityPlace(activity.id)}</p>
                   </div></div>`;
-              }
-          }
       }
+    }
+  }
 }

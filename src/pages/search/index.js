@@ -57,35 +57,39 @@ export default async function Search() {
       }
     }
 
-
     let categoryOptions, locationOptions, suggestions;
 
     const categorySelect = document.getElementById('category-sel');
     const locationSelect = document.getElementById('location-sel');
     const adventureName = document.getElementById('adventure-name');
-    const beginningDate = document.getElementById("from-date");
-    const endDate = document.getElementById("to-date");
-    const divResults = document.getElementById("suggestions");
-    const divFavourites = document.querySelector("#favourites .horizontal-scroll");
-    
+    const beginningDate = document.getElementById('from-date');
+    const endDate = document.getElementById('to-date');
+    const divResults = document.getElementById('suggestions');
+    const divFavourites = document.querySelector('#favourites .horizontal-scroll');
+
     let adventure;
     let adventureToChange;
 
     /* INITIAL LOAD - START */
-    if(location.hash.split('/').length > 1 && location.hash.split('/')[1] != ""){
+    if (location.hash.split('/').length > 1 && location.hash.split('/')[1] != '') {
       await loadAdventure(location.hash.split('/')[1]);
-    }else{
+    } else {
       adventure = new Adventure(adventureName.value, null, null, undefined);
     }
 
     const minStartDate = new Date();
     const offset = minStartDate.getTimezoneOffset() * 60000;
-    beginningDate.setAttribute("min", new Date(minStartDate-offset).toISOString().split('T')[0]);
-    endDate.setAttribute("min", new Date(minStartDate-offset).toISOString().split('T')[0]);
+    beginningDate.setAttribute('min', new Date(minStartDate - offset).toISOString().split('T')[0]);
+    endDate.setAttribute('min', new Date(minStartDate - offset).toISOString().split('T')[0]);
 
-    async function loadAdventure(adventureId){
+    async function loadAdventure(adventureId) {
       adventureToChange = (await getAdventure(adventureId, AuthenticatedUser.id))[0];
-      adventure = new Adventure(adventureToChange.name, adventureToChange.beginningDate, adventureToChange.endDate, adventureToChange.id);
+      adventure = new Adventure(
+        adventureToChange.name,
+        adventureToChange.beginningDate,
+        adventureToChange.endDate,
+        adventureToChange.id
+      );
       adventure.userActivities = [...adventureToChange.userActivities];
       adventureName.value = adventure.name;
       beginningDate.value = adventure.beginningDate;
@@ -140,39 +144,38 @@ export default async function Search() {
 
     async function loadFavourites() {
       let output = ``;
-              for(let activity of favouriteActiv){
-                const exists = adventure.alreadyHas(activity.id);
-                output += `<div class="activity" id="${activity.id}">
+      for (let activity of favouriteActiv) {
+        const exists = adventure.alreadyHas(activity.id);
+        output += `<div class="activity" id="${activity.id}">
                   <img src="${activity.imageUrl}" alt="Activity picture">
                   <span class="fa-regular fa-heart"></span>`;
-                  if(exists){
-                    output += `<span class="fa-solid fa-xmark remove"></span>`;
-                  }else{
-                    output += `<span class="fa-solid fa-xmark"></span>`;
-                  }
-                  output += `<h3>${activity.name}</h3>
+        if (exists) {
+          output += `<span class="fa-solid fa-xmark remove"></span>`;
+        } else {
+          output += `<span class="fa-solid fa-xmark"></span>`;
+        }
+        output += `<h3>${activity.name}</h3>
                   <p>${await getActivityPlace(activity.id)}</p>
                   </div>`;
-              }
+      }
 
-              divFavourites.innerHTML = output;
-              assignEventToSuggestions();
+      divFavourites.innerHTML = output;
+      assignEventToSuggestions();
     }
 
     loadCategories();
     loadLocations();
     loadFavourites();
 
-    if(favouriteActiv.length <= 0){
-      document.getElementById("favourites").style.display = "none";
+    if (favouriteActiv.length <= 0) {
+      document.getElementById('favourites').style.display = 'none';
     }
     /* INITIAL LOAD - END */
 
-
-    beginningDate.onchange= () =>{
-      endDate.value = "";
-      endDate.setAttribute("min", beginningDate.value);
-    }
+    beginningDate.onchange = () => {
+      endDate.value = '';
+      endDate.setAttribute('min', beginningDate.value);
+    };
 
     function updateCategory(category) {
       categorySelect.selectedIndex = category;
@@ -217,6 +220,8 @@ export default async function Search() {
 
     searchFilters.addEventListener('submit', async function (event) {
       event.preventDefault();
+      event.stopPropagation();
+
       document.getElementById('search').classList.add('hideBar');
 
       let category = document.getElementById('category-sel').value;
@@ -224,31 +229,34 @@ export default async function Search() {
 
       await searchActivity(category, location);
 
-      document.getElementById('category-sel').value = "Categories";
-      document.getElementById('location-sel').value = "Location";
+      document.getElementById('category-sel').value = 'Categories';
+      document.getElementById('location-sel').value = 'Location';
 
       cleanCategories();
       cleanLocations();
 
-      const collapsers = document.querySelectorAll(".collapse");
+      const collapsers = document.querySelectorAll('.collapse');
       collapsers.forEach((element) => {
-        element.classList.remove("show");
+        element.classList.remove('show');
       });
     });
 
-    formAdventure.addEventListener('submit', async function () {
+    formAdventure.addEventListener('submit', async function (event) {
+      event.preventDefault();
+      event.stopPropagation();
+
       adventure.name = adventureName.value;
       adventure.beginningDate = beginningDate.value;
       adventure.endDate = endDate.value;
-      if(adventure.id == undefined) adventure.id = getRandomId();
-      if(adventureToChange != undefined){
+      if (adventure.id == undefined) adventure.id = getRandomId();
+      if (adventureToChange != undefined) {
         await updateAdventure();
-      }else{
+      } else {
         await addAdventure(adventure.toPlainObject(), AuthenticatedUser.id);
       }
-      
+
       AuthenticatedUser.adventures = await getUserAdventures(AuthenticatedUser.id);
-      
+
       location.hash = '#myPlanner/' + adventure.id;
     });
 
@@ -257,38 +265,39 @@ export default async function Search() {
       await addAdventure(adventure.toPlainObject(), AuthenticatedUser.id);
     }
 
-
     async function searchActivity(category, location) {
       suggestions = new Array();
-      let filters = "";
-      if (category != 'Categories' && location != 'Location'){
+      let filters = '';
+      if (category != 'Categories' && location != 'Location') {
         suggestions = await getActivitiesWhere(category, location);
-        filters += "(<b>Location:</b> " + location + ", <b>Category:</b> " + category + ") ";
-      } else{
+        filters += '(<b>Location:</b> ' + location + ', <b>Category:</b> ' + category + ') ';
+      } else {
         if (location != 'Location') {
           suggestions = await getActivitiesWhere(null, location);
-          filters += "(<b>Location:</b> " + location + ") ";
+          filters += '(<b>Location:</b> ' + location + ') ';
         } else if (category != 'Categories') {
           suggestions = await getActivitiesWhere(category, null);
-          filters += "(<b>Category:</b> " + category + ") ";
+          filters += '(<b>Category:</b> ' + category + ') ';
         }
-      } 
+      }
 
       await updateResults(suggestions, filters);
       assignEventToSuggestions();
     }
 
-    async function updateResults(suggestions, filters){
-      var output="";
-      if(suggestions!= null && suggestions.length > 0){
+    async function updateResults(suggestions, filters) {
+      var output = '';
+      if (suggestions != null && suggestions.length > 0) {
         output = `<h4>Search results <span>${filters}</span></h4>`;
-      }else{
-        output = "<h5>No results for your search. Try again with different filters.</h5>";
+      } else {
+        output = '<h5>No results for your search. Try again with different filters.</h5>';
       }
-        for(let suggestion of suggestions){
-            let additional = "";
-            const exists = adventure.alreadyHas(suggestion.id);
-            if(exists){ additional = "added"};
+      for (let suggestion of suggestions) {
+        let additional = '';
+        const exists = adventure.alreadyHas(suggestion.id);
+        if (exists) {
+          additional = 'added';
+        }
 
         output += `<div class="activity ${additional}" id="${suggestion.id}">
             <img src="${suggestion.imageUrl}" alt="Activity picture">

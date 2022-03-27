@@ -1,40 +1,40 @@
 <div class="my-planner">
   <h2>My Planner</h2>
-  <div class="info-section">
-    <div class="planner-date-wrapper">
-      <div class="planner-selector dropdown">
-        <button
-          class="btn btn-secondary dropdown-toggle"
-          type="button"
-          id="adventureSelectionButton"
-          data-bs-toggle="dropdown"
-          aria-expanded="false"
-        >
-          Select
-        </button>
-        <ul class="dropdown-menu" aria-labelledby="adventureSelectionButton"></ul>
+  <div class="content-wrapper">
+    <div class="info-section">
+      <div class="planner-date-wrapper">
+        <div class="planner-selector dropdown">
+          <button
+            class="btn btn-secondary dropdown-toggle"
+            type="button"
+            id="adventureSelectionButton"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            Select
+          </button>
+          <ul class="dropdown-menu" aria-labelledby="adventureSelectionButton"></ul>
+        </div>
+        <div class="date-selector">
+          <input placeholder="From date" type="date" id="beginningDate" class="form-control adventureDates" />
+          <input placeholder="To date" type="date" id="endDate" class="form-control adventureDates" />
+        </div>
       </div>
-      <div class="date-selector">
-        <input placeholder="From date" type="date" id="beginningDate" class="form-control adventureDates" />
-        <input placeholder="To date" type="date" id="endDate" class="form-control adventureDates" />
+      <div class="meta-info">
+        <p class="info">By <span id="adventureCreator">Username</span></p>
+        <span>•</span>
+        <p class="info"><span id="activityNumber">0</span> activities</p>
       </div>
     </div>
-    <div class="meta-info">
-      <p class="info">By <span id="adventureCreator">Username</span></p>
-      <span>•</span>
-      <p class="info"><span id="activityNumber">0</span> activities</p>
+    <div class="to-schedule">
+      <h4>Activities to Schedule</h4>
+      <div class="horizontal-scroll">
+        <div class="activity-wrapper"></div>
+      </div>
     </div>
-  </div>
-
-  <div class="to-schedule">
-    <h4>Activities to Schedule</h4>
-    <div class="horizontal-scroll">
-      <div class="activity-wrapper"></div>
+    <div class="schedule-activities">
+      <div class="accordion" id="accordionPanelsForScheduling"></div>
     </div>
-  </div>
-
-  <div class="schedule-activities">
-    <div class="accordion" id="accordionPanelsForScheduling"></div>
   </div>
 
   <!-- Schedule Modal -->

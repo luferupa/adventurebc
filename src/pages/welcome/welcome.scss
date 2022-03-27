@@ -2,17 +2,18 @@
 
 .welcome {
     height: 100vh;
-    background: url("https://firebasestorage.googleapis.com/v0/b/adventurebc-bug-hunters.appspot.com/o/welcome%2Fwelcome.png?alt=media&token=d5407bdf-ee19-4ebc-93b0-a94d86824007");
+    background: url("https://firebasestorage.googleapis.com/v0/b/adventurebc-bug-hunters.appspot.com/o/welcome%2Fwelcome-background.jpg?alt=media&token=22e7159c-dc25-4088-a7e5-10a7a001f7d9");
     background-repeat: no-repeat;
-    background-size: contain;
-    background-position: center center;
+    background-size: cover;
+    background-position: center;
+    background-repeat: repeat-x;
     text-align: center;
     display: flex;
     flex-flow: column;
     align-items: center;
     justify-content: center;
 
-    #wrapper{
+    #wrapper {
         display: flex;
         flex-flow: column nowrap;
         background-color: rgba($color: #ffffff, $alpha: 0.8);
@@ -23,17 +24,15 @@
         position: relative;
         bottom: 2rem;
 
-        img{
+        img {
             max-width: 95%;
         }
 
-        button{
+        button {
             width: 8rem;
             font-size: 0.8rem;
         }
     }
-
-    
 
     .btn-groups {
         display: flex;
@@ -60,22 +59,19 @@
     }
 }
 
-.modal-backdrop.show{
-    opacity:0 !important;
+.modal-backdrop.show {
+    opacity: 0 !important;
 }
 
 @media screen and (max-width: 700px) {
     .welcome {
-       background-size: cover;
+        background-size: cover;
 
-        #wrapper{
-
-            button{
+        #wrapper {
+            button {
                 font-size: 1rem;
                 width: 9rem;
             }
         }
     }
-
-    
 }

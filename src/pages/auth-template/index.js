@@ -27,10 +27,14 @@ export default async function AuthTemplate() {
   document.querySelector('.file-upload').onchange = async function (e) {
     const uploadedFile = e.target.files[0];
 
-    const response = await changeUserPicture(uploadedFile, AuthenticatedUser);
+    try {
+      const response = await changeUserPicture(uploadedFile, AuthenticatedUser);
 
-    AuthenticatedUser.avatarURL = response;
-    userAvatar.setAttribute('src', window.URL.createObjectURL(uploadedFile));
+      AuthenticatedUser.avatarURL = response;
+      userAvatar.setAttribute('src', window.URL.createObjectURL(uploadedFile));
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   /**

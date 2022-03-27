@@ -1,16 +1,17 @@
 'use strict';
 
 import { AuthenticatedUser } from '../../index';
-import { getUserAdventures, getUserFavorites, addFavorite, removeFavorite } from '../../firebase/users';
+import { getUserFavorites, addFavorite, removeFavorite } from '../../firebase/users';
 
 import { getActivityPlace, getActivitiesRandom, getActivity, getActivityPlaceObject } from '../../firebase/activities';
-import { getFormattedDate } from '../../utils/index.js';
+import { getFormattedDate, setLoader } from '../../utils/index.js';
 export let favouriteActiv = new Array();
 
 export default async function Home() {
   if (!AuthenticatedUser) {
     location.hash = '#welcome';
   } else {
+    setLoader(true);
     const userAdventures = AuthenticatedUser.adventures;
     const myAdventuresDiv = document.querySelector('.my-adventures .horizontal-scroll');
     const randomActivities = await getActivitiesRandom();
@@ -22,6 +23,7 @@ export default async function Home() {
     await updateExplore();
     await updateFavourites();
     addFavoritesAction();
+    setLoader(false);
 
     async function updateMyAdventures() {
       myAdventuresDiv.innerHTML = ``;
@@ -36,48 +38,45 @@ export default async function Home() {
       }
     }
 
-   async function modifyFavourites(favouriteH){
+    async function modifyFavourites(favouriteH) {
       let added = false;
-      for(let favorite of favouriteActiv){
-        if(favorite.id == favouriteH.parentElement.id.substring(3)){
+      for (let favorite of favouriteActiv) {
+        if (favorite.id == favouriteH.parentElement.id.substring(3)) {
           added = true;
           break;
         }
       }
-      
-      if(!added){
+
+      if (!added) {
         const activityRef = await addFavorite(AuthenticatedUser.id, favouriteH.parentElement.id.substring(3));
         AuthenticatedUser.favourites.push(activityRef);
-        favouriteH.classList.remove("fa-regular");
-        favouriteH.classList.add("fav");
-        favouriteH.classList.add("fa-solid");
-
-      }else{
+        favouriteH.classList.remove('fa-regular');
+        favouriteH.classList.add('fav');
+        favouriteH.classList.add('fa-solid');
+      } else {
         const activityRef = await removeFavorite(AuthenticatedUser.id, favouriteH.parentElement.id.substring(3));
         AuthenticatedUser.favourites = AuthenticatedUser.favourites.filter(function (value) {
           return value.id != favouriteH.parentElement.id.substring(3);
         });
-        favouriteH.classList.add("fa-regular");
-        favouriteH.classList.remove("fa-solid");
-        favouriteH.classList.remove("fav");
+        favouriteH.classList.add('fa-regular');
+        favouriteH.classList.remove('fa-solid');
+        favouriteH.classList.remove('fav');
       }
-
 
       favouriteActiv = await getUserFavorites(AuthenticatedUser.favourites);
       updateFavourites();
       addFavoritesAction();
-
     }
 
     async function updateExplore() {
-      let content = "";
-      
+      let content = '';
+
       for (let activity of randomActivities) {
         content += `<div><div class="activity block-wide" id="ex-${activity.id}">
             <img src="${activity.imageUrl}" alt="Activity picture">
             <span class="fa-regular fa-heart`;
-        for(let fav of favouriteActiv){
-          if(fav.id == activity.id){
+        for (let fav of favouriteActiv) {
+          if (fav.id == activity.id) {
             content += ` fa-solid fav`;
             break;
           }
@@ -91,10 +90,9 @@ export default async function Home() {
     }
 
     async function updateFavourites() {
-
       favouritesDiv.innerHTML = ``;
-        for(let activity of favouriteActiv){
-          favouritesDiv.innerHTML += `<div><div class="activity block-wide" id="fv-${activity.id}">
+      for (let activity of favouriteActiv) {
+        favouritesDiv.innerHTML += `<div><div class="activity block-wide" id="fv-${activity.id}">
             <img src="${activity.imageUrl}" alt="Activity picture">
             <span class="fa-solid fa-heart fav"></span>
             <h3>${activity.name}</h3>
@@ -143,25 +141,23 @@ export default async function Home() {
       </iframe>`;
     }
 
-    const closeButton = document.getElementById("closeButton");
+    const closeButton = document.getElementById('closeButton');
 
     closeButton.addEventListener('click', () => {
       console.log('event listener close button');
       modalWrapper.classList.remove('showActivity');
     });
 
-    function addFavoritesAction(){
-      const act = document.querySelectorAll(".fa-heart");
-        act.forEach((activityH) => {
-          activityH.removeEventListener("click", function () {
-             modifyFavourites(activityH);
-          });
-          activityH.addEventListener("click",  function () {
-             modifyFavourites(activityH);
-          });
-          
+    function addFavoritesAction() {
+      const act = document.querySelectorAll('.fa-heart');
+      act.forEach((activityH) => {
+        activityH.removeEventListener('click', function () {
+          modifyFavourites(activityH);
         });
-      
+        activityH.addEventListener('click', function () {
+          modifyFavourites(activityH);
+        });
+      });
     }
   }
 }

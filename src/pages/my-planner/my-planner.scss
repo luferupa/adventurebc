@@ -5,6 +5,10 @@
   margin: 0 auto;
   padding: 0 1rem;
 
+  .content-wrapper{
+    min-height: 70vh;
+  }
+
   h2 {
     margin-bottom: 1rem;
   }
@@ -168,7 +172,7 @@
           }
         }
 
-        &.add-activity {
+        &.add-activity-from-search {
           display: flex;
           align-items: center;
           justify-content: center;

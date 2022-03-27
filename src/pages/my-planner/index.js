@@ -1,6 +1,6 @@
 'use strict';
 
-import { AuthenticatedUser, Modal } from '../../index';
+import { AuthenticatedUser, Modal, myPlannerSnapshot } from '../../index';
 
 import { db, collection, doc, onSnapshot } from '../../firebase';
 import { getActivity } from '../../firebase/activities';
@@ -11,7 +11,6 @@ export default async function MyPlanner() {
   const activitiesCollection = collection(db, 'activities');
 
   let userAdventures = [];
-  let myPlannerSnapshot;
   let currentAdventure;
   let currentAdventureId = null;
   let plannerDates = [];
@@ -19,7 +18,7 @@ export default async function MyPlanner() {
   if (!AuthenticatedUser) {
     location.hash = '#welcome';
   } else {
-    myPlannerSnapshot = onSnapshot(doc(db, 'users', AuthenticatedUser.id), { includeMetadataChanges: true }, (doc) => {
+    onSnapshot(doc(db, 'users', AuthenticatedUser.id), { includeMetadataChanges: true }, (doc) => {
       if (!doc.metadata.hasPendingWrites && doc.data().adventures.length > 0 && location.hash.includes('#myPlanner')) {
         setLoader(true);
         userAdventures = doc.data().adventures;
@@ -71,9 +70,16 @@ export default async function MyPlanner() {
 
     document.querySelectorAll('.schedule-button').forEach((item) => {
       item.addEventListener('click', function () {
-        daySlot.value = '';
-        dayOrder.value = '';
-        document.querySelector('#scheduleActivityModal #activityId').value = this.parentElement.parentElement.id;
+        const activityId = this.parentElement.parentElement.id;
+
+        const selectedActivity = currentAdventure.activities.find((activity) => activity.id === activityId);
+
+        if (selectedActivity) {
+          daySlot.value = selectedActivity.daySlot;
+          dayOrder.value = selectedActivity.dayOrder;
+        }
+
+        document.querySelector('#scheduleActivityModal #activityId').value = activityId;
         Modal.getOrCreateInstance(document.getElementById('scheduleActivityModal')).show();
       });
     });
@@ -238,32 +244,32 @@ export default async function MyPlanner() {
    */
   function populateToSchedule() {
     const activityWrapper = document.querySelector('.my-planner .to-schedule .activity-wrapper');
-    activityWrapper.innerHTML = `<div class="activity add-activity"><span class="fa-solid fa-plus"></span></div>`;
+    activityWrapper.innerHTML = `<div class="activity add-activity-from-search"><span class="fa-solid fa-plus"></span></div>`;
 
     if (currentAdventure.activities && currentAdventure.activities.length > 0) {
       currentAdventure.activities.forEach((activity) => {
         if (activity.daySlot === '' || !plannerDates.includes(activity.daySlot)) {
           const activityDOM = `
-        <div class="activity" id=${activity.id}>
-          <img
-            src="${activity.imageUrl}"
-            alt="Activity picture"
-          />
-          <span class="fa-regular fa-heart"></span>
-          <button class="delete-button"><span class='fa-solid fa-xmark'></span></button>
-          <h3>${activity.name}</h3>
-          <p>${activity.place}</p>
-          <div class="hover-state">
-            <button class="btn btn-secondary schedule-button" >Schedule</button>
-          </div>
-      </div>`;
+            <div class="activity" id=${activity.id}>
+              <img
+                src="${activity.imageUrl}"
+                alt="Activity picture"
+              />
+              <span class="fa-regular fa-heart"></span>
+              <button class="delete-button"><span class='fa-solid fa-xmark'></span></button>
+              <h3>${activity.name}</h3>
+              <p>${activity.place}</p>
+              <div class="hover-state">
+                <button class="btn btn-secondary schedule-button" >Schedule</button>
+              </div>
+            </div>`;
 
           activityWrapper.innerHTML += activityDOM;
         }
       });
     }
 
-    document.querySelector('.add-activity').addEventListener('click', function () {
+    document.querySelector('.add-activity-from-search').addEventListener('click', function () {
       location.hash = `#search/${currentAdventure.id}`;
     });
   }

@@ -39,6 +39,7 @@ import { auth } from './firebase';
 import { createUserProfileDocument } from './firebase/auth';
 
 export let AuthenticatedUser = null;
+export let myPlannerSnapshot = null;
 
 //setting up the Router with pages
 Router.init([
