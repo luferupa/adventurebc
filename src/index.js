@@ -14,12 +14,6 @@ import Modal from 'bootstrap/js/dist/modal';
 
 export { Modal };
 
-// import 'bootstrap/js/dist/popover';
-// import 'bootstrap/js/dist/scrollspy';
-// import 'bootstrap/js/dist/tab';
-// import 'bootstrap/js/dist/toast';
-// import 'bootstrap/js/dist/tooltip';
-
 //fontawesome
 import '@fortawesome/fontawesome-free/js/fontawesome';
 import '@fortawesome/fontawesome-free/js/solid';
@@ -68,7 +62,7 @@ auth.onAuthStateChanged(async (userInfo) => {
     try {
       const user = await createUserProfileDocument(userInfo);
       AuthenticatedUser = user;
-      console.log(AuthenticatedUser);
+
       if (location.hash === '#welcome' || location.hash === '') {
         location.hash = toRoute ? (toRoute === '#welcome' ? '#home' : toRoute) : '#home';
       }
