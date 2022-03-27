@@ -16,6 +16,7 @@ import {
   limit,
   orderBy,
   onSnapshot,
+  arrayRemove,
 } from 'firebase/firestore';
 import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 
@@ -58,4 +59,5 @@ export {
   getDownloadURL,
   arrayUnion,
   onSnapshot,
+  arrayRemove,
 };

@@ -126,7 +126,6 @@ export default async function Home() {
     }
 
     const closeButton = document.getElementById("closeButton");
-    console.log(closeButton);
 
     closeButton.addEventListener('click', () => {
       console.log("event listener close button");

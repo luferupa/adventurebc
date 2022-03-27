@@ -10,16 +10,10 @@ const getUsers = async () => {
   return snapshot.docs.map((doc) => doc.data());
 };
 
-const getUser = async (userId) => {
+const getUserAdventures = async (userId) => {
   const userDocRef = doc(usersCollection, userId);
   const snapshot = await getDoc(userDocRef);
   return snapshot.data().adventures;
-};
-
-//not being used - pending to delete
-const getUserAdventures = async (userId) => {
-  const userDocRef = doc(usersCollection, userId);
-  return await getDoc(userDocRef);
 };
 
 
@@ -43,7 +37,7 @@ const addFavorite = async (userId,favoriteId) => {
     favourites: arrayUnion(activityRef),
   });
 
-  return activityRef;//await getUser(userId);
+  return activityRef;
 }
 
 export { usersCollection, getUsersSnapshot, getUsers, getUserAdventures, getUserFavorites, addFavorite };
