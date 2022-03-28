@@ -113,7 +113,6 @@ export default async function Home() {
     };
 
     async function openActivity(id) {
-      let currentID = id;
       modalWrapper.classList.add('showActivity');
 
       let modalHeader = document.getElementById('modalHeader');
@@ -121,8 +120,8 @@ export default async function Home() {
       let descriptionText = document.getElementById('descriptionText');
       let mapLongLat = document.getElementById('mapLongLat');
 
-      let currentActivity = await getActivity(currentID);
-      let cityDB = await getActivityPlaceObject(currentID);
+      let currentActivity = await getActivity(id);
+      let cityDB = await getActivityPlaceObject(id);
 
       modalHeader.innerHTML = `<h2 id="title">${currentActivity.name}</h2><img src="${currentActivity.imageUrl}"><span class="fa-solid fa-xmark"></span>`;
       city.innerHTML = cityDB.city;
