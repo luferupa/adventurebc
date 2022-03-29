@@ -8,12 +8,14 @@ import { getCities } from '../../firebase/cities';
 import { getActivitiesWhere, getActivityPlace, activitiesCollection } from '../../firebase/activities';
 import { addAdventure, getAdventure, removeAdventure } from '../../firebase/adventures';
 import { db, doc } from '../../firebase';
-import { getUserAdventures, getUserFavorites, addFavorite, removeFavorite } from '../../firebase/users';
+import { getUserAdventures, addFavorite, removeFavorite } from '../../firebase/users';
+import { setLoader } from '../../utils';
 
 export default async function Search() {
   if (!AuthenticatedUser) {
     location.hash = '#welcome';
   } else {
+    setLoader(true);
     class Adventure {
       constructor(name, beginningDate, endDate, id) {
         this.name = name;
@@ -172,7 +174,10 @@ export default async function Search() {
     if (favouriteActiv.length <= 0) {
       document.getElementById('favourites').style.display = 'none';
     }
+
+    setLoader(false);
     /* INITIAL LOAD - END */
+    
 
     beginningDate.onchange = () => {
       endDate.value = '';
@@ -221,6 +226,7 @@ export default async function Search() {
     });
 
     searchFilters.addEventListener('submit', async function (event) {
+      setLoader(true);
       event.preventDefault();
       event.stopPropagation();
 
@@ -241,6 +247,8 @@ export default async function Search() {
       collapsers.forEach((element) => {
         element.classList.remove('show');
       });
+
+      setLoader(false);
     });
 
     formAdventure.addEventListener('submit', async function (event) {

@@ -17,6 +17,7 @@ export default async function Home() {
     location.hash = '#welcome';
   } else {
     setLoader(true);
+    document.querySelector(".home-greeting p").innerHTML = "Hello, "+ AuthenticatedUser.username.split(" ")[0] + "!";
     const userAdventures = AuthenticatedUser.adventures;
     const myAdventuresDiv = document.querySelector('.my-adventures .horizontal-scroll');
     const randomActivities = await getActivitiesRandom();

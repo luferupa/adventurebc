@@ -13,6 +13,12 @@
     display: grid;
     grid-gap: 1rem;
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    justify-items: center;
+
+    >div{
+      max-width: 600px;
+      height: auto;
+    }
 
     .activity {
       position: relative;
@@ -35,10 +41,10 @@
 
       .fa-heart {
         font-size: 1.8rem;
-        color: white;
+        color: red;
         position: absolute;
         top: 0.5rem;
-        right: 0.7rem;
+        right: 0.7rem; 
       }
 
       &.add-activity {
