@@ -124,12 +124,10 @@ export default async function Home() {
 
       let currentActivity = await getActivity(id);
       let cityDB = await getActivityPlaceObject(id);
-      let categories = await getCategories(id);
 
-      modalHeader.innerHTML = `<h2 id="title">${currentActivity.name}</h2><img src="${currentActivity.imageUrl}"><span class="fa-solid fa-xmark"></span>`;
+      modalHeader.innerHTML = `<h2 id="title">${currentActivity.name}</h2><img src="${currentActivity.imageUrl}"><div id="closeButton"><span class="fa-solid fa-xmark"></span></div>`;
       city.innerHTML = cityDB.city;
       descriptionText.innerHTML = currentActivity.about;
-
       
       tipsAndRecommendation.innerHTML = getRecommendations(currentActivity)
 
@@ -144,13 +142,19 @@ export default async function Home() {
         cityDB.coordinates._lat
       }%2C${cityDB.coordinates._long}" 
       </iframe>`;
+
+      const closeButton = document.getElementById('closeButton');
+
+      closeButton.addEventListener('click', () => {
+        modalWrapper.classList.remove('showActivity');
+      });
     }
 
-    const closeButton = document.getElementById('closeButton');
+/*     const closeButton = document.getElementById('closeButton');
 
     closeButton.addEventListener('click', () => {
       modalWrapper.classList.remove('showActivity');
-    });
+    }); */
 
     function addFavoritesAction() {
       const act = document.querySelectorAll('.fa-heart');
@@ -165,25 +169,24 @@ export default async function Home() {
     }
 
     function getRecommendations(id) {
-      let output = `<div>`
+      let output = ``
 
       for (let i = 0; i < id.category.length; i++) {
         if (id.category[i].hasOwnProperty('tips') == true) { 
           for (let e = 0; e < id.category[i].tips.length; e++) {
-            console.log("valor de i = " + i)
-            console.log("valor de e = " + e)
-            console.log(id.category[i].tips[e].description)
-            let preOutput = `<div id="category-${i}-tip-${e}">${id.category[i].tips[e].description}</div>`
+
+            let preOutput = `
+              <div class="tip">
+                <img src="${id.category[i].tips[e].url}">
+                <p>
+                  ${id.category[i].tips[e].description}
+                </p>
+              </div>
+              `;  
             output += preOutput;
           }
         }
-      }
-      output += `</div>`
-      return output;
-
-
-      //return `<div>EITA MEHMÃO</div>`
-      //return `<div>${currentActivity.category[1].tips[0].description}</div>`
+      } return output;
     }
   }
 }
