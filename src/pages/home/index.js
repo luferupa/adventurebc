@@ -50,22 +50,21 @@ export default async function Home() {
       if (!added) {
         const activityRef = await addFavorite(AuthenticatedUser.id, favouriteH.parentElement.id.substring(3));
         AuthenticatedUser.favourites.push(activityRef);
-        favouriteH.classList.remove('fa-regular');
-        favouriteH.classList.add('fav');
-        favouriteH.classList.add('fa-solid');
+        favouriteH.firstChild.classList.remove('fa-regular');
+        favouriteH.firstChild.classList.add('fav');
+        favouriteH.firstChild.classList.add('fa-solid');
       } else {
         const activityRef = await removeFavorite(AuthenticatedUser.id, favouriteH.parentElement.id.substring(3));
         AuthenticatedUser.favourites = AuthenticatedUser.favourites.filter(function (value) {
           return value.id != favouriteH.parentElement.id.substring(3);
         });
-        favouriteH.classList.add('fa-regular');
-        favouriteH.classList.remove('fa-solid');
-        favouriteH.classList.remove('fav');
+        favouriteH.firstChild.classList.add('fa-regular');
+        favouriteH.firstChild.classList.remove('fa-solid');
+        favouriteH.firstChild.classList.remove('fav');
       }
 
       favouriteActiv = await getUserFavorites(AuthenticatedUser.favourites);
-      updateFavourites();
-      addFavoritesAction();
+      await updateFavourites();
     }
 
     async function updateExplore() {
@@ -74,14 +73,14 @@ export default async function Home() {
       for (let activity of randomActivities) {
         content += `<div><div class="activity block-wide" id="ex-${activity.id}">
             <img src="${activity.imageUrl}" alt="Activity picture">
-            <span class="fa-regular fa-heart`;
+            <div class="heart"><span class="fa-regular fa-heart`;
         for (let fav of favouriteActiv) {
           if (fav.id == activity.id) {
             content += ` fa-solid fav`;
             break;
           }
         }
-        content += `"></span>
+        content += `"></span></div>
             <h3>${activity.name}</h3>
             <p>${await getActivityPlace(activity.id)}</p>
             </div></div>`;
@@ -90,15 +89,17 @@ export default async function Home() {
     }
 
     async function updateFavourites() {
-      favouritesDiv.innerHTML = ``;
+      let content = '';
+      
       for (let activity of favouriteActiv) {
-        favouritesDiv.innerHTML += `<div><div class="activity block-wide" id="fv-${activity.id}">
+        content += `<div><div class="activity block-wide" id="fv-${activity.id}">
             <img src="${activity.imageUrl}" alt="Activity picture">
-            <span class="fa-solid fa-heart fav"></span>
+            <div class="heart"><span class="fa-solid fa-heart fav"></span></div>
             <h3>${activity.name}</h3>
             <p>${await getActivityPlace(activity.id)}</p>
             </div></div>`;
       }
+      favouritesDiv.innerHTML = content;
     }
 
     const exploreActivities = document.getElementById('exploreID');
@@ -149,11 +150,9 @@ export default async function Home() {
     });
 
     function addFavoritesAction() {
-      const act = document.querySelectorAll('.fa-heart');
+      const act = document.querySelectorAll('.heart');
       act.forEach((activityH) => {
-        activityH.removeEventListener('click', function () {
-          modifyFavourites(activityH);
-        });
+        
         activityH.addEventListener('click', function () {
           modifyFavourites(activityH);
         });
