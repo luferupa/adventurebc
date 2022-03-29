@@ -27,7 +27,7 @@ export default async function Home() {
     updateMyAdventures();
     await updateExplore();
     await updateFavourites();
-    addFavoritesAction();
+    addFavoritesAction('.heart');
     setLoader(false);
 
     async function updateMyAdventures() {
@@ -68,8 +68,13 @@ export default async function Home() {
         favouriteH.firstChild.classList.remove('fav');
       }
 
+      if(favouriteH.parentElement.id.substring(0,2) == "fv"){
+        await refreshSuggestion("ex-"+favouriteH.parentElement.id.substring(3));
+      }
+
       favouriteActiv = await getUserFavorites(AuthenticatedUser.favourites);
       await updateFavourites();
+      addFavoritesAction('.favourites .heart');
     }
 
     async function updateExplore() {
@@ -154,14 +159,33 @@ export default async function Home() {
       modalWrapper.classList.remove('showActivity');
     });
 
-    function addFavoritesAction() {
-      const act = document.querySelectorAll('.heart');
+    function addFavoritesAction(selector) {
+      const act = document.querySelectorAll(selector);
       act.forEach((activityH) => {
         
         activityH.addEventListener('click', function () {
           modifyFavourites(activityH);
         });
       });
+    }
+
+    async function refreshSuggestion(activityId){
+      let added = false;
+      for (let favorite of favouriteActiv) {
+        if (favorite.id == activityId.substring(3)) {
+          added = true;
+          break;
+        }
+      }
+
+      const element = document.querySelector('#'+activityId+' .heart');
+
+      if(added){
+        element.firstChild.classList.add('fa-regular');
+        element.firstChild.classList.remove('fa-solid');
+        element.firstChild.classList.remove('fav');
+      }
+
     }
   }
 }

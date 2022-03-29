@@ -388,14 +388,11 @@ export default async function Search() {
       await updateFav(AuthenticatedUser.favourites);
       await updateFavourites();
       
-      
-      //const newFav = '#fv-'+favouriteH.parentElement.id.substring(3);
       assignEventToActivities('#favourites .heart');
       addFavoritesAction('#favourites .heart');
     }
 
     async function refreshSuggestion(activityId){
-      console.log("called with "+activityId);
       let added = false;
       for (let favorite of favouriteActiv) {
         if (favorite.id == activityId.substring(3)) {
