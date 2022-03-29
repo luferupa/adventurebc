@@ -5,7 +5,12 @@ import { getUserFavorites, addFavorite, removeFavorite } from '../../firebase/us
 
 import { getActivityPlace, getActivitiesRandom, getActivity, getActivityPlaceObject } from '../../firebase/activities';
 import { getFormattedDate, setLoader } from '../../utils/index.js';
-export let favouriteActiv = new Array();
+export { updateFav, favouriteActiv };
+
+async function updateFav(list){
+  favouriteActiv = await getUserFavorites(AuthenticatedUser.favourites);
+}
+let favouriteActiv = new Array();
 
 export default async function Home() {
   if (!AuthenticatedUser) {

@@ -1,14 +1,14 @@
 'use strict';
 
 import { AuthenticatedUser } from '../../index';
-import { favouriteActiv } from '../home/index';
+import { favouriteActiv, updateFav } from '../home/index';
 
 import { getCategories } from '../../firebase/categories';
 import { getCities } from '../../firebase/cities';
 import { getActivitiesWhere, getActivityPlace, activitiesCollection } from '../../firebase/activities';
 import { addAdventure, getAdventure, removeAdventure } from '../../firebase/adventures';
 import { db, doc } from '../../firebase';
-import { getUserAdventures } from '../../firebase/users';
+import { getUserAdventures, getUserFavorites, addFavorite, removeFavorite } from '../../firebase/users';
 
 export default async function Search() {
   if (!AuthenticatedUser) {
@@ -33,6 +33,7 @@ export default async function Search() {
 
         this.userActivities = new Array();
       }
+
       addActivity(activityRef) {
         this.userActivities.push({
           activityId: activityRef,
@@ -57,7 +58,7 @@ export default async function Search() {
       }
     }
 
-    let categoryOptions, locationOptions, suggestions;
+    let categoryOptions, locationOptions, suggestions, filters;
 
     const categorySelect = document.getElementById('category-sel');
     const locationSelect = document.getElementById('location-sel');
@@ -146,9 +147,9 @@ export default async function Search() {
       let output = ``;
       for (let activity of favouriteActiv) {
         const exists = adventure.alreadyHas(activity.id);
-        output += `<div class="activity" id="${activity.id}">
+        output += `<div class="activity" id="fv-${activity.id}">
                   <img src="${activity.imageUrl}" alt="Activity picture">
-                  <span class="fa-regular fa-heart"></span>`;
+                  <div class="heart"><span class="fa-solid fa-heart fav"></span></div>`;
         if (exists) {
           output += `<span class="fa-solid fa-xmark remove"></span>`;
         } else {
@@ -160,7 +161,8 @@ export default async function Search() {
       }
 
       divFavourites.innerHTML = output;
-      assignEventToSuggestions();
+      assignEventToActivities('#favourites .activity');
+      addFavoritesAction('#favourites .heart');
     }
 
     loadCategories();
@@ -267,7 +269,7 @@ export default async function Search() {
 
     async function searchActivity(category, location) {
       suggestions = new Array();
-      let filters = '';
+      filters = '';
       if (category != 'Categories' && location != 'Location') {
         suggestions = await getActivitiesWhere(category, location);
         filters += '(<b>Location:</b> ' + location + ', <b>Category:</b> ' + category + ') ';
@@ -281,11 +283,12 @@ export default async function Search() {
         }
       }
 
-      await updateResults(suggestions, filters);
-      assignEventToSuggestions();
+      await updateResults();
+      assignEventToActivities('#suggestions .activity');
+      addFavoritesAction('#suggestions .heart');
     }
 
-    async function updateResults(suggestions, filters) {
+    async function updateResults() {
       var output = '';
       if (suggestions != null && suggestions.length > 0) {
         output = `<h4>Search results <span>${filters}</span></h4>`;
@@ -299,9 +302,16 @@ export default async function Search() {
           additional = 'added';
         }
 
-        output += `<div class="activity ${additional}" id="${suggestion.id}">
+        output += `<div class="activity ${additional}" id="sg-${suggestion.id}">
             <img src="${suggestion.imageUrl}" alt="Activity picture">
-            <span class="fa-regular fa-heart"></span>`;
+            <div class="heart"><span class="fa-regular fa-heart`;
+        for (let fav of favouriteActiv) {
+          if (fav.id == suggestion.id) {
+            output += ` fa-solid fav`;
+            break;
+          }
+        }
+        output += `"></span></div>`;
         if (exists) {
           output += `<span class="fa-solid fa-xmark remove"></span>`;
         } else {
@@ -313,10 +323,11 @@ export default async function Search() {
             </div>`;
       }
       divResults.innerHTML = output;
+      
     }
 
-    function assignEventToSuggestions() {
-      const activities = document.querySelectorAll('.activity');
+    function assignEventToActivities(selector) {
+      const activities = document.querySelectorAll(selector);
       activities.forEach((activity) => {
         activity.addEventListener('click', function () {
           if (this.classList.contains('added')) {
@@ -335,5 +346,87 @@ export default async function Search() {
     function getRandomId() {
       return Date.now().toString(36) + Math.random().toString(36).substr(2);
     }
+
+    function addFavoritesAction(selector) {
+      const act = document.querySelectorAll(selector);
+      act.forEach((activityH) => {
+        
+        activityH.addEventListener('click', function () {
+          modifyFavourites(activityH);
+        });
+      });
+    }
+
+    async function modifyFavourites(favouriteH) {
+      let added = false;
+      for (let favorite of favouriteActiv) {
+        if (favorite.id == favouriteH.parentElement.id.substring(3)) {
+          added = true;
+          break;
+        }
+      }
+
+      if (!added) {
+        const activityRef = await addFavorite(AuthenticatedUser.id, favouriteH.parentElement.id.substring(3));
+        AuthenticatedUser.favourites.push(activityRef);
+        favouriteH.firstChild.classList.remove('fa-regular');
+        favouriteH.firstChild.classList.add('fav');
+        favouriteH.firstChild.classList.add('fa-solid');
+      } else {
+        const activityRef = await removeFavorite(AuthenticatedUser.id, favouriteH.parentElement.id.substring(3));
+        AuthenticatedUser.favourites = AuthenticatedUser.favourites.filter(function (value) {
+          return value.id != favouriteH.parentElement.id.substring(3);
+        });
+        favouriteH.firstChild.classList.add('fa-regular');
+        favouriteH.firstChild.classList.remove('fa-solid');
+        favouriteH.firstChild.classList.remove('fav');
+      }
+      
+      if(favouriteH.parentElement.id.substring(0,2) == "fv"){
+          await refreshSuggestion("sg-"+favouriteH.parentElement.id.substring(3));
+      }
+      await updateFav(AuthenticatedUser.favourites);
+      await updateFavourites();
+      
+      
+      //const newFav = '#fv-'+favouriteH.parentElement.id.substring(3);
+      assignEventToActivities('#favourites .heart');
+      addFavoritesAction('#favourites .heart');
+    }
+
+    async function refreshSuggestion(activityId){
+      console.log("called with "+activityId);
+      let added = false;
+      for (let favorite of favouriteActiv) {
+        if (favorite.id == activityId.substring(3)) {
+          added = true;
+          break;
+        }
+      }
+
+      const element = document.querySelector('#'+activityId+' .heart');
+
+      if(added){
+        element.firstChild.classList.add('fa-regular');
+        element.firstChild.classList.remove('fa-solid');
+        element.firstChild.classList.remove('fav');
+      }
+
+    }
+
+    async function updateFavourites() {
+      let content = '';
+      
+      for (let activity of favouriteActiv) {
+        content += `<div class="activity" id="fv-${activity.id}">
+            <img src="${activity.imageUrl}" alt="Activity picture">
+            <div class="heart"><span class="fa-solid fa-heart fav"></span></div>
+            <h3>${activity.name}</h3>
+            <p>${await getActivityPlace(activity.id)}</p>
+            </div>`;
+      }
+      divFavourites.innerHTML = content;
+    }
+
   }
 }
