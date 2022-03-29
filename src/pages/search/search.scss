@@ -310,7 +310,7 @@
             display: grid;
             grid-template: "container";
 
-            .fa-xmark {
+            div {
                 grid-area: container;
                 place-self: start;
                 padding-top: 1rem;
@@ -383,10 +383,32 @@
             }
 
             .horizontal-scroll {
-                display: flex;
-                flex-flow: row nowrap;
                 gap: 75px;
                 padding-bottom: 0.7rem;
+
+                .tip {
+                    display: grid;
+                    grid-template: 'container2';
+                    
+                    * {
+                        grid-area: container2;
+                    }
+
+                    p {
+                        background-color: rgba(variables.$color-black, 0.6);
+                        color: variables.$color-white;
+                        padding: 1rem 0;
+                        width: 100%;
+                        place-self: end center;
+                        text-align: center;
+                        margin-bottom: 0;
+                    }
+
+                    img {
+                        height: 100%;
+                        object-fit: cover;
+                    }
+                }
 
                 .place-holder {
                     height: 150px;

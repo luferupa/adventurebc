@@ -150,12 +150,6 @@ export default async function Home() {
       });
     }
 
-/*     const closeButton = document.getElementById('closeButton');
-
-    closeButton.addEventListener('click', () => {
-      modalWrapper.classList.remove('showActivity');
-    }); */
-
     function addFavoritesAction() {
       const act = document.querySelectorAll('.fa-heart');
       act.forEach((activityH) => {
@@ -170,11 +164,9 @@ export default async function Home() {
 
     function getRecommendations(id) {
       let output = ``
-
       for (let i = 0; i < id.category.length; i++) {
         if (id.category[i].hasOwnProperty('tips') == true) { 
           for (let e = 0; e < id.category[i].tips.length; e++) {
-
             let preOutput = `
               <div class="tip">
                 <img src="${id.category[i].tips[e].url}">
