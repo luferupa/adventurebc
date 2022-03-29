@@ -5,7 +5,7 @@ import { getUserFavorites, addFavorite, removeFavorite } from '../../firebase/us
 
 import { getActivityPlace, getActivitiesRandom, getActivity, getActivityPlaceObject } from '../../firebase/activities';
 import { getFormattedDate, setLoader } from '../../utils/index.js';
-import { getCategories } from '../../firebase/categories';
+import { getCategories, getCategoryByRef } from '../../firebase/categories';
 export let favouriteActiv = new Array();
 
 export default async function Home() {
@@ -130,9 +130,8 @@ export default async function Home() {
       city.innerHTML = cityDB.city;
       descriptionText.innerHTML = currentActivity.about;
 
-
-      console.log(currentActivity)
-      tipsAndRecommendation.innerHTML = `<div>${currentActivity.category[0]}</div>`
+      
+      tipsAndRecommendation.innerHTML = getRecommendations(currentActivity)
 
       mapLongLat.innerHTML = `<iframe
       frameborder="0" 
@@ -150,7 +149,6 @@ export default async function Home() {
     const closeButton = document.getElementById('closeButton');
 
     closeButton.addEventListener('click', () => {
-      console.log('event listener close button');
       modalWrapper.classList.remove('showActivity');
     });
 
@@ -164,6 +162,28 @@ export default async function Home() {
           modifyFavourites(activityH);
         });
       });
+    }
+
+    function getRecommendations(id) {
+      let output = `<div>`
+
+      for (let i = 0; i < id.category.length; i++) {
+        if (id.category[i].hasOwnProperty('tips') == true) { 
+          for (let e = 0; e < id.category[i].tips.length; e++) {
+            console.log("valor de i = " + i)
+            console.log("valor de e = " + e)
+            console.log(id.category[i].tips[e].description)
+            let preOutput = `<div id="category-${i}-tip-${e}">${id.category[i].tips[e].description}</div>`
+            output += preOutput;
+          }
+        }
+      }
+      output += `</div>`
+      return output;
+
+
+      //return `<div>EITA MEHMÃO</div>`
+      //return `<div>${currentActivity.category[1].tips[0].description}</div>`
     }
   }
 }

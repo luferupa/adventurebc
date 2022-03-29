@@ -13,12 +13,6 @@ const getCategories = async () => {
     };
   });
 };
-/* 
-const getCategory = async (activityId) => {
-  const activityDocRef = doc(activitiesCollection, activityId);
-  const snapshot = await getDoc(activityDocRef);
-  const snapshotCategory = await getDoc(snapshot.data().category);
-} */
 
 const getCategoryByRef = async (categoryRef) => {
   const snapshotCategory = await getDoc(categoryRef);
