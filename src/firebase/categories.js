@@ -1,4 +1,4 @@
-import { db, collection, getDocs } from '../firebase';
+import { db, collection, getDocs, getDoc } from '../firebase';
 
 const categoriesCollection = collection(db, 'categories');
 
@@ -20,4 +20,9 @@ const getCategory = async (activityId) => {
   const snapshotCategory = await getDoc(snapshot.data().category);
 } */
 
-export { categoriesCollection, getCategoriesSnapshot, getCategories };
+const getCategoryByRef = async (categoryRef) => {
+  const snapshotCategory = await getDoc(categoryRef);
+  return snapshotCategory.data();
+};
+
+export { categoriesCollection, getCategoriesSnapshot, getCategories, getCategoryByRef };

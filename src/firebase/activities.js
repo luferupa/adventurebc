@@ -1,4 +1,5 @@
 import { db, collection, doc, addDoc, getDocs, getDoc, query, where, limit } from '../firebase';
+import { getCategoryByRef } from './categories';
 import { getPlaceCity } from './places';
 
 const activitiesCollection = collection(db, 'activities');
@@ -72,7 +73,9 @@ const getActivityPlaceObject = async (activityId) => {
 const getActivity = async (activityId) => {
   const activityDocRef = doc(activitiesCollection, activityId);
   const snapshot = await getDoc(activityDocRef);
-  return { id: snapshot.id, ...snapshot.data(), place: await getActivityPlace(activityId) };
+  const categoryRefs = snapshot.data().category;
+  const category = await Promise.all(categoryRefs.map(async (ref) => await getCategoryByRef(ref)));
+  return { id: snapshot.id, ...snapshot.data(), place: await getActivityPlace(activityId), category };
 };
 
 const getActivityRef = async (activityId) => {
