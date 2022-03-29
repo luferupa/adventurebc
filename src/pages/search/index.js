@@ -366,8 +366,10 @@ export default async function Search() {
       </iframe>`;
 
       const addRemoveButton = document.getElementById('addRemoveButton');
-      const currentActivityID = document.getElementById(id);
+      let currentActivityID = document.getElementById(id);
  
+      
+
       checkIfAdded(currentActivityID)
   
       addRemoveButton.addEventListener('click', () => {
@@ -380,6 +382,7 @@ export default async function Search() {
           currentActivityID.classList.add('added');
           addRemoveButton.innerHTML = `Remove`
         } 
+        currentActivityID = ''
       })
     }
 

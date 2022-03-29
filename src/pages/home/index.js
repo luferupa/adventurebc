@@ -5,6 +5,7 @@ import { getUserFavorites, addFavorite, removeFavorite } from '../../firebase/us
 
 import { getActivityPlace, getActivitiesRandom, getActivity, getActivityPlaceObject } from '../../firebase/activities';
 import { getFormattedDate, setLoader } from '../../utils/index.js';
+import { getCategories } from '../../firebase/categories';
 export let favouriteActiv = new Array();
 
 export default async function Home() {
@@ -119,13 +120,19 @@ export default async function Home() {
       let city = document.getElementById('city');
       let descriptionText = document.getElementById('descriptionText');
       let mapLongLat = document.getElementById('mapLongLat');
+      let tipsAndRecommendation = document.getElementById('tipsAndRecommendation');
 
       let currentActivity = await getActivity(id);
       let cityDB = await getActivityPlaceObject(id);
+      let categories = await getCategories(id);
 
       modalHeader.innerHTML = `<h2 id="title">${currentActivity.name}</h2><img src="${currentActivity.imageUrl}"><span class="fa-solid fa-xmark"></span>`;
       city.innerHTML = cityDB.city;
       descriptionText.innerHTML = currentActivity.about;
+
+
+      console.log(currentActivity)
+      tipsAndRecommendation.innerHTML = `<div>${currentActivity.category[0]}</div>`
 
       mapLongLat.innerHTML = `<iframe
       frameborder="0" 
