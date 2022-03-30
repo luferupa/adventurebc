@@ -1,0 +1,10 @@
+{
+    "name" :  "Adventure BC" ,
+    "short_name" :  "AdvBC" ,
+    "icons" :  [  
+        { "src" : "https://firebasestorage.googleapis.com/v0/b/adventurebc-bug-hunters.appspot.com/o/icons%2Ficon-192x192.png?alt=media&token=3495b888-d61f-48ac-a261-00f90b1b7c53" , "sizes" : "192x192" , "type" : "image/png" } ,
+      	{ "src" : "https://firebasestorage.googleapis.com/v0/b/adventurebc-bug-hunters.appspot.com/o/icons%2Ficon-512x512.png?alt=media&token=9019475e-d208-43f5-81cd-0a2ac1109862" , "sizes" : "512x512" , "type" : "image/png" }
+   	] ,
+    "start_url" :  "/#home" , 
+    "display" :  "standalone"
+} 
