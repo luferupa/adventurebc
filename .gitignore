@@ -9,3 +9,4 @@ dist
 *.log
 .firebase
 .DS_Store
+package-lock.json

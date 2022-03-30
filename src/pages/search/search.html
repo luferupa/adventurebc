@@ -47,7 +47,7 @@
             <input type="text" class="form-control" placeholder="Search Activities" aria-label="Activities search" />
           </div>
 
-          <div>
+<!--           <div>
             <label for="customRange3" class="form-label">Distance within:</label>
             <div id="slider-labels">
               <span>0 Km</span>
@@ -64,7 +64,7 @@
               name="distance"
             />
             <output name="labels" for="distance">0 km</output>
-          </div>
+          </div> -->
 
           <button type="submit" id="sbSearch" class="btn btn-primary mb-3">Search</button>
         </form>
@@ -114,6 +114,37 @@
               
         </div>
     </div>
+
+
+    <div class="modalWrapper" id="modalWrapper">
+      <div class="modalActivity">
+        <div class="modalHeader" id="modalHeader">
+          <!--             <span class="fa-solid fa-xmark"></span>
+          <h2 id="title"></h2>
+          <img id="topImage" src="" alt=""> -->
+        </div>
+        <div class="modalMain">
+          <button class="btn btn-secondary" id="addRemoveButton"></button>
+          <div class="city-rating-price">
+            <div class="cityTag">
+              <span class="fa-solid fa-map-marker"></span>
+              <h3 id="city"></h3>
+            </div>
+            <span id="rating">Rating</span>
+            <span id="intakePrice">Price</span>
+          </div>
+          <h3>Description</h3>
+          <p id="descriptionText"></p>
+          <h3>Recommendations & Tips</h3>
+          <div class="horizontal-scroll" id="tipsAndRecommendation">
+            <div class="place-holder"></div>
+            <div class="place-holder"></div>
+          </div>
+          <h3>Location</h3>
+          <div id="mapLongLat"></div>
+        </div>
+      </div>
+
 
     </main>
 
