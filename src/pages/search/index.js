@@ -1,21 +1,23 @@
 'use strict';
 
 import { AuthenticatedUser } from '../../index';
-import { favouriteActiv } from '../home/index';
+import { favouriteActiv, updateFav } from '../home/index';
 
 import { getCategories } from '../../firebase/categories';
 import { getCities } from '../../firebase/cities';
 import { getActivitiesWhere, getActivityPlace, activitiesCollection, getActivity, getActivityPlaceObject } from '../../firebase/activities';
 import { addAdventure, getAdventure, removeAdventure } from '../../firebase/adventures';
 import { db, doc } from '../../firebase';
-import { getUserAdventures } from '../../firebase/users';
+import { getUserAdventures, addFavorite, removeFavorite } from '../../firebase/users';
+import { setLoader } from '../../utils';
 
 export default async function Search() {
   if (!AuthenticatedUser) {
     location.hash = '#welcome';
   } else {
+    setLoader(true);
     class Adventure {
-      constructor(name, beginningDate, endDate, id) {
+      constructor(name, beginningDate, endDate, id, imageUrl) {
         this.name = name;
         if (beginningDate != null) {
           this.beginningDate = beginningDate;
@@ -30,9 +32,10 @@ export default async function Search() {
         }
 
         this.id = id;
-
+        this.imageUrl = imageUrl;
         this.userActivities = new Array();
       }
+
       addActivity(activityRef) {
         this.userActivities.push({
           activityId: activityRef,
@@ -55,9 +58,16 @@ export default async function Search() {
         const clone = { ...this };
         return clone;
       }
+      assignRandomImage(){
+        this.imageUrl = adventureImgs[Math.floor(Math.random() * (adventureImgs.length+1))];
+      }
     }
 
-    let categoryOptions, locationOptions, suggestions;
+    let adventureImgs = ["https://firebasestorage.googleapis.com/v0/b/adventurebc-bug-hunters.appspot.com/o/adventures%2FADVENTURE1.png?alt=media&token=2ffc7ac3-0411-4b28-8216-031efae86847",
+                    "https://firebasestorage.googleapis.com/v0/b/adventurebc-bug-hunters.appspot.com/o/adventures%2FADVENTURE2.png?alt=media&token=f0b6fdfa-634e-4c5e-b04b-5d2ae9db9dcc",
+                    "https://firebasestorage.googleapis.com/v0/b/adventurebc-bug-hunters.appspot.com/o/adventures%2FADVENTURE3.jpg?alt=media&token=5ec7050f-c139-4b73-bd81-50c68b8d9229"];
+
+    let categoryOptions, locationOptions, suggestions, filters;
 
     const categorySelect = document.getElementById('category-sel');
     const locationSelect = document.getElementById('location-sel');
@@ -74,7 +84,8 @@ export default async function Search() {
     if (location.hash.split('/').length > 1 && location.hash.split('/')[1] != '') {
       await loadAdventure(location.hash.split('/')[1]);
     } else {
-      adventure = new Adventure(adventureName.value, null, null, undefined);
+      adventure = new Adventure(adventureName.value, null, null, undefined, undefined);
+      adventure.assignRandomImage();
     }
 
     const minStartDate = new Date();
@@ -83,12 +94,14 @@ export default async function Search() {
     endDate.setAttribute('min', new Date(minStartDate - offset).toISOString().split('T')[0]);
 
     async function loadAdventure(adventureId) {
+      
       adventureToChange = (await getAdventure(adventureId, AuthenticatedUser.id))[0];
       adventure = new Adventure(
         adventureToChange.name,
         adventureToChange.beginningDate,
         adventureToChange.endDate,
-        adventureToChange.id
+        adventureToChange.id,
+        adventureToChange.imageUrl
       );
       adventure.userActivities = [...adventureToChange.userActivities];
       adventureName.value = adventure.name;
@@ -146,9 +159,9 @@ export default async function Search() {
       let output = ``;
       for (let activity of favouriteActiv) {
         const exists = adventure.alreadyHas(activity.id);
-        output += `<div class="activity" id="${activity.id}">
+        output += `<div class="activity" id="fv-${activity.id}">
                   <img src="${activity.imageUrl}" alt="Activity picture">
-                  <span class="fa-regular fa-heart"></span>`;
+                  <div class="heart"><span class="fa-solid fa-heart fav"></span></div>`;
         if (exists) {
           output += `<span class="fa-solid fa-xmark remove"></span>`;
         } else {
@@ -160,7 +173,8 @@ export default async function Search() {
       }
 
       divFavourites.innerHTML = output;
-      assignEventToSuggestions();
+      assignEventToActivities('#favourites .activity');
+      addFavoritesAction('#favourites .heart');
     }
 
     loadCategories();
@@ -170,7 +184,10 @@ export default async function Search() {
     if (favouriteActiv.length <= 0) {
       document.getElementById('favourites').style.display = 'none';
     }
+
+    setLoader(false);
     /* INITIAL LOAD - END */
+    
 
     beginningDate.onchange = () => {
       endDate.value = '';
@@ -219,6 +236,7 @@ export default async function Search() {
     });
 
     searchFilters.addEventListener('submit', async function (event) {
+      setLoader(true);
       event.preventDefault();
       event.stopPropagation();
 
@@ -239,6 +257,8 @@ export default async function Search() {
       collapsers.forEach((element) => {
         element.classList.remove('show');
       });
+
+      setLoader(false);
     });
 
     formAdventure.addEventListener('submit', async function (event) {
@@ -267,7 +287,7 @@ export default async function Search() {
 
     async function searchActivity(category, location) {
       suggestions = new Array();
-      let filters = '';
+      filters = '';
       if (category != 'Categories' && location != 'Location') {
         suggestions = await getActivitiesWhere(category, location);
         filters += '(<b>Location:</b> ' + location + ', <b>Category:</b> ' + category + ') ';
@@ -281,11 +301,12 @@ export default async function Search() {
         }
       }
 
-      await updateResults(suggestions, filters);
-      assignEventToSuggestions();
+      await updateResults();
+      assignEventToActivities('#suggestions .activity');
+      addFavoritesAction('#suggestions .heart');
     }
 
-    async function updateResults(suggestions, filters) {
+    async function updateResults() {
       var output = '';
       if (suggestions != null && suggestions.length > 0) {
         output = `<h4>Search results <span>${filters}</span></h4>`;
@@ -299,9 +320,16 @@ export default async function Search() {
           additional = 'added';
         }
 
-        output += `<div class="activity ${additional}" id="${suggestion.id}">
+        output += `<div class="activity ${additional}" id="sg-${suggestion.id}">
             <img src="${suggestion.imageUrl}" alt="Activity picture">
-            <span class="fa-regular fa-heart"></span>`;
+            <div class="heart"><span class="fa-regular fa-heart`;
+        for (let fav of favouriteActiv) {
+          if (fav.id == suggestion.id) {
+            output += ` fa-solid fav`;
+            break;
+          }
+        }
+        output += `"></span></div>`;
         if (exists) {
           output += `<span class="fa-solid fa-xmark remove"></span>`;
         } else {
@@ -313,24 +341,20 @@ export default async function Search() {
             </div>`;
       }
       divResults.innerHTML = output;
+      
     }
 
-
-
-
-
-    function assignEventToSuggestions() {
-      const activities = document.querySelectorAll('.activity');
+    function assignEventToActivities(selector) {
+      const activities = document.querySelectorAll(selector);
       activities.forEach((activity) => {
         activity.addEventListener('click', function () {
-          openActivity(this.id)
-
-/*            if (this.classList.contains('added')) {
-            adventure.removeActivity(doc(activitiesCollection, this.id));
+          openActivity(this.id.substring(3))
+          /*if (this.classList.contains('added')) {
+            adventure.removeActivity(doc(activitiesCollection, this.id.substring(3)));
             this.classList.remove('added');
             this.querySelector('.fa-xmark').classList.remove('remove');
           } else {
-            adventure.addActivity(doc(activitiesCollection, this.id));
+            adventure.addActivity(doc(activitiesCollection, this.id.substring(3)));
             this.classList.add('added');
             this.querySelector('.fa-xmark').classList.add('remove');
           } */ 
@@ -374,22 +398,39 @@ export default async function Search() {
       });
 
       const addRemoveButton = document.getElementById('addRemoveButton');
-      let currentActivityID = document.getElementById(id);
+
+      let currentActivityID = document.getElementById("sg-"+id);
  
-      checkIfAdded(currentActivityID)
-  
+      if(currentActivityID != null && currentActivityID != undefined){
+        checkIfAdded(currentActivityID);
+        addEventsAndClassesToCurrent(currentActivityID, addRemoveButton, true);
+      }
+
+      let currentFavouriteID = document.getElementById("fv-"+id);
+
+      if(currentFavouriteID != null && currentFavouriteID != undefined){
+        checkIfAdded(currentFavouriteID);
+        addEventsAndClassesToCurrent(currentFavouriteID, addRemoveButton, false);
+      }
+
+    }
+
+    function addEventsAndClassesToCurrent(element, addRemoveButton, dbCheck){
+      
       addRemoveButton.addEventListener('click', () => {
-        if (currentActivityID.classList.contains('added')) {
-          adventure.removeActivity(doc(activitiesCollection, id));
-          currentActivityID.classList.remove('added');
+        if (element.classList.contains('added')) {
+          if(dbCheck) adventure.removeActivity(doc(activitiesCollection, element.id.substring(3)));
+          
+          element.classList.remove('added');
           addRemoveButton.innerHTML = `Add`
         } else {
-          adventure.addActivity(doc(activitiesCollection, id));
-          currentActivityID.classList.add('added');
+          if(dbCheck) adventure.addActivity(doc(activitiesCollection, element.id.substring(3)));
+          
+          element.classList.add('added');
           addRemoveButton.innerHTML = `Remove`
         } 
-        currentActivityID = ''
-      })
+        element = ''
+      });
     }
 
     function checkIfAdded(currentActivityID) {
@@ -403,6 +444,85 @@ export default async function Search() {
     function getRandomId() {
       return Date.now().toString(36) + Math.random().toString(36).substr(2);
     }
+
+    function addFavoritesAction(selector) {
+      const act = document.querySelectorAll(selector);
+      act.forEach((activityH) => {
+        
+        activityH.addEventListener('click', function () {
+          modifyFavourites(activityH);
+        });
+      });
+    }
+
+    async function modifyFavourites(favouriteH) {
+      let added = false;
+      for (let favorite of favouriteActiv) {
+        if (favorite.id == favouriteH.parentElement.id.substring(3)) {
+          added = true;
+          break;
+        }
+      }
+
+      if (!added) {
+        const activityRef = await addFavorite(AuthenticatedUser.id, favouriteH.parentElement.id.substring(3));
+        AuthenticatedUser.favourites.push(activityRef);
+        favouriteH.firstChild.classList.remove('fa-regular');
+        favouriteH.firstChild.classList.add('fav');
+        favouriteH.firstChild.classList.add('fa-solid');
+      } else {
+        const activityRef = await removeFavorite(AuthenticatedUser.id, favouriteH.parentElement.id.substring(3));
+        AuthenticatedUser.favourites = AuthenticatedUser.favourites.filter(function (value) {
+          return value.id != favouriteH.parentElement.id.substring(3);
+        });
+        favouriteH.firstChild.classList.add('fa-regular');
+        favouriteH.firstChild.classList.remove('fa-solid');
+        favouriteH.firstChild.classList.remove('fav');
+      }
+      
+      if(favouriteH.parentElement.id.substring(0,2) == "fv"){
+          await refreshSuggestion("sg-"+favouriteH.parentElement.id.substring(3));
+      }
+      await updateFav(AuthenticatedUser.favourites);
+      await updateFavourites();
+      
+      assignEventToActivities('#favourites .heart');
+      addFavoritesAction('#favourites .heart');
+    }
+
+    async function refreshSuggestion(activityId){
+      let added = false;
+      for (let favorite of favouriteActiv) {
+        if (favorite.id == activityId.substring(3)) {
+          added = true;
+          break;
+        }
+      }
+
+      const element = document.querySelector('#'+activityId+' .heart');
+
+      if(added){
+        element.firstChild.classList.add('fa-regular');
+        element.firstChild.classList.remove('fa-solid');
+        element.firstChild.classList.remove('fav');
+      }
+
+    }
+
+    async function updateFavourites() {
+      let content = '';
+      
+      for (let activity of favouriteActiv) {
+        content += `<div class="activity" id="fv-${activity.id}">
+            <img src="${activity.imageUrl}" alt="Activity picture">
+            <div class="heart"><span class="fa-solid fa-heart fav"></span></div>
+            <h3>${activity.name}</h3>
+            <p>${await getActivityPlace(activity.id)}</p>
+            </div>`;
+      }
+      divFavourites.innerHTML = content;
+    }
+
 
     function getRecommendations(id) {
       let output = ``
@@ -420,7 +540,8 @@ export default async function Search() {
             output += preOutput;
           }
         }
-      } return output;
+      } 
+      return output;
     }
 
   }

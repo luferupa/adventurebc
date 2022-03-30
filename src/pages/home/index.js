@@ -6,13 +6,21 @@ import { getUserFavorites, addFavorite, removeFavorite } from '../../firebase/us
 import { getActivityPlace, getActivitiesRandom, getActivity, getActivityPlaceObject } from '../../firebase/activities';
 import { getFormattedDate, setLoader } from '../../utils/index.js';
 import { getCategories, getCategoryByRef } from '../../firebase/categories';
-export let favouriteActiv = new Array();
+
+export { updateFav, favouriteActiv };
+
+async function updateFav(list){
+  favouriteActiv = await getUserFavorites(AuthenticatedUser.favourites);
+}
+let favouriteActiv = new Array();
+
 
 export default async function Home() {
   if (!AuthenticatedUser) {
     location.hash = '#welcome';
   } else {
     setLoader(true);
+    document.querySelector(".home-greeting p").innerHTML = "Hello, "+ AuthenticatedUser.username.split(" ")[0] + "!";
     const userAdventures = AuthenticatedUser.adventures;
     const myAdventuresDiv = document.querySelector('.my-adventures .horizontal-scroll');
     const randomActivities = await getActivitiesRandom();
@@ -23,20 +31,24 @@ export default async function Home() {
     updateMyAdventures();
     await updateExplore();
     await updateFavourites();
-    addFavoritesAction();
+    addFavoritesAction('.heart');
     setLoader(false);
 
     async function updateMyAdventures() {
-      myAdventuresDiv.innerHTML = ``;
+      let output = ``;
       for (let userAdventure of userAdventures) {
-        myAdventuresDiv.innerHTML += `<div><div class="activity block-narrow" onclick="location.hash = '#myPlanner/${
-          userAdventure.id
-        }'">
-            <img src="https://firebasestorage.googleapis.com/v0/b/adventurebc-bug-hunters.appspot.com/o/activities%2Fpexels-marco-milanesi-5899783%201.png?alt=media&token=d2f4cb27-60c8-421f-aadc-c07a9ee8165b" alt="Activity picture">
-            <h3>${userAdventure.name}</h3>
+        output += `<div><div class="activity block-narrow" onclick="location.hash = '#myPlanner/${userAdventure.id}'">`;
+        if(userAdventure.imageUrl!=undefined && userAdventure.imageUrl!=null){
+          output += `<img src="${userAdventure.imageUrl}" alt="Activity picture">`;
+        }else{
+          output += `<img src="https://firebasestorage.googleapis.com/v0/b/adventurebc-bug-hunters.appspot.com/o/activities%2Fpexels-marco-milanesi-5899783%201.png?alt=media&token=d2f4cb27-60c8-421f-aadc-c07a9ee8165b" alt="Activity picture">`;
+        }
+        output += `<h3>${userAdventure.name}</h3>
             <p>${getFormattedDate(userAdventure.beginningDate)} - ${getFormattedDate(userAdventure.endDate)}</p>
             </div></div>`;
       }
+
+      myAdventuresDiv.innerHTML = output;
     }
 
     async function modifyFavourites(favouriteH) {
@@ -51,22 +63,26 @@ export default async function Home() {
       if (!added) {
         const activityRef = await addFavorite(AuthenticatedUser.id, favouriteH.parentElement.id.substring(3));
         AuthenticatedUser.favourites.push(activityRef);
-        favouriteH.classList.remove('fa-regular');
-        favouriteH.classList.add('fav');
-        favouriteH.classList.add('fa-solid');
+        favouriteH.firstChild.classList.remove('fa-regular');
+        favouriteH.firstChild.classList.add('fav');
+        favouriteH.firstChild.classList.add('fa-solid');
       } else {
         const activityRef = await removeFavorite(AuthenticatedUser.id, favouriteH.parentElement.id.substring(3));
         AuthenticatedUser.favourites = AuthenticatedUser.favourites.filter(function (value) {
           return value.id != favouriteH.parentElement.id.substring(3);
         });
-        favouriteH.classList.add('fa-regular');
-        favouriteH.classList.remove('fa-solid');
-        favouriteH.classList.remove('fav');
+        favouriteH.firstChild.classList.add('fa-regular');
+        favouriteH.firstChild.classList.remove('fa-solid');
+        favouriteH.firstChild.classList.remove('fav');
+      }
+
+      if(favouriteH.parentElement.id.substring(0,2) == "fv"){
+        await refreshSuggestion("ex-"+favouriteH.parentElement.id.substring(3));
       }
 
       favouriteActiv = await getUserFavorites(AuthenticatedUser.favourites);
-      updateFavourites();
-      addFavoritesAction();
+      await updateFavourites();
+      addFavoritesAction('.favourites .heart');
     }
 
     async function updateExplore() {
@@ -75,14 +91,14 @@ export default async function Home() {
       for (let activity of randomActivities) {
         content += `<div><div class="activity block-wide" id="ex-${activity.id}">
             <img src="${activity.imageUrl}" alt="Activity picture">
-            <span class="fa-regular fa-heart`;
+            <div class="heart"><span class="fa-regular fa-heart`;
         for (let fav of favouriteActiv) {
           if (fav.id == activity.id) {
             content += ` fa-solid fav`;
             break;
           }
         }
-        content += `"></span>
+        content += `"></span></div>
             <h3>${activity.name}</h3>
             <p>${await getActivityPlace(activity.id)}</p>
             </div></div>`;
@@ -91,15 +107,17 @@ export default async function Home() {
     }
 
     async function updateFavourites() {
-      favouritesDiv.innerHTML = ``;
+      let content = '';
+      
       for (let activity of favouriteActiv) {
-        favouritesDiv.innerHTML += `<div><div class="activity block-wide" id="fv-${activity.id}">
+        content += `<div><div class="activity block-wide" id="fv-${activity.id}">
             <img src="${activity.imageUrl}" alt="Activity picture">
-            <span class="fa-solid fa-heart fav"></span>
+            <div class="heart"><span class="fa-solid fa-heart fav"></span></div>
             <h3>${activity.name}</h3>
             <p>${await getActivityPlace(activity.id)}</p>
             </div></div>`;
       }
+      favouritesDiv.innerHTML = content;
     }
 
     const exploreActivities = document.getElementById('exploreID');
@@ -150,16 +168,33 @@ export default async function Home() {
       });
     }
 
-    function addFavoritesAction() {
-      const act = document.querySelectorAll('.fa-heart');
+    function addFavoritesAction(selector) {
+      const act = document.querySelectorAll(selector);
       act.forEach((activityH) => {
-        activityH.removeEventListener('click', function () {
-          modifyFavourites(activityH);
-        });
+        
         activityH.addEventListener('click', function () {
           modifyFavourites(activityH);
         });
       });
+    }
+
+    async function refreshSuggestion(activityId){
+      let added = false;
+      for (let favorite of favouriteActiv) {
+        if (favorite.id == activityId.substring(3)) {
+          added = true;
+          break;
+        }
+      }
+
+      const element = document.querySelector('#'+activityId+' .heart');
+
+      if(added){
+        element.firstChild.classList.add('fa-regular');
+        element.firstChild.classList.remove('fa-solid');
+        element.firstChild.classList.remove('fav');
+      }
+
     }
 
     function getRecommendations(id) {
@@ -180,5 +215,6 @@ export default async function Home() {
         }
       } return output;
     }
+    
   }
 }
