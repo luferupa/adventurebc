@@ -32,16 +32,20 @@ export default async function Home() {
     setLoader(false);
 
     async function updateMyAdventures() {
-      myAdventuresDiv.innerHTML = ``;
+      let output = ``;
       for (let userAdventure of userAdventures) {
-        myAdventuresDiv.innerHTML += `<div><div class="activity block-narrow" onclick="location.hash = '#myPlanner/${
-          userAdventure.id
-        }'">
-            <img src="https://firebasestorage.googleapis.com/v0/b/adventurebc-bug-hunters.appspot.com/o/activities%2Fpexels-marco-milanesi-5899783%201.png?alt=media&token=d2f4cb27-60c8-421f-aadc-c07a9ee8165b" alt="Activity picture">
-            <h3>${userAdventure.name}</h3>
+        output += `<div><div class="activity block-narrow" onclick="location.hash = '#myPlanner/${userAdventure.id}'">`;
+        if(userAdventure.imageUrl!=undefined && userAdventure.imageUrl!=null){
+          output += `<img src="${userAdventure.imageUrl}" alt="Activity picture">`;
+        }else{
+          output += `<img src="https://firebasestorage.googleapis.com/v0/b/adventurebc-bug-hunters.appspot.com/o/activities%2Fpexels-marco-milanesi-5899783%201.png?alt=media&token=d2f4cb27-60c8-421f-aadc-c07a9ee8165b" alt="Activity picture">`;
+        }
+        output += `<h3>${userAdventure.name}</h3>
             <p>${getFormattedDate(userAdventure.beginningDate)} - ${getFormattedDate(userAdventure.endDate)}</p>
             </div></div>`;
       }
+
+      myAdventuresDiv.innerHTML = output;
     }
 
     async function modifyFavourites(favouriteH) {

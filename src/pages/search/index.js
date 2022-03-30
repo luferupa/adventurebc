@@ -17,7 +17,7 @@ export default async function Search() {
   } else {
     setLoader(true);
     class Adventure {
-      constructor(name, beginningDate, endDate, id) {
+      constructor(name, beginningDate, endDate, id, imageUrl) {
         this.name = name;
         if (beginningDate != null) {
           this.beginningDate = beginningDate;
@@ -32,7 +32,7 @@ export default async function Search() {
         }
 
         this.id = id;
-
+        this.imageUrl = imageUrl;
         this.userActivities = new Array();
       }
 
@@ -58,7 +58,14 @@ export default async function Search() {
         const clone = { ...this };
         return clone;
       }
+      assignRandomImage(){
+        this.imageUrl = adventureImgs[Math.floor(Math.random() * (adventureImgs.length+1))];
+      }
     }
+
+    let adventureImgs = ["https://firebasestorage.googleapis.com/v0/b/adventurebc-bug-hunters.appspot.com/o/adventures%2FADVENTURE1.png?alt=media&token=2ffc7ac3-0411-4b28-8216-031efae86847",
+                    "https://firebasestorage.googleapis.com/v0/b/adventurebc-bug-hunters.appspot.com/o/adventures%2FADVENTURE2.png?alt=media&token=f0b6fdfa-634e-4c5e-b04b-5d2ae9db9dcc",
+                    "https://firebasestorage.googleapis.com/v0/b/adventurebc-bug-hunters.appspot.com/o/adventures%2FADVENTURE3.jpg?alt=media&token=5ec7050f-c139-4b73-bd81-50c68b8d9229"];
 
     let categoryOptions, locationOptions, suggestions, filters;
 
@@ -77,7 +84,8 @@ export default async function Search() {
     if (location.hash.split('/').length > 1 && location.hash.split('/')[1] != '') {
       await loadAdventure(location.hash.split('/')[1]);
     } else {
-      adventure = new Adventure(adventureName.value, null, null, undefined);
+      adventure = new Adventure(adventureName.value, null, null, undefined, undefined);
+      adventure.assignRandomImage();
     }
 
     const minStartDate = new Date();
@@ -86,12 +94,14 @@ export default async function Search() {
     endDate.setAttribute('min', new Date(minStartDate - offset).toISOString().split('T')[0]);
 
     async function loadAdventure(adventureId) {
+      
       adventureToChange = (await getAdventure(adventureId, AuthenticatedUser.id))[0];
       adventure = new Adventure(
         adventureToChange.name,
         adventureToChange.beginningDate,
         adventureToChange.endDate,
-        adventureToChange.id
+        adventureToChange.id,
+        adventureToChange.imageUrl
       );
       adventure.userActivities = [...adventureToChange.userActivities];
       adventureName.value = adventure.name;
@@ -339,11 +349,11 @@ export default async function Search() {
       activities.forEach((activity) => {
         activity.addEventListener('click', function () {
           if (this.classList.contains('added')) {
-            adventure.removeActivity(doc(activitiesCollection, this.id));
+            adventure.removeActivity(doc(activitiesCollection, this.id.substring(3)));
             this.classList.remove('added');
             this.querySelector('.fa-xmark').classList.remove('remove');
           } else {
-            adventure.addActivity(doc(activitiesCollection, this.id));
+            adventure.addActivity(doc(activitiesCollection, this.id.substring(3)));
             this.classList.add('added');
             this.querySelector('.fa-xmark').classList.add('remove');
           }
