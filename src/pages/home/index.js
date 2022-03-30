@@ -5,6 +5,7 @@ import { getUserFavorites, addFavorite, removeFavorite } from '../../firebase/us
 
 import { getActivityPlace, getActivitiesRandom, getActivity, getActivityPlaceObject } from '../../firebase/activities';
 import { getFormattedDate, setLoader } from '../../utils/index.js';
+import { getCategories, getCategoryByRef } from '../../firebase/categories';
 export let favouriteActiv = new Array();
 
 export default async function Home() {
@@ -113,20 +114,22 @@ export default async function Home() {
     };
 
     async function openActivity(id) {
-      let currentID = id;
       modalWrapper.classList.add('showActivity');
 
       let modalHeader = document.getElementById('modalHeader');
       let city = document.getElementById('city');
       let descriptionText = document.getElementById('descriptionText');
       let mapLongLat = document.getElementById('mapLongLat');
+      let tipsAndRecommendation = document.getElementById('tipsAndRecommendation');
 
-      let currentActivity = await getActivity(currentID);
-      let cityDB = await getActivityPlaceObject(currentID);
+      let currentActivity = await getActivity(id);
+      let cityDB = await getActivityPlaceObject(id);
 
-      modalHeader.innerHTML = `<h2 id="title">${currentActivity.name}</h2><img src="${currentActivity.imageUrl}"><span class="fa-solid fa-xmark"></span>`;
+      modalHeader.innerHTML = `<h2 id="title">${currentActivity.name}</h2><img src="${currentActivity.imageUrl}"><div id="closeButton"><span class="fa-solid fa-xmark"></span></div>`;
       city.innerHTML = cityDB.city;
       descriptionText.innerHTML = currentActivity.about;
+      
+      tipsAndRecommendation.innerHTML = getRecommendations(currentActivity)
 
       mapLongLat.innerHTML = `<iframe
       frameborder="0" 
@@ -139,14 +142,13 @@ export default async function Home() {
         cityDB.coordinates._lat
       }%2C${cityDB.coordinates._long}" 
       </iframe>`;
+
+      const closeButton = document.getElementById('closeButton');
+
+      closeButton.addEventListener('click', () => {
+        modalWrapper.classList.remove('showActivity');
+      });
     }
-
-    const closeButton = document.getElementById('closeButton');
-
-    closeButton.addEventListener('click', () => {
-      console.log('event listener close button');
-      modalWrapper.classList.remove('showActivity');
-    });
 
     function addFavoritesAction() {
       const act = document.querySelectorAll('.fa-heart');
@@ -158,6 +160,25 @@ export default async function Home() {
           modifyFavourites(activityH);
         });
       });
+    }
+
+    function getRecommendations(id) {
+      let output = ``
+      for (let i = 0; i < id.category.length; i++) {
+        if (id.category[i].hasOwnProperty('tips') == true) { 
+          for (let e = 0; e < id.category[i].tips.length; e++) {
+            let preOutput = `
+              <div class="tip">
+                <img src="${id.category[i].tips[e].url}">
+                <p>
+                  ${id.category[i].tips[e].description}
+                </p>
+              </div>
+              `;  
+            output += preOutput;
+          }
+        }
+      } return output;
     }
   }
 }

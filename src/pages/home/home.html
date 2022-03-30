@@ -4,7 +4,6 @@
       src="https://firebasestorage.googleapis.com/v0/b/adventurebc-bug-hunters.appspot.com/o/home-header-background.png?alt=media&token=5cc4529b-dfa1-44db-a133-070e8746fc78"
       alt="river in the forest" />
     <div class="home-greeting">
-      <p>Hello, #user!</p>
       <h1>An Adventure on every step</h1>
       <button type="button" class="btn-primary btn mt-4" onclick="location.hash = '#search'">Create Adventures</button>
     </div>
@@ -68,7 +67,6 @@
             <img id="topImage" src="" alt=""> -->
           </div>
           <div class="modalMain">
-            <button class="btn btn-secondary" id="addButton">Add to Adventure</button>
             <div class="city-rating-price">
               <div class="cityTag">
                 <span class="fa-solid fa-map-marker"></span>
@@ -80,19 +78,13 @@
             <h3>Description</h3>
             <p id="descriptionText"></p>
             <h3>Recommendations & Tips</h3>
-            <div class="horizontal-scroll">
-              <div class="place-holder"></div>
-              <div class="place-holder"></div>
-              <div class="place-holder"></div>
-              <div class="place-holder"></div>
+            <div class="horizontal-scroll" id="tipsAndRecommendation">
               <div class="place-holder"></div>
               <div class="place-holder"></div>
             </div>
             <h3>Location</h3>
             <div id="mapLongLat"></div>
-            <button class="btn btn-secondary" id="closeButton">Close</button>
           </div>
-
         </div>
       </div>
 

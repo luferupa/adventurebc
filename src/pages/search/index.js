@@ -5,7 +5,7 @@ import { favouriteActiv } from '../home/index';
 
 import { getCategories } from '../../firebase/categories';
 import { getCities } from '../../firebase/cities';
-import { getActivitiesWhere, getActivityPlace, activitiesCollection } from '../../firebase/activities';
+import { getActivitiesWhere, getActivityPlace, activitiesCollection, getActivity, getActivityPlaceObject } from '../../firebase/activities';
 import { addAdventure, getAdventure, removeAdventure } from '../../firebase/adventures';
 import { db, doc } from '../../firebase';
 import { getUserAdventures } from '../../firebase/users';
@@ -315,11 +315,17 @@ export default async function Search() {
       divResults.innerHTML = output;
     }
 
+
+
+
+
     function assignEventToSuggestions() {
       const activities = document.querySelectorAll('.activity');
       activities.forEach((activity) => {
         activity.addEventListener('click', function () {
-          if (this.classList.contains('added')) {
+          openActivity(this.id)
+
+/*            if (this.classList.contains('added')) {
             adventure.removeActivity(doc(activitiesCollection, this.id));
             this.classList.remove('added');
             this.querySelector('.fa-xmark').classList.remove('remove');
@@ -327,13 +333,95 @@ export default async function Search() {
             adventure.addActivity(doc(activitiesCollection, this.id));
             this.classList.add('added');
             this.querySelector('.fa-xmark').classList.add('remove');
-          }
+          } */ 
         });
       });
+    }
+
+    async function openActivity(id) {
+      modalWrapper.classList.add('showActivity');
+
+      let modalHeader = document.getElementById('modalHeader');
+      let city = document.getElementById('city');
+      let descriptionText = document.getElementById('descriptionText');
+      let mapLongLat = document.getElementById('mapLongLat');
+      
+      let currentActivity = await getActivity(id);
+      let cityDB = await getActivityPlaceObject(id);
+
+      modalHeader.innerHTML = `<h2 id="title">${currentActivity.name}</h2><img src="${currentActivity.imageUrl}"><div id="closeButton"><span class="fa-solid fa-xmark"></span></div>`;
+      city.innerHTML = cityDB.city;
+      descriptionText.innerHTML = currentActivity.about;
+
+      tipsAndRecommendation.innerHTML = getRecommendations(currentActivity)
+
+      mapLongLat.innerHTML = `<iframe
+      frameborder="0" 
+      scrolling="no" 
+      marginheight="0" 
+      marginwidth="0"
+      src="https://www.openstreetmap.org/export/embed.html?bbox=${cityDB.coordinates._long - 0.01}%2C${
+        cityDB.coordinates._lat - 0.01
+      }%2C${cityDB.coordinates._long + 0.01}%2C${cityDB.coordinates._lat + 0.01}&amp;layer=mapnik&amp;marker=${
+        cityDB.coordinates._lat
+      }%2C${cityDB.coordinates._long}" 
+      </iframe>`;
+
+      const closeButton = document.getElementById('closeButton');
+
+      closeButton.addEventListener('click', () => {
+        modalWrapper.classList.remove('showActivity');
+      });
+
+      const addRemoveButton = document.getElementById('addRemoveButton');
+      let currentActivityID = document.getElementById(id);
+ 
+      checkIfAdded(currentActivityID)
+  
+      addRemoveButton.addEventListener('click', () => {
+        if (currentActivityID.classList.contains('added')) {
+          adventure.removeActivity(doc(activitiesCollection, id));
+          currentActivityID.classList.remove('added');
+          addRemoveButton.innerHTML = `Add`
+        } else {
+          adventure.addActivity(doc(activitiesCollection, id));
+          currentActivityID.classList.add('added');
+          addRemoveButton.innerHTML = `Remove`
+        } 
+        currentActivityID = ''
+      })
+    }
+
+    function checkIfAdded(currentActivityID) {
+      if (currentActivityID.classList.contains('added')) {
+        addRemoveButton.innerHTML = `Remove`
+      } else {
+        addRemoveButton.innerHTML = `Add`
+      }
     }
 
     function getRandomId() {
       return Date.now().toString(36) + Math.random().toString(36).substr(2);
     }
+
+    function getRecommendations(id) {
+      let output = ``
+      for (let i = 0; i < id.category.length; i++) {
+        if (id.category[i].hasOwnProperty('tips') == true) { 
+          for (let e = 0; e < id.category[i].tips.length; e++) {
+            let preOutput = `
+              <div class="tip">
+                <img src="${id.category[i].tips[e].url}">
+                <p>
+                  ${id.category[i].tips[e].description}
+                </p>
+              </div>
+              `;  
+            output += preOutput;
+          }
+        }
+      } return output;
+    }
+
   }
 }
