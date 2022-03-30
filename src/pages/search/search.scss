@@ -281,6 +281,160 @@
         }
     }
 
+
+    /* MODAL ACTIVITY SCREEN */
+    .modalWrapper {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background-color: rgba(0, 0, 0, 0.25);
+        opacity: 0;
+        pointer-events: none;
+    }
+
+    .modalActivity {
+        position: relative;
+        // Redo this calculation, maybe just unstick the footer?
+        top: calc(50% - (100vh - 30%) / 1.8);
+        left: calc(50% - 1000px / 2);
+        width: 1000px;
+        max-height: calc(100vh - 30%);
+        overflow-y: scroll;
+        background-color: #fff;
+        border-radius: 25px;
+        box-shadow: 7px 7px 15px 3px rgba(0, 0, 0, 0.5);
+
+        .modalHeader {
+            display: grid;
+            grid-template: "container";
+
+            div {
+                grid-area: container;
+                place-self: start;
+                padding-top: 1rem;
+                padding-left: 1rem;
+                z-index: 20;
+                font-size: 1.6rem;
+                color: variables.$color-black;
+                cursor: pointer;
+            }
+
+            h2 {
+                padding: 0.5rem 1rem;
+                background-color: rgba(0, 0, 0, 0.35);
+                border-radius: 5px;
+                color: variables.$color-white;
+                grid-area: container;
+                place-self: center;
+                z-index: 10;
+            }
+
+            img {
+                border-radius: 10px 10px 0 0;
+                grid-area: container;
+                width: 100%;
+                object-fit: cover;
+                max-height: 300px;
+            }
+        }
+
+        .modalMain {
+            padding: 1rem 3% 2rem 3%;
+
+            .btn {
+                display: block;
+                margin: 0 auto;
+            }
+
+            .city-rating-price {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 0rem 3rem;
+
+                .cityTag {
+                    display: flex;
+                    text-align: center;
+                    align-items: center;
+                    gap: 0.5rem;
+                }
+
+                #rating {
+                    height: 1.5rem;
+                    width: 100px;
+                    background-color: #ccc;
+                    text-align: center;
+                }
+
+                #intakePrice {
+                    height: 1.5rem;
+                    width: 100px;
+                    background-color: #ccc;
+                    text-align: center;
+                }
+            }
+
+            h3 {
+                margin: 1rem 0;
+                padding: 0;
+                font-size: 1.5rem;
+            }
+
+            .horizontal-scroll {
+                gap: 75px;
+                padding-bottom: 0.7rem;
+
+                .tip {
+                    display: grid;
+                    grid-template: 'container2';
+                    
+                    * {
+                        grid-area: container2;
+                    }
+
+                    p {
+                        background-color: rgba(variables.$color-black, 0.6);
+                        color: variables.$color-white;
+                        padding: 1rem 0;
+                        width: 100%;
+                        place-self: end center;
+                        text-align: center;
+                        margin-bottom: 0;
+                    }
+
+                    img {
+                        height: 100%;
+                        object-fit: cover;
+                    }
+                }
+
+                .place-holder {
+                    height: 150px;
+                    width: 150px;
+                    background-color: #ccc;
+                    flex: 1 0 20%;
+                }
+            }
+
+            #mapLongLat {
+                iframe {
+                    width: 100%;
+                    min-height: 350px;
+                    margin-bottom: 1rem;
+                }
+            }
+        }
+    }
+
+    .showActivity {
+        opacity: 1;
+        pointer-events: auto;
+    }
+
+
+
     @media screen and (max-width: 1000px) {
         main #results {
             #suggestions {
