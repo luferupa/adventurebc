@@ -467,8 +467,8 @@
             position: relative;
             // Redo this calculation, maybe just unstick the footer?
             top: calc(50% - (100vh - 30%) / 1.8);
-            left: 0;
-            width: 100%;
+            left: 2%;
+            width: 96%;
             max-height: 85%;
             overflow-y: scroll;
             background-color: #fff;
@@ -572,8 +572,8 @@
                 position: relative;
                 // Redo this calculation, maybe just unstick the footer?
                 top: 80px;
-                left: 0;
-                width: 100%;
+                left: 2%;
+                width: 96%;
                 max-height: 85%;
                 overflow-y: scroll;
                 background-color: #fff;
