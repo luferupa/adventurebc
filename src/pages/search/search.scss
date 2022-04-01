@@ -323,6 +323,10 @@
                 font-size: 1.6rem;
                 color: variables.$color-black;
                 cursor: pointer;
+
+                .fa-xmark {
+                    filter:drop-shadow(0px 0px 2px white)
+                }
             }
 
             h2 {
@@ -364,20 +368,20 @@
                     align-items: center;
                     gap: 0.5rem;
                 }
-
+/* 
                 #rating {
                     height: 1.5rem;
                     width: 100px;
                     background-color: #ccc;
                     text-align: center;
-                }
+                } */
 
-                #intakePrice {
+ /*                #intakePrice {
                     height: 1.5rem;
                     width: 100px;
                     background-color: #ccc;
                     text-align: center;
-                }
+                } */
             }
 
             h3 {
@@ -387,6 +391,11 @@
             }
 
             .horizontal-scroll {
+                display: flex;
+                flex-flow: row nowrap;
+                gap: 2rem;
+                overflow-x: auto;
+                margin: 1rem 0;
                 gap: 75px;
                 padding-bottom: 0.7rem;
 
@@ -437,8 +446,6 @@
         pointer-events: auto;
     }
 
-
-
     @media screen and (max-width: 1000px) {
         main #results {
             #suggestions {
@@ -454,6 +461,19 @@
                     }
                 }
             }
+        }
+
+        .modalActivity {
+            position: relative;
+            // Redo this calculation, maybe just unstick the footer?
+            top: 80px;
+            left: 0;
+            width: 100%;
+            max-height: 80%;
+            overflow-y: scroll;
+            background-color: #fff;
+            border-radius: 25px;
+            box-shadow: 7px 7px 15px 3px rgba(0, 0, 0, 0.5);
         }
     }
 
