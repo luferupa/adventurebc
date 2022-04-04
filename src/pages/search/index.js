@@ -347,8 +347,9 @@ export default async function Search() {
     function assignEventToActivities(selector) {
       const activities = document.querySelectorAll(selector);
       activities.forEach((activity) => {
-        activity.addEventListener('click', function () {
-          openActivity(this.id.substring(3))
+        activity.addEventListener('click', function (event) {
+          if (!event.target.classList.contains('fa-heart') && !event.target.parentNode.classList.contains('fa-heart')) {
+            openActivity(this.id.substring(3))
           /*if (this.classList.contains('added')) {
             adventure.removeActivity(doc(activitiesCollection, this.id.substring(3)));
             this.classList.remove('added');
@@ -358,6 +359,7 @@ export default async function Search() {
             this.classList.add('added');
             this.querySelector('.fa-xmark').classList.add('remove');
           } */ 
+          }
         });
       });
     }
@@ -456,6 +458,7 @@ export default async function Search() {
     }
 
     async function modifyFavourites(favouriteH) {
+      setLoader(true);
       let added = false;
       for (let favorite of favouriteActiv) {
         if (favorite.id == favouriteH.parentElement.id.substring(3)) {
@@ -488,6 +491,7 @@ export default async function Search() {
       
       assignEventToActivities('#favourites .heart');
       addFavoritesAction('#favourites .heart');
+      setLoader(false);
     }
 
     async function refreshSuggestion(activityId){

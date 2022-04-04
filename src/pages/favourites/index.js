@@ -18,14 +18,20 @@ export default async function Favourites() {
 
     async function updateFavourites() {
       divFavourites.innerHTML = ``;
-      for (let activity of favouriteActiv) {
-        divFavourites.innerHTML += `<div><div class="activity block-wide" id="${activity.id}">
-                  <img src="${activity.imageUrl}" alt="Activity picture">
-                  <div class="heart"><span class="fa-solid fa-heart fav"></span></div>
-                  <h3>${activity.name}</h3>
-                  <p>${await getActivityPlace(activity.id)}</p>
-                  </div></div>`;
+      if(favouriteActiv.length > 0){
+        for (let activity of favouriteActiv) {
+          divFavourites.innerHTML += `<div><div class="activity block-wide" id="${activity.id}">
+                    <img src="${activity.imageUrl}" alt="Activity picture">
+                    <div class="heart"><span class="fa-solid fa-heart fav"></span></div>
+                    <h3>${activity.name}</h3>
+                    <p>${await getActivityPlace(activity.id)}</p>
+                    </div></div>`;
+        }
+      }else{
+        divFavourites.innerHTML += `<div>You still don't have favourites. Please add some from home or search page.</div>`;
+        divFavourites.style.height = "70vh";
       }
+      
     }
 
     function addFavoritesAction() {

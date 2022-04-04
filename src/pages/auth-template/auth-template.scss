@@ -62,10 +62,11 @@
     display: flex;
     flex-flow: column;
     align-items: center;
-    background-color: rgb(134, 188, 134);
+    background-color: variables.$green-medium;
     padding: 1rem 0;
     gap: 1rem;
     z-index: 100;
+    color: variables.$color-light-font;
     //position: sticky;
 
     p {

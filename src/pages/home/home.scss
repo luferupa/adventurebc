@@ -12,11 +12,12 @@
         }
 
         img {
-            filter: brightness(60%);
+            filter: brightness(70%);
             z-index: -1;
             max-height: 50vh;
             width: 100vw;
             object-fit: cover;
+            object-position: top;
         }
 
         .home-greeting,
@@ -39,7 +40,32 @@
     }
 
     .my-adventures {
-        padding: 0 1rem;
+        //padding: 0 1rem;
+
+        .add-adventure {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            background: rgba(255,255,255,0.4) url(https://firebasestorage.googleapis.com/v0/b/adventurebc-bug-hunters.appspot.com/o/adventures%2FADVENTURE3.jpg?alt=media&token=5ec7050f-c139-4b73-bd81-50c68b8d9229);
+            background-size: cover;
+            background-blend-mode: lighten;
+  
+            &:hover {
+              background-color: rgba(variables.$color-black, 0.2);
+            }
+  
+            .fa-plus {
+              font-size: 32px;
+              background-color: variables.$color-secondary;
+              width: 32px;
+              height: 32px;
+              color: variables.$color-white;
+              border-radius: 50%;
+              padding: 0.5rem;
+              z-index: 2;
+            }
+          }
     }
 
     .favourites {
@@ -52,6 +78,7 @@
         gap: 2rem;
         overflow-x: auto;
         margin: 1rem 0;
+        padding: 0.2rem;
     }
 
     .block-narrow {
@@ -96,7 +123,7 @@
         }
 
         .fav {
-            color: red;
+            color: variables.$color-favourite;
         }
     }
 
@@ -137,6 +164,7 @@
         left: 0;
         width: 100vw;
         height: 100vh;
+        z-index: 10;
         background-color: rgba(0, 0, 0, 0.25);
         opacity: 0;
         pointer-events: none;
