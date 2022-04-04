@@ -148,7 +148,7 @@
         top: calc(50% - (100vh - 30%) / 1.8);
         left: calc(50% - 1000px / 2);
         width: 1000px;
-        max-height: calc(100vh - 30%);
+        max-height: calc(100vh - 15%);
         overflow-y: scroll;
         background-color: #fff;
         border-radius: 25px;
@@ -167,6 +167,10 @@
                 font-size: 1.6rem;
                 color: variables.$color-black;
                 cursor: pointer;
+
+                .fa-xmark {
+                    filter:drop-shadow(0px 0px 2px white)
+                }
             }
 
             h2 {
@@ -209,7 +213,7 @@
                     gap: 0.5rem;
                 }
 
-                #rating {
+/*                 #rating {
                     height: 1.5rem;
                     width: 100px;
                     background-color: #ccc;
@@ -221,7 +225,7 @@
                     width: 100px;
                     background-color: #ccc;
                     text-align: center;
-                }
+                } */
             }
 
             h3 {
@@ -233,6 +237,8 @@
             .horizontal-scroll {
                 gap: 75px;
                 padding-bottom: 0.7rem;
+                gap: 25px;
+                overflow-x: scroll;
 
                 .tip {
                     display: grid;
@@ -254,6 +260,8 @@
 
                     img {
                         height: 100%;
+                        min-height: 250px;
+                        min-width: 300px;
                         object-fit: cover;
                     }
                 }
@@ -279,5 +287,35 @@
     .showActivity {
         opacity: 1;
         pointer-events: auto;
+    }
+
+    @media screen and (max-width: 1000px) {
+        .modalActivity {
+            position: relative;
+            // Redo this calculation, maybe just unstick the footer?
+            top: calc(50% - (100vh - 30%) / 1.8);
+            left: 2%;
+            width: 96%;
+            max-height: 85%;
+            overflow-y: scroll;
+            background-color: #fff;
+            border-radius: 25px;
+            box-shadow: 7px 7px 15px 3px rgba(0, 0, 0, 0.5);
+        }
+    }
+
+    @media screen and (max-width: 700px) {
+        .modalActivity {
+            position: relative;
+            // Redo this calculation, maybe just unstick the footer?
+            top: 80px;
+            left: 2%;
+            width: 96%;
+            max-height: 85%;
+            overflow-y: scroll;
+            background-color: #fff;
+            border-radius: 25px;
+            box-shadow: 7px 7px 15px 3px rgba(0, 0, 0, 0.5);
+        }
     }
 }
