@@ -500,20 +500,24 @@ export default async function Search() {
     }
 
     async function refreshSuggestion(activityId){
-      let added = false;
-      for (let favorite of favouriteActiv) {
-        if (favorite.id == activityId.substring(3)) {
-          added = true;
-          break;
-        }
-      }
-
       const element = document.querySelector('#'+activityId+' .heart');
 
-      if(added){
-        element.firstChild.classList.add('fa-regular');
-        element.firstChild.classList.remove('fa-solid');
-        element.firstChild.classList.remove('fav');
+      if(element != null && element != undefined){
+        let added = false;
+        for (let favorite of favouriteActiv) {
+          if (favorite.id == activityId.substring(3)) {
+            added = true;
+            break;
+          }
+        }
+
+        
+
+        if(added){
+          element.firstChild.classList.add('fa-regular');
+          element.firstChild.classList.remove('fa-solid');
+          element.firstChild.classList.remove('fav');
+        }
       }
 
     }
@@ -522,7 +526,14 @@ export default async function Search() {
       let content = '';
       
       for (let activity of favouriteActiv) {
-        content += `<div class="activity" id="fv-${activity.id}">
+        let additional = '';
+        const exists = adventure.alreadyHas(activity.id);
+        if (exists) {
+          additional = 'added';
+        }
+
+
+        content += `<div class="activity ${additional}" id="fv-${activity.id}">
             <img src="${activity.imageUrl}" alt="Activity picture">
             <div class="heart"><span class="fa-solid fa-heart fav"></span></div>
             <h3>${activity.name}</h3>
