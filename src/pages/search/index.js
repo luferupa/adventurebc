@@ -59,13 +59,17 @@ export default async function Search() {
         return clone;
       }
       assignRandomImage(){
-        this.imageUrl = adventureImgs[Math.floor(Math.random() * (adventureImgs.length+1))];
+        if(AuthenticatedUser.adventures.length < 3 ){
+          this.imageUrl = adventureImgs[AuthenticatedUser.adventures.length];
+        } else{
+          this.imageUrl = adventureImgs[Math.floor(Math.random() * (adventureImgs.length+1))];
+        }
       }
     }
 
     let adventureImgs = ["https://firebasestorage.googleapis.com/v0/b/adventurebc-bug-hunters.appspot.com/o/adventures%2FADVENTURE1.png?alt=media&token=2ffc7ac3-0411-4b28-8216-031efae86847",
-                    "https://firebasestorage.googleapis.com/v0/b/adventurebc-bug-hunters.appspot.com/o/adventures%2FADVENTURE2.png?alt=media&token=f0b6fdfa-634e-4c5e-b04b-5d2ae9db9dcc",
-                    "https://firebasestorage.googleapis.com/v0/b/adventurebc-bug-hunters.appspot.com/o/adventures%2FADVENTURE3.jpg?alt=media&token=5ec7050f-c139-4b73-bd81-50c68b8d9229"];
+                    "https://firebasestorage.googleapis.com/v0/b/adventurebc-bug-hunters.appspot.com/o/adventures%2FADVENTURE3.jpg?alt=media&token=5ec7050f-c139-4b73-bd81-50c68b8d9229",
+                    "https://firebasestorage.googleapis.com/v0/b/adventurebc-bug-hunters.appspot.com/o/adventures%2FADVENTURE2.png?alt=media&token=f0b6fdfa-634e-4c5e-b04b-5d2ae9db9dcc"];
 
     let categoryOptions, locationOptions, suggestions, filters;
 
