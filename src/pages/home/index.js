@@ -150,7 +150,7 @@ export default async function Home() {
     };
 
     async function openActivity(id) {
-      modalWrapper.classList.add('showActivity');
+      setLoader(true);
 
       let modalHeader = document.getElementById('modalHeader');
       let city = document.getElementById('city');
@@ -184,6 +184,9 @@ export default async function Home() {
       closeButton.addEventListener('click', () => {
         modalWrapper.classList.remove('showActivity');
       });
+
+      modalWrapper.classList.add('showActivity');
+      setLoader(false);
     }
 
     function addFavoritesAction(selector) {
