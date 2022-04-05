@@ -59,13 +59,17 @@ export default async function Search() {
         return clone;
       }
       assignRandomImage(){
-        this.imageUrl = adventureImgs[Math.floor(Math.random() * (adventureImgs.length+1))];
+        if(AuthenticatedUser.adventures.length < 3 ){
+          this.imageUrl = adventureImgs[AuthenticatedUser.adventures.length];
+        } else{
+          this.imageUrl = adventureImgs[Math.floor(Math.random() * (adventureImgs.length+1))];
+        }
       }
     }
 
     let adventureImgs = ["https://firebasestorage.googleapis.com/v0/b/adventurebc-bug-hunters.appspot.com/o/adventures%2FADVENTURE1.png?alt=media&token=2ffc7ac3-0411-4b28-8216-031efae86847",
-                    "https://firebasestorage.googleapis.com/v0/b/adventurebc-bug-hunters.appspot.com/o/adventures%2FADVENTURE2.png?alt=media&token=f0b6fdfa-634e-4c5e-b04b-5d2ae9db9dcc",
-                    "https://firebasestorage.googleapis.com/v0/b/adventurebc-bug-hunters.appspot.com/o/adventures%2FADVENTURE3.jpg?alt=media&token=5ec7050f-c139-4b73-bd81-50c68b8d9229"];
+                    "https://firebasestorage.googleapis.com/v0/b/adventurebc-bug-hunters.appspot.com/o/adventures%2FADVENTURE3.jpg?alt=media&token=5ec7050f-c139-4b73-bd81-50c68b8d9229",
+                    "https://firebasestorage.googleapis.com/v0/b/adventurebc-bug-hunters.appspot.com/o/adventures%2FADVENTURE2.png?alt=media&token=f0b6fdfa-634e-4c5e-b04b-5d2ae9db9dcc"];
 
     let categoryOptions, locationOptions, suggestions, filters;
 
@@ -158,8 +162,13 @@ export default async function Search() {
     async function loadFavourites() {
       let output = ``;
       for (let activity of favouriteActiv) {
+        let additional = '';
         const exists = adventure.alreadyHas(activity.id);
-        output += `<div class="activity" id="fv-${activity.id}">
+        if (exists) {
+          additional = 'added';
+        }
+
+        output += `<div class="activity ${additional}" id="fv-${activity.id}">
                   <img src="${activity.imageUrl}" alt="Activity picture">
                   <div class="heart"><span class="fa-solid fa-heart fav"></span></div>`;
         if (exists) {
@@ -347,24 +356,17 @@ export default async function Search() {
     function assignEventToActivities(selector) {
       const activities = document.querySelectorAll(selector);
       activities.forEach((activity) => {
-        activity.addEventListener('click', function () {
-          openActivity(this.id.substring(3))
-          /*if (this.classList.contains('added')) {
-            adventure.removeActivity(doc(activitiesCollection, this.id.substring(3)));
-            this.classList.remove('added');
-            this.querySelector('.fa-xmark').classList.remove('remove');
-          } else {
-            adventure.addActivity(doc(activitiesCollection, this.id.substring(3)));
-            this.classList.add('added');
-            this.querySelector('.fa-xmark').classList.add('remove');
-          } */ 
+        activity.addEventListener('click', function (event) {
+          if (!event.target.classList.contains('fa-heart') && !event.target.parentNode.classList.contains('fa-heart')) {
+            openActivity(this.id.substring(3))
+          }
         });
       });
     }
 
     async function openActivity(id) {
-      modalWrapper.classList.add('showActivity');
-
+      
+      setLoader(true);
       let modalHeader = document.getElementById('modalHeader');
       let city = document.getElementById('city');
       let descriptionText = document.getElementById('descriptionText');
@@ -399,45 +401,50 @@ export default async function Search() {
 
       const addRemoveButton = document.getElementById('addRemoveButton');
 
-      let currentActivityID = document.getElementById("sg-"+id);
+      let currentActivitiesID = document.querySelectorAll(`.activity[id*= "${id}" ]`);
  
-      if(currentActivityID != null && currentActivityID != undefined){
-        checkIfAdded(currentActivityID);
-        addEventsAndClassesToCurrent(currentActivityID, addRemoveButton, true);
+      if(currentActivitiesID != null && currentActivitiesID != undefined && currentActivitiesID.length > 0){
+        let dbCheck = true;
+        for(let activity of currentActivitiesID){
+          checkIfAdded(activity);
+          addEventsAndClassesToCurrent(activity,addRemoveButton, dbCheck);
+          dbCheck = false;
+        }
+        
       }
 
-      let currentFavouriteID = document.getElementById("fv-"+id);
-
-      if(currentFavouriteID != null && currentFavouriteID != undefined){
-        checkIfAdded(currentFavouriteID);
-        addEventsAndClassesToCurrent(currentFavouriteID, addRemoveButton, false);
-      }
-
+      modalWrapper.classList.add('showActivity');
+      setLoader(false);
     }
 
-    function addEventsAndClassesToCurrent(element, addRemoveButton, dbCheck){
-      
+    function addEventsAndClassesToCurrent(activity, addRemoveButton, dbCheck){
       addRemoveButton.addEventListener('click', () => {
-        if (element.classList.contains('added')) {
-          if(dbCheck) adventure.removeActivity(doc(activitiesCollection, element.id.substring(3)));
+        if (activity.classList.contains('added')) {
+          if(dbCheck){
+            adventure.removeActivity(doc(activitiesCollection, activity.id.substring(3)));
+          } 
           
-          element.classList.remove('added');
-          addRemoveButton.innerHTML = `Add`
+          activity.classList.remove('added');
+          activity.querySelector('.fa-xmark').classList.remove('remove');
+          addRemoveButton.innerHTML = `Add`;
         } else {
-          if(dbCheck) adventure.addActivity(doc(activitiesCollection, element.id.substring(3)));
+          if(dbCheck){
+            adventure.addActivity(doc(activitiesCollection, activity.id.substring(3)));
+          } 
           
-          element.classList.add('added');
-          addRemoveButton.innerHTML = `Remove`
+          activity.classList.add('added');
+          activity.querySelector('.fa-xmark').classList.add('remove');
+          addRemoveButton.innerHTML = `Remove`;
         } 
-        element = ''
+        activity = ''
       });
     }
 
-    function checkIfAdded(currentActivityID) {
-      if (currentActivityID.classList.contains('added')) {
-        addRemoveButton.innerHTML = `Remove`
+    function checkIfAdded(activity) {
+      if (activity.classList.contains('added')) {
+        addRemoveButton.innerHTML = `Remove`;
       } else {
-        addRemoveButton.innerHTML = `Add`
+        addRemoveButton.innerHTML = `Add`;
       }
     }
 
@@ -456,6 +463,7 @@ export default async function Search() {
     }
 
     async function modifyFavourites(favouriteH) {
+      setLoader(true);
       let added = false;
       for (let favorite of favouriteActiv) {
         if (favorite.id == favouriteH.parentElement.id.substring(3)) {
@@ -488,6 +496,7 @@ export default async function Search() {
       
       assignEventToActivities('#favourites .heart');
       addFavoritesAction('#favourites .heart');
+      setLoader(false);
     }
 
     async function refreshSuggestion(activityId){
