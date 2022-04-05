@@ -20,7 +20,7 @@
         #search {
             grid-column: 1/2;
             position: fixed;
-            height: 65vh;
+            height: 100vh;
 
             #title {
                 background-color: white;
@@ -82,6 +82,10 @@
                         background-color: #d2e4d6 !important;
                         cursor: pointer;
                     }
+                }
+
+                >span{
+                    padding-top: 1rem;
                 }
 
                 button {
@@ -157,6 +161,7 @@
                     flex-flow: row nowrap;
                     overflow-x: auto;
                     gap: 1rem;
+                    padding: 0.2rem;
 
                     .activity {
                         flex: 0 0 30%;
@@ -224,7 +229,7 @@
                     }
             
                     .fav {
-                        color: red;
+                        color: variables.$color-favourite;
                     }
 
                     .fa-xmark {
@@ -295,6 +300,7 @@
         background-color: rgba(0, 0, 0, 0.25);
         opacity: 0;
         pointer-events: none;
+        z-index: 102;
     }
 
     .modalActivity {

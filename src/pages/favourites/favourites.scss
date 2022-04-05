@@ -4,6 +4,7 @@
   max-width: variables.$base-max-width;
   margin: 0 auto;
   padding: 0 1rem;
+  min-height: 70vh;
 
   h2 {
     margin-bottom: 1rem;
@@ -15,7 +16,7 @@
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
     justify-items: center;
 
-    >div{
+    > div {
       max-width: 600px;
       height: auto;
     }
@@ -41,10 +42,14 @@
 
       .fa-heart {
         font-size: 1.8rem;
-        color: red;
+        color: variables.$color-favourite;
         position: absolute;
         top: 0.5rem;
-        right: 0.7rem; 
+        right: 0.7rem;
+
+        &:hover {
+          cursor: pointer;
+        }
       }
 
       &.add-activity {

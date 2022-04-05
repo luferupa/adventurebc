@@ -17,36 +17,40 @@ const getActivitiesRandom = async () => {
   return snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
 };
 
-const getActivitiesWhere = async (category, location) => {
+const getActivitiesWhere = async (category, location, tag) => {
   let qActivities,
     qPlaces,
     categoryDocRef,
     locationDocRef = '';
   const placesRef = [];
 
-  if (category != null) {
-    categoryDocRef = doc(collection(db, 'categories'), category.toLowerCase().replaceAll(' ', '_'));
-  }
+  if(tag!= null){
+    qActivities = query(activitiesCollection, where('tags', 'array-contains', tag));
+  }else{
+    if (category != null) {
+      categoryDocRef = doc(collection(db, 'categories'), category.toLowerCase().replaceAll(' ', '_'));
+    }
 
-  if (location != null) {
-    locationDocRef = doc(collection(db, 'cities'), location.toLowerCase().replaceAll(' ', '_'));
+    if (location != null) {
+      locationDocRef = doc(collection(db, 'cities'), location.toLowerCase().replaceAll(' ', '_'));
 
-    qPlaces = query(collection(db, 'places'), where('city', '==', locationDocRef));
-    const snapshotPlaces = await getDocs(qPlaces);
+      qPlaces = query(collection(db, 'places'), where('city', '==', locationDocRef));
+      const snapshotPlaces = await getDocs(qPlaces);
 
-    snapshotPlaces.forEach((place) => placesRef.push(doc(collection(db, 'places'), place.id)));
-  }
+      snapshotPlaces.forEach((place) => placesRef.push(doc(collection(db, 'places'), place.id)));
+    }
 
-  if (category != null && location != null) {
-    qActivities = query(
-      activitiesCollection,
-      where('category', 'array-contains', categoryDocRef),
-      where('place', 'in', placesRef)
-    );
-  } else if (category == null) {
-    qActivities = query(activitiesCollection, where('place', 'in', placesRef));
-  } else if (location == null) {
-    qActivities = query(activitiesCollection, where('category', 'array-contains', categoryDocRef));
+    if (category != null && location != null) {
+      qActivities = query(
+        activitiesCollection,
+        where('category', 'array-contains', categoryDocRef),
+        where('place', 'in', placesRef)
+      );
+    } else if (location != null) {
+      qActivities = query(activitiesCollection, where('place', 'in', placesRef));
+    } else if (category != null) {
+      qActivities = query(activitiesCollection, where('category', 'array-contains', categoryDocRef));
+    }
   }
 
   const snapshot = await getDocs(qActivities);

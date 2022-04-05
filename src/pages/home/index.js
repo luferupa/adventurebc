@@ -25,7 +25,8 @@ export default async function Home() {
       window.myPlannerSnapshotUnsubscribe = null;
     }
 
-    document.querySelector('.home-greeting p').innerHTML = 'Hello, ' + AuthenticatedUser.username.split(' ')[0] + '!';
+    // document.querySelector('.home-greeting p').innerHTML = 'Hello, ' + AuthenticatedUser.username.split(' ')[0] + '!';
+    //document.querySelector(".home-greeting p").innerHTML = "Hello, "+ AuthenticatedUser.username.split(" ")[0] + "!";
     const userAdventures = AuthenticatedUser.adventures;
     const myAdventuresDiv = document.querySelector('.my-adventures .horizontal-scroll');
     const randomActivities = await getActivitiesRandom();
@@ -41,22 +42,30 @@ export default async function Home() {
 
     async function updateMyAdventures() {
       let output = ``;
-      for (let userAdventure of userAdventures) {
-        output += `<div><div class="activity block-narrow" onclick="location.hash = '#myPlanner/${userAdventure.id}'">`;
-        if (userAdventure.imageUrl != undefined && userAdventure.imageUrl != null) {
-          output += `<img src="${userAdventure.imageUrl}" alt="Activity picture">`;
-        } else {
-          output += `<img src="https://firebasestorage.googleapis.com/v0/b/adventurebc-bug-hunters.appspot.com/o/activities%2Fpexels-marco-milanesi-5899783%201.png?alt=media&token=d2f4cb27-60c8-421f-aadc-c07a9ee8165b" alt="Activity picture">`;
+      if (userAdventures != null && userAdventures != undefined && userAdventures.length > 0) {
+        for (let userAdventure of userAdventures) {
+          output += `<div><div class="activity block-narrow" onclick="location.hash = '#myPlanner/${userAdventure.id}'">`;
+          if (userAdventure.imageUrl != undefined && userAdventure.imageUrl != null) {
+            output += `<img src="${userAdventure.imageUrl}" alt="Activity picture">`;
+          } else {
+            output += `<img src="https://firebasestorage.googleapis.com/v0/b/adventurebc-bug-hunters.appspot.com/o/activities%2Fpexels-marco-milanesi-5899783%201.png?alt=media&token=d2f4cb27-60c8-421f-aadc-c07a9ee8165b" alt="Activity picture">`;
+          }
+          output += `<h3>${userAdventure.name}</h3>
+              <p>${getFormattedDate(userAdventure.beginningDate)} - ${getFormattedDate(userAdventure.endDate)}</p>
+              </div></div>`;
         }
-        output += `<h3>${userAdventure.name}</h3>
-            <p>${getFormattedDate(userAdventure.beginningDate)} - ${getFormattedDate(userAdventure.endDate)}</p>
-            </div></div>`;
+        myAdventuresDiv.innerHTML = output;
+      } else {
+        output = `<div class="activity  block-narrow add-adventure"><span class="fa-solid fa-plus"></span></div>`;
+        myAdventuresDiv.innerHTML = output;
+        document.querySelector('.add-adventure').addEventListener('click', function () {
+          location.hash = `#search`;
+        });
       }
-
-      myAdventuresDiv.innerHTML = output;
     }
 
     async function modifyFavourites(favouriteH) {
+      setLoader(true);
       let added = false;
       for (let favorite of favouriteActiv) {
         if (favorite.id == favouriteH.parentElement.id.substring(3)) {
@@ -88,6 +97,7 @@ export default async function Home() {
       favouriteActiv = await getUserFavorites(AuthenticatedUser.favourites);
       await updateFavourites();
       addFavoritesAction('.favourites .heart');
+      setLoader(false);
     }
 
     async function updateExplore() {
@@ -114,18 +124,24 @@ export default async function Home() {
     async function updateFavourites() {
       let content = '';
 
-      for (let activity of favouriteActiv) {
-        content += `<div><div class="activity block-wide" id="fv-${activity.id}">
-            <img src="${activity.imageUrl}" alt="Activity picture">
-            <div class="heart"><span class="fa-solid fa-heart fav"></span></div>
-            <h3>${activity.name}</h3>
-            <p>${await getActivityPlace(activity.id)}</p>
-            </div></div>`;
+      if (favouriteActiv != null && favouriteActiv != undefined && favouriteActiv.length > 0) {
+        document.querySelector('.favourites').style.display = 'block';
+        for (let activity of favouriteActiv) {
+          content += `<div><div class="activity block-wide" id="fv-${activity.id}">
+              <img src="${activity.imageUrl}" alt="Activity picture">
+              <div class="heart"><span class="fa-solid fa-heart fav"></span></div>
+              <h3>${activity.name}</h3>
+              <p>${await getActivityPlace(activity.id)}</p>
+              </div></div>`;
+        }
+        favouritesDiv.innerHTML = content;
+      } else {
+        document.querySelector('.favourites').style.display = 'none';
       }
-      favouritesDiv.innerHTML = content;
     }
 
     const exploreActivities = document.getElementById('exploreID');
+    const favouriteActivities = document.getElementById('favouritesID');
     const modalWrapper = document.getElementById('modalWrapper');
 
     exploreActivities.onclick = function (event) {
@@ -136,8 +152,16 @@ export default async function Home() {
       }
     };
 
+    favouriteActivities.onclick = function (event) {
+      if (!event.target.classList.contains('fa-heart') && !event.target.parentNode.classList.contains('fa-heart')) {
+        let target = event.target.parentNode;
+        let clickedActivity = document.getElementById(target.id);
+        openActivity(clickedActivity.id.substring(3));
+      }
+    };
+
     async function openActivity(id) {
-      modalWrapper.classList.add('showActivity');
+      setLoader(true);
 
       let modalHeader = document.getElementById('modalHeader');
       let city = document.getElementById('city');
@@ -171,6 +195,9 @@ export default async function Home() {
       closeButton.addEventListener('click', () => {
         modalWrapper.classList.remove('showActivity');
       });
+
+      modalWrapper.classList.add('showActivity');
+      setLoader(false);
     }
 
     function addFavoritesAction(selector) {
@@ -183,20 +210,22 @@ export default async function Home() {
     }
 
     async function refreshSuggestion(activityId) {
-      let added = false;
-      for (let favorite of favouriteActiv) {
-        if (favorite.id == activityId.substring(3)) {
-          added = true;
-          break;
-        }
-      }
-
       const element = document.querySelector('#' + activityId + ' .heart');
 
-      if (added) {
-        element.firstChild.classList.add('fa-regular');
-        element.firstChild.classList.remove('fa-solid');
-        element.firstChild.classList.remove('fav');
+      if (element != null && element != undefined) {
+        let added = false;
+        for (let favorite of favouriteActiv) {
+          if (favorite.id == activityId.substring(3)) {
+            added = true;
+            break;
+          }
+        }
+
+        if (added) {
+          element.firstChild.classList.add('fa-regular');
+          element.firstChild.classList.remove('fa-solid');
+          element.firstChild.classList.remove('fav');
+        }
       }
     }
 

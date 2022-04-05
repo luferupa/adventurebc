@@ -7,10 +7,7 @@
       </div>
 
       <div>
-        <form
-          id="searchFilters"
-          oninput="labels.value = `${distance.valueAsNumber} km`; labels.style.paddingLeft = `calc(${distance.valueAsNumber*10}% `;"
-        >
+        <form id="searchFilters" >
           <div class="input-group flex-nowrap" id="category">
             <span class="input-group-text fa fa-solid fa-tree"></span>
             <select
@@ -42,9 +39,11 @@
 
           <div class="collapse" id="options-loc"></div>
 
+          <span>- Or just search by a keyword -</span>
+
           <div class="input-group flex-nowrap">
             <span class="input-group-text fa fa-search"></span>
-            <input type="text" class="form-control" placeholder="Search Activities" aria-label="Activities search" />
+            <input type="text" id="tags-input" class="form-control" placeholder="Search Activities" aria-label="Activities search" />
           </div>
 
 <!--           <div>
