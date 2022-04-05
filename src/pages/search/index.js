@@ -492,10 +492,14 @@ export default async function Search() {
           await refreshSuggestion("sg-"+favouriteH.parentElement.id.substring(3));
       }
       await updateFav(AuthenticatedUser.favourites);
-      await updateFavourites();
+      await loadFavourites();
       
-      assignEventToActivities('#favourites .heart');
-      addFavoritesAction('#favourites .heart');
+      if (favouriteActiv.length <= 0) {
+        document.getElementById('favourites').style.display = 'none';
+      }else{
+        document.getElementById('favourites').style.display = 'block';
+      }
+
       setLoader(false);
     }
 
@@ -511,8 +515,6 @@ export default async function Search() {
           }
         }
 
-        
-
         if(added){
           element.firstChild.classList.add('fa-regular');
           element.firstChild.classList.remove('fa-solid');
@@ -520,27 +522,6 @@ export default async function Search() {
         }
       }
 
-    }
-
-    async function updateFavourites() {
-      let content = '';
-      
-      for (let activity of favouriteActiv) {
-        let additional = '';
-        const exists = adventure.alreadyHas(activity.id);
-        if (exists) {
-          additional = 'added';
-        }
-
-
-        content += `<div class="activity ${additional}" id="fv-${activity.id}">
-            <img src="${activity.imageUrl}" alt="Activity picture">
-            <div class="heart"><span class="fa-solid fa-heart fav"></span></div>
-            <h3>${activity.name}</h3>
-            <p>${await getActivityPlace(activity.id)}</p>
-            </div>`;
-      }
-      divFavourites.innerHTML = content;
     }
 
 

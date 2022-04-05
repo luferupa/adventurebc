@@ -209,20 +209,22 @@ export default async function Home() {
     }
 
     async function refreshSuggestion(activityId){
-      let added = false;
-      for (let favorite of favouriteActiv) {
-        if (favorite.id == activityId.substring(3)) {
-          added = true;
-          break;
-        }
-      }
-
       const element = document.querySelector('#'+activityId+' .heart');
 
-      if(added){
-        element.firstChild.classList.add('fa-regular');
-        element.firstChild.classList.remove('fa-solid');
-        element.firstChild.classList.remove('fav');
+      if(element != null && element != undefined){
+        let added = false;
+        for (let favorite of favouriteActiv) {
+          if (favorite.id == activityId.substring(3)) {
+            added = true;
+            break;
+          }
+        }
+
+        if(added){
+          element.firstChild.classList.add('fa-regular');
+          element.firstChild.classList.remove('fa-solid');
+          element.firstChild.classList.remove('fav');
+        }
       }
 
     }
