@@ -58,6 +58,83 @@
     }
 }
 
+#profilePicModal {
+    z-index: 9999;
+
+    .modal-content {
+        max-width: 400px;
+        max-height: 361px;
+        overflow: hidden;
+
+        .modal-header {
+            padding: 0.5rem 1rem;
+            background-color: variables.$color-secondary;
+            color: variables.$color-white;
+        }
+
+        .modal-body {
+            display: flex;
+            flex-flow: column nowrap;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .video-wrapper {
+            position: relative;
+
+            video {
+                width: 100%;
+                height: auto;
+            }
+
+            #snap {
+                position: absolute;
+                font-size: 38px;
+                bottom: 2rem;
+                left: 50%;
+                color: variables.$color-white;
+                transform: translateX(-50%);
+                cursor: pointer;
+
+                &:hover {
+                    color: variables.$color-grey;
+                }
+            }
+        }
+
+        .canvas-wrapper {
+            position: relative;
+            display: none;
+
+            .actionWrapper {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-top: .5rem;
+
+                #captureAgain {
+                    font-size: 26px;
+                    color: variables.$color-black;
+                    cursor: pointer;
+                }
+
+                #uploadPic {
+                    font-size: 18px;
+                    font-weight: bold;
+                    color: variables.$color-white;
+                    cursor: pointer;
+                    outline: none;
+                }
+
+                #captureAgain:hover,
+                #uploadPic:hover {
+                    color: variables.$color-grey;
+                }
+            }
+        }
+    }
+}
+
 .footer {
     display: flex;
     flex-flow: column;

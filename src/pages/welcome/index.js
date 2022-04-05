@@ -10,6 +10,11 @@ import {
 } from '../../firebase/auth';
 
 export default async function Welcome() {
+  if (window.myPlannerSnapshotUnsubscribe) {
+    window.myPlannerSnapshotUnsubscribe();
+    window.myPlannerSnapshotUnsubscribe = null;
+  }
+
   /**
    * handles the login form submit
    */

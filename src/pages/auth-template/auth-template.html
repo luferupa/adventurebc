@@ -52,12 +52,36 @@
               Hello <span id="username" class="fw-bold">Username</span>
             </a>
             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <li><a class="dropdown-item" href="" id="changeProfilePic">Change Profile Picture</a></li>
-              <li><a class="dropdown-item add-activity" href="#addActivities" >Add Activities</a></li>
+              <li><a class="dropdown-item" href="" id="changeProfilePicMobile">Change Profile Picture</a></li>
+              <li><a class="dropdown-item" href="" id="changeProfilePicDesktop">Change Profile Picture</a></li>
+              <li><a class="dropdown-item add-activity" href="#addActivities">Add Activities</a></li>
               <li><a class="dropdown-item" href="" id="signOut">Sign Out</a></li>
             </ul>
           </li>
         </ul>
+      </div>
+      <!-- Delete Modal -->
+      <div class="modal fade" id="profilePicModal" tabindex="-1" aria-labelledby="profilePicModal" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title" id="registerModalLabel">Upload</h4>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <div class="video-wrapper">
+                <video id="video" autoplay></video>
+                <span id="snap" class="fa fa-solid fa-camera"></span>
+              </div>
+              <div class="canvas-wrapper">
+                <div class="actionWrapper">
+                  <span id="captureAgain" class="fa fa-solid fa-arrow-rotate-right"></span>
+                  <button id="uploadPic" type="button" class="btn btn-primary">Upload</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </nav>

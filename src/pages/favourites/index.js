@@ -10,6 +10,11 @@ export default async function Favourites() {
   if (!AuthenticatedUser) {
     location.hash = '#welcome';
   } else {
+    if (window.myPlannerSnapshotUnsubscribe) {
+      window.myPlannerSnapshotUnsubscribe();
+      window.myPlannerSnapshotUnsubscribe = null;
+    }
+
     const divFavourites = document.querySelector('.activity-wrapper');
     setLoader(true);
     await updateFavourites();
@@ -29,9 +34,8 @@ export default async function Favourites() {
     }
 
     function addFavoritesAction() {
-      const act = document.querySelectorAll(".activity .heart");
+      const act = document.querySelectorAll('.activity .heart');
       act.forEach((activityH) => {
-        
         activityH.addEventListener('click', function () {
           modifyFavourites(activityH);
         });
@@ -40,7 +44,7 @@ export default async function Favourites() {
 
     async function modifyFavourites(favouriteH) {
       await removeFavorite(AuthenticatedUser.id, favouriteH.parentElement.id);
-      
+
       AuthenticatedUser.favourites = AuthenticatedUser.favourites.filter(function (value) {
         return value.id != favouriteH.parentElement.id;
       });
@@ -49,6 +53,5 @@ export default async function Favourites() {
       await updateFavourites();
       addFavoritesAction();
     }
-
   }
 }

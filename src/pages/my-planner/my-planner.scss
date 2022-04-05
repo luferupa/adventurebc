@@ -5,7 +5,7 @@
   margin: 0 auto;
   padding: 0 1rem;
 
-  .content-wrapper{
+  .content-wrapper {
     min-height: 70vh;
   }
 
@@ -232,6 +232,13 @@
 
   .btn-secondary {
     color: variables.$color-white;
+  }
+
+  #scheduleActivityModal {
+    .modal-header {
+      background-color: variables.$color-secondary;
+      color: variables.$color-white;
+    }
   }
 
   #deleteModal {

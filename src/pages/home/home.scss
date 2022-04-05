@@ -36,14 +36,7 @@
     .explore,
     .favourites {
         margin-top: 2rem;
-    }
-
-    .my-adventures {
         padding: 0 1rem;
-    }
-
-    .favourites {
-        padding: 0;
     }
 
     .horizontal-scroll {
@@ -108,7 +101,7 @@
                 display: flex;
                 flex-flow: row nowrap;
                 gap: 2rem;
-                overflow-x: scroll;
+                overflow-x: auto;
                 margin-bottom: 1rem;
                 margin-top: 1rem;
             }
@@ -149,7 +142,7 @@
         left: calc(50% - 1000px / 2);
         width: 1000px;
         max-height: calc(100vh - 15%);
-        overflow-y: scroll;
+        overflow-y: auto;
         background-color: #fff;
         border-radius: 25px;
         box-shadow: 7px 7px 15px 3px rgba(0, 0, 0, 0.5);
@@ -238,7 +231,7 @@
                 gap: 75px;
                 padding-bottom: 0.7rem;
                 gap: 25px;
-                overflow-x: scroll;
+                overflow-x: auto;
 
                 .tip {
                     display: grid;
@@ -297,7 +290,7 @@
             left: 2%;
             width: 96%;
             max-height: 85%;
-            overflow-y: scroll;
+            overflow-y: auto;
             background-color: #fff;
             border-radius: 25px;
             box-shadow: 7px 7px 15px 3px rgba(0, 0, 0, 0.5);
@@ -312,7 +305,7 @@
             left: 2%;
             width: 96%;
             max-height: 85%;
-            overflow-y: scroll;
+            overflow-y: auto;
             background-color: #fff;
             border-radius: 25px;
             box-shadow: 7px 7px 15px 3px rgba(0, 0, 0, 0.5);

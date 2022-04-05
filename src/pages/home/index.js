@@ -9,18 +9,23 @@ import { getCategories, getCategoryByRef } from '../../firebase/categories';
 
 export { updateFav, favouriteActiv };
 
-async function updateFav(list){
+async function updateFav(list) {
   favouriteActiv = await getUserFavorites(AuthenticatedUser.favourites);
 }
 let favouriteActiv = new Array();
-
 
 export default async function Home() {
   if (!AuthenticatedUser) {
     location.hash = '#welcome';
   } else {
     setLoader(true);
-    document.querySelector(".home-greeting p").innerHTML = "Hello, "+ AuthenticatedUser.username.split(" ")[0] + "!";
+
+    if (window.myPlannerSnapshotUnsubscribe) {
+      window.myPlannerSnapshotUnsubscribe();
+      window.myPlannerSnapshotUnsubscribe = null;
+    }
+
+    document.querySelector('.home-greeting p').innerHTML = 'Hello, ' + AuthenticatedUser.username.split(' ')[0] + '!';
     const userAdventures = AuthenticatedUser.adventures;
     const myAdventuresDiv = document.querySelector('.my-adventures .horizontal-scroll');
     const randomActivities = await getActivitiesRandom();
@@ -38,9 +43,9 @@ export default async function Home() {
       let output = ``;
       for (let userAdventure of userAdventures) {
         output += `<div><div class="activity block-narrow" onclick="location.hash = '#myPlanner/${userAdventure.id}'">`;
-        if(userAdventure.imageUrl!=undefined && userAdventure.imageUrl!=null){
+        if (userAdventure.imageUrl != undefined && userAdventure.imageUrl != null) {
           output += `<img src="${userAdventure.imageUrl}" alt="Activity picture">`;
-        }else{
+        } else {
           output += `<img src="https://firebasestorage.googleapis.com/v0/b/adventurebc-bug-hunters.appspot.com/o/activities%2Fpexels-marco-milanesi-5899783%201.png?alt=media&token=d2f4cb27-60c8-421f-aadc-c07a9ee8165b" alt="Activity picture">`;
         }
         output += `<h3>${userAdventure.name}</h3>
@@ -76,8 +81,8 @@ export default async function Home() {
         favouriteH.firstChild.classList.remove('fav');
       }
 
-      if(favouriteH.parentElement.id.substring(0,2) == "fv"){
-        await refreshSuggestion("ex-"+favouriteH.parentElement.id.substring(3));
+      if (favouriteH.parentElement.id.substring(0, 2) == 'fv') {
+        await refreshSuggestion('ex-' + favouriteH.parentElement.id.substring(3));
       }
 
       favouriteActiv = await getUserFavorites(AuthenticatedUser.favourites);
@@ -108,7 +113,7 @@ export default async function Home() {
 
     async function updateFavourites() {
       let content = '';
-      
+
       for (let activity of favouriteActiv) {
         content += `<div><div class="activity block-wide" id="fv-${activity.id}">
             <img src="${activity.imageUrl}" alt="Activity picture">
@@ -146,8 +151,8 @@ export default async function Home() {
       modalHeader.innerHTML = `<h2 id="title">${currentActivity.name}</h2><img src="${currentActivity.imageUrl}"><div id="closeButton"><span class="fa-solid fa-xmark"></span></div>`;
       city.innerHTML = cityDB.city;
       descriptionText.innerHTML = currentActivity.about;
-      
-      tipsAndRecommendation.innerHTML = getRecommendations(currentActivity)
+
+      tipsAndRecommendation.innerHTML = getRecommendations(currentActivity);
 
       mapLongLat.innerHTML = `<iframe
       frameborder="0" 
@@ -171,14 +176,13 @@ export default async function Home() {
     function addFavoritesAction(selector) {
       const act = document.querySelectorAll(selector);
       act.forEach((activityH) => {
-        
         activityH.addEventListener('click', function () {
           modifyFavourites(activityH);
         });
       });
     }
 
-    async function refreshSuggestion(activityId){
+    async function refreshSuggestion(activityId) {
       let added = false;
       for (let favorite of favouriteActiv) {
         if (favorite.id == activityId.substring(3)) {
@@ -187,20 +191,19 @@ export default async function Home() {
         }
       }
 
-      const element = document.querySelector('#'+activityId+' .heart');
+      const element = document.querySelector('#' + activityId + ' .heart');
 
-      if(added){
+      if (added) {
         element.firstChild.classList.add('fa-regular');
         element.firstChild.classList.remove('fa-solid');
         element.firstChild.classList.remove('fav');
       }
-
     }
 
     function getRecommendations(id) {
-      let output = ``
+      let output = ``;
       for (let i = 0; i < id.category.length; i++) {
-        if (id.category[i].hasOwnProperty('tips') == true) { 
+        if (id.category[i].hasOwnProperty('tips') == true) {
           for (let e = 0; e < id.category[i].tips.length; e++) {
             let preOutput = `
               <div class="tip">
@@ -209,12 +212,12 @@ export default async function Home() {
                   ${id.category[i].tips[e].description}
                 </p>
               </div>
-              `;  
+              `;
             output += preOutput;
           }
         }
-      } return output;
+      }
+      return output;
     }
-    
   }
 }

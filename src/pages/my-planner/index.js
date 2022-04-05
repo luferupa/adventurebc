@@ -1,6 +1,6 @@
 'use strict';
 
-import { AuthenticatedUser, Modal, myPlannerSnapshot } from '../../index';
+import { AuthenticatedUser, Modal } from '../../index';
 
 import { db, collection, doc, onSnapshot } from '../../firebase';
 import { getActivity } from '../../firebase/activities';
@@ -18,41 +18,49 @@ export default async function MyPlanner() {
   if (!AuthenticatedUser) {
     location.hash = '#welcome';
   } else {
-    onSnapshot(doc(db, 'users', AuthenticatedUser.id), { includeMetadataChanges: true }, (doc) => {
-      if (!doc.metadata.hasPendingWrites && doc.data().adventures.length > 0 && location.hash.includes('#myPlanner')) {
-        setLoader(true);
-        userAdventures = doc.data().adventures;
+    window.myPlannerSnapshotUnsubscribe = onSnapshot(
+      doc(db, 'users', AuthenticatedUser.id),
+      { includeMetadataChanges: true },
+      (doc) => {
+        if (
+          !doc.metadata.hasPendingWrites &&
+          doc.data().adventures.length > 0 &&
+          location.hash.includes('#myPlanner')
+        ) {
+          setLoader(true);
+          userAdventures = doc.data().adventures;
 
-        userAdventures.forEach((adventure) => {
-          adventure.activities = [];
+          userAdventures.forEach((adventure) => {
+            adventure.activities = [];
 
-          adventure.userActivities.forEach(async (item) => {
-            const activity = await getActivity(item.activityId.id);
-            adventure.activities &&
-              adventure.activities.push({ ...activity, dayOrder: item.dayOrder, daySlot: item.daySlot });
+            adventure.userActivities.forEach(async (item) => {
+              const activity = await getActivity(item.activityId.id);
+              adventure.activities &&
+                adventure.activities.push({ ...activity, dayOrder: item.dayOrder, daySlot: item.daySlot });
+            });
           });
-        });
 
-        if (location.hash.split('/')[1]) {
-          currentAdventure = userAdventures.find((adventure) => adventure.id === location.hash.split('/')[1]);
+          if (location.hash.split('/')[1]) {
+            currentAdventure = userAdventures.find((adventure) => adventure.id === location.hash.split('/')[1]);
+          }
+
+          if (currentAdventure) {
+            currentAdventure = userAdventures.find((adventure) => adventure.id === currentAdventure.id);
+          } else if (currentAdventureId) {
+            currentAdventure = userAdventures.find((adventure) => adventure.id === currentAdventureId);
+          } else {
+            currentAdventure = userAdventures[0];
+          }
+
+          getPlannerDates();
+
+          setTimeout(() => {
+            renderUiElements();
+            setLoader(false);
+          }, 1000);
         }
-
-        if (currentAdventure) {
-          currentAdventure = userAdventures.find((adventure) => adventure.id === currentAdventure.id);
-        } else if (currentAdventureId) {
-          currentAdventure = userAdventures.find((adventure) => adventure.id === currentAdventureId);
-        } else {
-          currentAdventure = userAdventures[0];
-        }
-
-        getPlannerDates();
-
-        setTimeout(() => {
-          renderUiElements();
-          setLoader(false);
-        }, 1000);
       }
-    });
+    );
 
     // Stop listening to changes
     // unsubscribe();

@@ -11,6 +11,11 @@ export default async function AddActivities() {
   if (!AuthenticatedUser) {
     location.hash = '#welcome';
   } else {
+    if (window.myPlannerSnapshotUnsubscribe) {
+      window.myPlannerSnapshotUnsubscribe();
+      window.myPlannerSnapshotUnsubscribe = null;
+    }
+
     async function loadCategories() {
       const categories = await getCategories();
       const categorySelect = document.getElementById('category');
@@ -71,7 +76,7 @@ export default async function AddActivities() {
             name: activityName.value,
             about: about.value,
             imageUrl: imageUrl.value,
-            tags: tags.value.split(',').map((tag) => tag.trim()),
+            tags: tags.value.split(',').map((tag) => tag.toLowerCase().trim()),
             place: doc(placesCollection, place.value),
             category: categories,
           };

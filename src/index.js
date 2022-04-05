@@ -39,7 +39,6 @@ import { auth } from './firebase';
 import { createUserProfileDocument } from './firebase/auth';
 
 export let AuthenticatedUser = null;
-export let myPlannerSnapshot = null;
 
 //setting up the Router with pages
 Router.init([
@@ -76,16 +75,17 @@ auth.onAuthStateChanged(async (userInfo) => {
   }
 });
 
-window.addEventListener('load', async() => {
+window.addEventListener('load', async () => {
   if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('./sw.js')
-    .then( function (reg) {
+    navigator.serviceWorker
+      .register('./sw.js')
+      .then(function (reg) {
         console.log(`Service Worker Registered`);
-    })
-    .catch( function (error) {
-        console.log(`Service Worker Error (${error})`);       
-    });
+      })
+      .catch(function (error) {
+        console.log(`Service Worker Error (${error})`);
+      });
   } else {
-      console.error("This browser doesn't support Service Worker");
+    console.error("This browser doesn't support Service Worker");
   }
 });
