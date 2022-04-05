@@ -253,11 +253,13 @@ export default async function Search() {
 
       let category = document.getElementById('category-sel').value;
       let location = document.getElementById('location-sel').value;
+      let tags = document.getElementById('tags-input').value;
 
-      await searchActivity(category, location);
+      await searchActivity(category, location, tags);
 
       document.getElementById('category-sel').value = 'Categories';
       document.getElementById('location-sel').value = 'Location';
+      document.getElementById('tags-input').value = '';
 
       cleanCategories();
       cleanLocations();
@@ -294,21 +296,27 @@ export default async function Search() {
       await addAdventure(adventure.toPlainObject(), AuthenticatedUser.id);
     }
 
-    async function searchActivity(category, location) {
+    async function searchActivity(category, location, tags) {
       suggestions = new Array();
       filters = '';
-      if (category != 'Categories' && location != 'Location') {
-        suggestions = await getActivitiesWhere(category, location);
-        filters += '(<b>Location:</b> ' + location + ', <b>Category:</b> ' + category + ') ';
-      } else {
-        if (location != 'Location') {
-          suggestions = await getActivitiesWhere(null, location);
-          filters += '(<b>Location:</b> ' + location + ') ';
-        } else if (category != 'Categories') {
-          suggestions = await getActivitiesWhere(category, null);
-          filters += '(<b>Category:</b> ' + category + ') ';
+      if (tags != null && tags != ''){
+        suggestions = await getActivitiesWhere(null, null, tags);
+        filters += '(<b>Keyword:</b> ' + tags + ') ';
+      }else{
+        if (category != 'Categories' && location != 'Location') {
+          suggestions = await getActivitiesWhere(category, location, null);
+          filters += '(<b>Location:</b> ' + location + ', <b>Category:</b> ' + category + ') ';
+        } else {
+          if (location != 'Location') {
+            suggestions = await getActivitiesWhere(null, location, null);
+            filters += '(<b>Location:</b> ' + location + ') ';
+          } else if (category != 'Categories') {
+            suggestions = await getActivitiesWhere(category, null, null);
+            filters += '(<b>Category:</b> ' + category + ') ';
+          }
         }
       }
+      
 
       await updateResults();
       assignEventToActivities('#suggestions .activity');
