@@ -20,7 +20,7 @@
         #search {
             grid-column: 1/2;
             position: fixed;
-            height: 65vh;
+            height: 100vh;
 
             #title {
                 background-color: white;
@@ -157,6 +157,7 @@
                     flex-flow: row nowrap;
                     overflow-x: scroll;
                     gap: 1rem;
+                    padding: 0.2rem;
 
                     .activity {
                         flex: 0 0 30%;
@@ -295,6 +296,7 @@
         background-color: rgba(0, 0, 0, 0.25);
         opacity: 0;
         pointer-events: none;
+        z-index: 102;
     }
 
     .modalActivity {

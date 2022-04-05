@@ -45,6 +45,7 @@ export default async function Favourites() {
     }
 
     async function modifyFavourites(favouriteH) {
+      setLoader(true);
       await removeFavorite(AuthenticatedUser.id, favouriteH.parentElement.id);
       
       AuthenticatedUser.favourites = AuthenticatedUser.favourites.filter(function (value) {
@@ -54,6 +55,7 @@ export default async function Favourites() {
       await updateFav(AuthenticatedUser.favourites);
       await updateFavourites();
       addFavoritesAction();
+      setLoader(false);
     }
 
   }

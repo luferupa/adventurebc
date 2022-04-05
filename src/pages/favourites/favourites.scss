@@ -45,6 +45,11 @@
         position: absolute;
         top: 0.5rem;
         right: 0.7rem; 
+
+        &:hover{
+          cursor: pointer;
+        }
+
       }
 
       &.add-activity {

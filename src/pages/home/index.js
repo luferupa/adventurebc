@@ -139,9 +139,18 @@ export default async function Home() {
     }
 
     const exploreActivities = document.getElementById('exploreID');
+    const favouriteActivities = document.getElementById('favouritesID');
     const modalWrapper = document.getElementById('modalWrapper');
 
     exploreActivities.onclick = function (event) {
+      if (!event.target.classList.contains('fa-heart') && !event.target.parentNode.classList.contains('fa-heart')) {
+        let target = event.target.parentNode;
+        let clickedActivity = document.getElementById(target.id);
+        openActivity(clickedActivity.id.substring(3));
+      }
+    };
+
+    favouriteActivities.onclick = function (event) {
       if (!event.target.classList.contains('fa-heart') && !event.target.parentNode.classList.contains('fa-heart')) {
         let target = event.target.parentNode;
         let clickedActivity = document.getElementById(target.id);
